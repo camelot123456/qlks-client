@@ -1,66 +1,90 @@
+import { FastField, Form, Formik } from "formik";
+import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
+import FormField from "../../custom/FormField";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from '../../../redux/slice/user-jwt-slice';
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import FullPageLoader from '../../custom/FullPageLoader';
+
 const Login = () => {
+    const dispatch = useDispatch();
+    const { loading, jwtToken, error } = useSelector((state) => ({ ...state.userJwt }));
+    const navigate = useNavigate();
+
+    useEffect(() => {
+    }, [loading, error]);
+
+    const initialValues = {
+        login: "",
+        password: "",
+        rememberMe: false,
+    };
+
+    const validationSchema = Yup.object().shape({
+        login: Yup.string().required("Trường này không được để trống."),
+        password: Yup.string().required("Trường này không được để trống."),
+        rememberMe: Yup.boolean()
+    });
 
     return (
-        <div class="bg-gradient-primary">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-10 col-lg-12 col-md-9">
-                        <div class="card o-hidden border-0 shadow-lg my-5">
-                            <div class="card-body p-0">
-                                <div class="row">
-                                    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                                    <div class="col-lg-6">
-                                        <div class="p-5">
-                                            <div class="text-center">
-                                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                            </div>
-                                            <form class="user">
-                                                <div class="form-group">
-                                                    <input type="email" class="form-control form-control-user"
-                                                        id="exampleInputEmail" aria-describedby="emailHelp"
-                                                        placeholder="Enter Email Address..." />
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="password" class="form-control form-control-user"
-                                                        id="exampleInputPassword" placeholder="Password" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="custom-control custom-checkbox small">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck" />
-                                                        <label class="custom-control-label" for="customCheck">Remember
-                                                            Me</label>
-                                                    </div>
-                                                </div>
-                                                <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                                    Login
-                                                </a>
-                                                <hr />
-                                                <a href="index.html" class="btn btn-google btn-user btn-block">
-                                                    <i class="fab fa-google fa-fw"></i> Login with Google
-                                                </a>
-                                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                                    <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                                </a>
-                                            </form>
-                                            <hr />
-                                            <div class="text-center">
-                                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                            </div>
-                                            <div class="text-center">
-                                                <a class="small" href="register.html">Create an Account!</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+                let loginForm = {
+                    login: values.login,
+                    password: values.password,
+                    rememberMe: values.rememberMe,
+                };
+                dispatch(login(loginForm))
+                    .then(res => {
+                        if (!res.error) {
+                            toast.success('Login Successfully');
+                            navigate('/');
+                        } else {
+                            toast.error('Login Failure');
+                        }
+                    })
+
+            }}
+        >
+            {(formikProps) => {
+                const { errors, values, touched, handleSubmit, handleBlur, handleChange } = formikProps;
+                return (
+                    <Form className="w-25 position-absolute top-50 start-50 translate-middle bg-light p-4 shadow-lg p-3 mb-5 bg-body rounded">
+                        <h3 className="text-center mb-4">Sign In</h3>
+                        <FastField id="login" name="login" placeholder="Username or Email" type="text" component={FormField.InputField1} />
+                        <FastField id="password" name="password" placeholder="Password" type="password" component={FormField.InputField1} />
+                        <div className="mb-3 form-check">
+                            <input type="checkbox" className="form-check-input" id="rememberMe" name="rememberMe" onChange={handleChange} />
+                            <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                         </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
+                        <div className="d-grid mt-4">
+                            <button type="submit" className="btn btn-primary rounded-pill">
+                                Login
+                            </button>
+                            <hr />
+                            <button type="button" className="btn btn-danger rounded-pill">
+                                <i className="fa fa-google" aria-hidden="true"></i> Login with Google
+                            </button>
+                            <button type="button" className="btn btn-primary rounded-pill mt-3">
+                                <i className="fa fa-facebook" aria-hidden="true"></i> Login with Facebook
+                            </button>
+                            <hr />
+                            <a className="forgot-password text-center" href="#">
+                                Forgot Password?
+                            </a>
+                            <a className="forgot-password text-center" href="#">
+                                Create an Account!
+                            </a>
+                        </div>
+                        {loading && <FullPageLoader />}
+                    </Form>
+                );
+            }}
+        </Formik>
     );
 
 };

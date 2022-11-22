@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from '../fragments/navbar';
-import Footer from '../fragments/footer';
+import Navbar from '../fragments/Navbar';
+import Footer from '../fragments/Footer';
 
 const HomeLayout = () => {
 

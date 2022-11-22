@@ -10,10 +10,8 @@ export const httpClient = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-    } 
+    }
     return axios.create({
-        headers: {
-            baseURL: process.env.REACT_APP_SERVICE_API_URL
-        }
-    })
+        baseURL: process.env.REACT_APP_SERVICE_API_URL
+    });
 }

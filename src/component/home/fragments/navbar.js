@@ -1,27 +1,28 @@
+import logo from '../../../asset/img/mer-de-nuit-hm-logo.png';
+
 const Navbar = () => {
-
     return (
-        // Navigation
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars ms-1"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    );
+        <div className="container">
+            <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+                <a href="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                    <img className='w-25' src={logo}/>
+                </a>
 
+                <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" className="nav-link px-2 link-secondary">Home</a></li>
+                    <li><a href="#" className="nav-link px-2 link-dark">Features</a></li>
+                    <li><a href="#" className="nav-link px-2 link-dark">Pricing</a></li>
+                    <li><a href="#" className="nav-link px-2 link-dark">FAQs</a></li>
+                    <li><a href="#" className="nav-link px-2 link-dark">About</a></li>
+                </ul>
+
+                <div className="col-md-3 text-end">
+                    <button type="button" className="btn btn-outline-primary me-2">Login</button>
+                    <button type="button" className="btn btn-primary">Sign-up</button>
+                </div>
+            </header>
+        </div>
+    );
 };
 
 export default Navbar;
