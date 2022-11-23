@@ -1,4 +1,5 @@
 import HeaderSlice from "./HeaderSlide";
+import React from "react";
 
 const HomePage = () => {
 
