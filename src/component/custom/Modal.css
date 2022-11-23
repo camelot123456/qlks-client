@@ -1,0 +1,22 @@
+.modal-container {
+    background-color: rgba(12, 11, 11, 0.439);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+}
+
+.modal-box {
+    margin-top: 100px;
+    display: block;
+    background-color: aliceblue;
+    width: 700px;
+    padding: 16px;
+}
+
+.modal-main {
+    max-height: 400px;
+    overflow: auto;
+}

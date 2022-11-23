@@ -1,7 +1,18 @@
 import {httpClient} from "../config/axios-config";
 
-const findAll = () => {
-    return httpClient().get(`/api/roomtypes`);
+const findAll = (pageable) => {
+    return httpClient().get(`/api/roomtypes`, {
+        params: {
+            page: pageable.page,
+            size: pageable.size,
+            sort: pageable.sort,
+            search: pageable.search,
+        }
+    });
+};
+
+const findById = (id) => {
+    return httpClient().get(`/api/roomtypes/${id}`);
 };
 
 const roomTypeSearch = (filterForm) => {
@@ -18,5 +29,6 @@ const roomTypeSearch = (filterForm) => {
 
 export {
     findAll,
+    findById,
     roomTypeSearch
 };

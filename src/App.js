@@ -11,6 +11,9 @@ import HomePage from './component/home/bodys/home-page/HomePage';
 import Unauthorized from './component/error/bodys/Unauthorized';
 import Login from './component/auth/bodys/Login';
 import Register from './component/auth/bodys/Register';
+import RoomtypeDetail from './component/home/bodys/home-page/RoomtypeDetail';
+import ServiceDetail from './component/home/bodys/home-page/ServiceDetail';
+import BookingLayout from './component/home/bodys/booking-order/BookingLayout';
 
 // https://preview.themeforest.net/item/triper-creative-tour-travel-hotel-booking-agency-react-template/full_screen_preview/25335777?_ga=2.46860001.75497068.1669143948-1579485344.1669043010
 function App() {
@@ -27,16 +30,19 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<MainLayout />}>
-
-              <Route path="auth" element={<AuthLayout />}>
-                <Route index path="login" element={<Login />}></Route>
-                <Route index path="register" element={<Register />}></Route>
-              </Route>
-
               <Route path="" element={<HomeLayout />}>
                 <Route path="" element={<HomePage />}></Route>
                 <Route path="home" element={<HomePage />}></Route>
+                <Route path="roomtype/:id" element={<RoomtypeDetail />}></Route>
+                <Route path="service/:id" element={<ServiceDetail />}></Route>
+                <Route path="booking/detail" element={<BookingLayout />}></Route>
               </Route>
+
+              <Route path="" element={<AuthLayout />}>
+                <Route path="login" element={<Login />}></Route>
+                <Route path="register" element={<Register />}></Route>
+              </Route>
+
 
               <Route path="error" element={<ErrorLayout />}>
                 <Route path="unauthorized" element={<Unauthorized />}></Route>

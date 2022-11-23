@@ -3,9 +3,19 @@ import {LOCAL_TIME_REGEX} from "../constants/constants";
 export const addTimeSuffixes = (dateInput, defaultTime) => {
     const localTime = new Date();
     if (defaultTime?.match(LOCAL_TIME_REGEX)) {
-        console.log(1);
         return dateInput + 'T' + defaultTime;
     } else {
-        return `${dateInput}T${localTime.getHours().toString()}:${localTime.getMinutes().toString()}:${localTime.getSeconds().toString()}`;
+        return `${dateInput}T${checkNumber(localTime.getHours().toString())}:${checkNumber(localTime.getMinutes().toString())}:${checkNumber(localTime.getSeconds().toString())}`;
     }
+}
+
+export const convertByPercent = (input, percent) => {
+    return input * (100.0 - percent) / 100;
+}
+
+const checkNumber = (num) => {
+    if (num.length < 2) {
+        return `0${num}`;
+    }
+    return num;
 }
