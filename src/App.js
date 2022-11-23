@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-import MainLayout from './component';
-import HomeLayout from './component/home/layouts';
-import ErrorLayout from './component/error/layouts';
-import AuthLayout from './component/auth/layouts';
-import HomePage from './component/home/bodys/home-page/index';
+import MainLayout from './component/MainLayout';
+import HomeLayout from './component/home/layouts/HomeLayout';
+import ErrorLayout from './component/error/layouts/ErrorLayout';
+import AuthLayout from './component/auth/layouts/AuthLayout';
+import HomePage from './component/home/bodys/home-page/HomePage';
 import Unauthorized from './component/error/bodys/Unauthorized';
 import Login from './component/auth/bodys/Login';
 import Register from './component/auth/bodys/Register';
