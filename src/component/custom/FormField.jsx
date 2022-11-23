@@ -9,9 +9,9 @@ function InputField(props) {
     const showError = errors[name] && touched[name];
 
     return (
-        <div className="mb-3">
-            {label && <label htmlFor="{name}" className="form-label">{label}</label>}
+        <div className="form-floating mb-3">
             <input type={type} className="form-control" id={name} placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} disabled={disabled} />
+            <label htmlFor={name}>{label}</label>
             {showError && <p style={{ color: 'red', fontSize: '12px' }}>{errors[name]}</p>}
         </div>
     );
@@ -26,8 +26,9 @@ function InputField1(props) {
     const showError = errors[name] && touched[name];
 
     return (
-        <div className="mb-3">
+        <div className="form-floating mb-3">
             <input type={type} className="form-control rounded-pill" id={name} placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} disabled={disabled} />
+            <label htmlFor={name}>{label}</label>
             {showError && <p style={{ color: 'red', fontSize: '12px' }}>{errors[name]}</p>}
         </div>
     );

@@ -55,8 +55,8 @@ const Login = () => {
                 return (
                     <Form className="w-25 position-absolute top-50 start-50 translate-middle bg-light p-4 shadow-lg p-3 mb-5 bg-body rounded">
                         <h3 className="text-center mb-4">Sign In</h3>
-                        <FastField id="login" name="login" placeholder="Username or Email" type="text" component={FormField.InputField1} />
-                        <FastField id="password" name="password" placeholder="Password" type="password" component={FormField.InputField1} />
+                        <FastField id="login" name="login" placeholder="Username or Email" label="Username or Email" type="text" component={FormField.InputField1} />
+                        <FastField id="password" name="password" placeholder="Password" label="Password" type="password" component={FormField.InputField1} />
                         <div className="mb-3 form-check">
                             <input type="checkbox" className="form-check-input" id="rememberMe" name="rememberMe" onChange={handleChange} />
                             <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>

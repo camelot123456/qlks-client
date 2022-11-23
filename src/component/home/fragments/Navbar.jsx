@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import logo from '../../../asset/img/mer-de-nuit-hm-logo.png';
 
 const Navbar = () => {
@@ -17,8 +18,8 @@ const Navbar = () => {
                 </ul>
 
                 <div className="col-md-3 text-end">
-                    <button type="button" className="btn btn-outline-primary me-2">Login</button>
-                    <button type="button" className="btn btn-primary">Sign-up</button>
+                    <Link to="/auth/login" className="btn btn-outline-primary me-2">Login</Link>
+                    <Link to="/auth/register" className="btn btn-primary">Register</Link>
                 </div>
             </header>
         </div>

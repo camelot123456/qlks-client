@@ -2,7 +2,7 @@ div.image {
     content: url(https://pix10.agoda.net/hotelImages/48701/-1/5647a54e56053eb6f68edcbf61038e94.jpg?ce=0&s=1024x768);
     width: 100%;
     height: 100vh;
-    position: relative;
+    position: fixed;
     z-index: 0;
 }
 

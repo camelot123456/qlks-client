@@ -1,0 +1,21 @@
+.header-container {
+    height: 600px;
+    position: relative;
+}
+
+.image-container {
+    content: url('https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg');
+    width: 100%;
+    height: 600px;
+    position: absolute;
+}
+
+.form-filter {
+    width: 100%;
+    z-index: 2;
+    position: absolute;
+    background-color: rgb(155 144 144 / 54%);
+    color: aliceblue;
+    padding: 30px;
+    bottom: 0;
+}
