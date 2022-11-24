@@ -50,20 +50,20 @@ const GuestDetailForm = () => {
                         <div className="mt-3">
                             <select className="form-select form-select-lg mb-3 rounded-pill">
                                 <option defaultValue>Open this select menu</option>
-                                <option value={PAYMENT_TYPE.PREPAID}>{PAYMENT_TYPE.PREPAID}</option>
-                                <option value={PAYMENT_TYPE.POSTPAID}>{PAYMENT_TYPE.POSTPAID}</option>
-                                <option value={PAYMENT_TYPE.DEPOSIT}>{PAYMENT_TYPE.DEPOSIT}</option>
+                                <option value={PAYMENT_TYPE.PREPAID}>TRẢ TRƯỚC</option>
+                                <option value={PAYMENT_TYPE.POSTPAID}>TRẢ SAU</option>
+                                <option value={PAYMENT_TYPE.DEPOSIT}>ĐẶT CỌC</option>
                             </select>
                         </div>
                         <div className="mt-3">
                             <select className="form-select form-select-lg mb-3 rounded-pill">
                                 <option defaultValue>Open this select menu</option>
-                                <option value={PAYMENT_METHOD.CASH}>{PAYMENT_METHOD.CASH}</option>
-                                <option value={PAYMENT_METHOD.CHECKS}>{PAYMENT_METHOD.CHECKS}</option>
-                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>{PAYMENT_METHOD.CREDIT_CARDS}</option>
-                                <option value={PAYMENT_METHOD.DEBIT_CARDS}>{PAYMENT_METHOD.DEBIT_CARDS}</option>
-                                <option value={PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}>{PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}</option>
-                                <option value={PAYMENT_METHOD.MOBILE_PAYMENTS}>{PAYMENT_METHOD.MOBILE_PAYMENTS}</option>
+                                <option value={PAYMENT_METHOD.CASH}>TIỀN MẶT</option>
+                                <option value={PAYMENT_METHOD.CHECKS}>SÉC</option>
+                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>THẺ TÍN DỤNG</option>
+                                <option value={PAYMENT_METHOD.DEBIT_CARDS}>THẺ GHI NỢ</option>
+                                <option value={PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}>CHUYỂN TIỀN NGÂN HÀNG</option>
+                                <option value={PAYMENT_METHOD.MOBILE_PAYMENTS}>THANH TOÁN DI ĐỘNG</option>
                             </select>
                         </div>
                         <FastField id="note" name="note" label="Note" placeholder="Note" type="textarea" component={FormField.TextareaField} />

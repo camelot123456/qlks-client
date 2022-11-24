@@ -15,6 +15,10 @@ const findById = (id) => {
     return httpClient().get(`/api/roomtypes/${id}`);
 };
 
+const findObjectSelect = () => {
+    return httpClient().get(`/api/roomtypes/select`);
+};
+
 const roomTypeSearch = (filterForm) => {
     return httpClient().get(`/api/roomtypes/search`, {
         params: {
@@ -30,5 +34,6 @@ const roomTypeSearch = (filterForm) => {
 export {
     findAll,
     findById,
-    roomTypeSearch
+    roomTypeSearch,
+    findObjectSelect
 };

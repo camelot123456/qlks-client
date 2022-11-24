@@ -1,30 +1,30 @@
-import { FastField, Form, Formik } from 'formik';
-import FormField from '../../../custom/FormField';
-import './HeaderSlide.css';
-import * as Yup from "yup";
-import { addTimeSuffixes } from "../../../../util/util";
+import { FastField, Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { findAllObjectSelect, roomtypeFilter } from "../../../../redux/slice/roomtype-slice";
+import FormField from "../../../custom/FormField";
+import * as Yup from 'yup';
 import { useEffect } from "react";
+import { findAllObjectSelect, roomtypeFilter } from "../../../../redux/slice/roomtype-slice";
+import { addTimeSuffixes } from "../../../../util/util";
+import { updateTimeBooking } from "../../../../redux/slice/booking-slice";
 
-const HeaderSlide = () => {
+const RoomBookingFilter = () => {
 
     const dispatch = useDispatch();
-    const { roomtypeSearch, loading, error, roomtypeSelect } = useSelector(state => ({ ...state.roomtype }));
+    const { error, bookingRequest } = useSelector(state => ({ ...state.booking }));
+    const { loading, roomtypeSelect } = useSelector(state => ({ ...state.roomtype }));
 
     useEffect(() => {
         dispatch(findAllObjectSelect());
     }, []);
 
     useEffect(() => {
-    }, [loading, error, roomtypeSearch]);
+    }, [loading, error, roomtypeSelect, bookingRequest]);
 
     const initialValues = {
         checkin: '',
         checkout: '',
         adultGuest: '',
-        childGuest: '',
-        idRoomType: ''
+        childGuest: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -47,11 +47,8 @@ const HeaderSlide = () => {
                     childGuest: values.childGuest || 0,
                     idRoomType: values.idRoomType || ''
                 };
-
-                dispatch(roomtypeFilter(filterForm))
-                    .then(res => {
-                        console.log(res);
-                    });
+                dispatch(updateTimeBooking(filterForm));
+                dispatch(roomtypeFilter(filterForm));
             })}
         >
             {(formikProps) => {
@@ -67,12 +64,12 @@ const HeaderSlide = () => {
                             <FastField id="adultGuest" name="adultGuest" placeholder="Người lớn" label="Người lớn"
                                 type="number" min={1} max={20} component={FormField.InputField2} />
                             <FastField id="childGuest" name="childGuest" placeholder="Trẻ em" label="Trẻ em"
-                                type="number" min={0} max={20} component={FormField.InputField2} def />
+                                type="number" min={0} max={20} component={FormField.InputField2} />
                             <div className="">
                                 <select id='idRoomType' name="idRoomType" className="form-select form-select-lg mb-3"
                                     onChange={handleChange} style={{ minHeight: '58px', minWidth: '200px' }}>
                                     <option value={''}>Tất cả</option>
-                                    {roomtypeSearch && roomtypeSelect.map(itemSelect => (
+                                    {roomtypeSelect && roomtypeSelect.map(itemSelect => (
                                         <option key={itemSelect.id} value={itemSelect.id}>{itemSelect.name}</option>
                                     ))}
                                 </select>
@@ -88,4 +85,4 @@ const HeaderSlide = () => {
     );
 };
 
-export default HeaderSlide;
+export default RoomBookingFilter;

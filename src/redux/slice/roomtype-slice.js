@@ -14,6 +14,18 @@ export const roomtypeFilter = createAsyncThunk(
     }
 );
 
+export const findAllObjectSelect = createAsyncThunk(
+    'roomtype/select',
+    async (params, { rejectedWithValue }) => {
+        try {
+            const roomtypeSelect = await roomtypeService.findObjectSelect();
+            return roomtypeSelect.data;
+        } catch (error) {
+            return rejectedWithValue(error.response.data);
+        }
+    }
+);
+
 export const findAll = createAsyncThunk(
     'roomtype/findAll',
     async (pageable, { rejectedWithValue }) => {
@@ -74,6 +86,7 @@ export const addRoomIntoCart = (idRoomtype) => {
 const roomtypeSlice = createSlice({
     name: 'roomtype',
     initialState: {
+        roomtypeSelect: [],
         roomtypeSearch: [],
         roomtypeCart: [],
         roomtypes: [],
@@ -123,6 +136,19 @@ const roomtypeSlice = createSlice({
             state.roomtypes = payload;
         },
         [findAll.rejected]: (state, acction) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [findAllObjectSelect.pending]: (state, acction) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [findAllObjectSelect.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.roomtypeSelect = payload;
+        },
+        [findAllObjectSelect.rejected]: (state, acction) => {
             state.loading = false;
             state.error = true;
         }

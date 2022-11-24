@@ -3,7 +3,7 @@ import React from "react";
 import RoomtypeList from "./RoomtypeList";
 import ServiceList from "./ServiceList";
 
-const HomePage = () => {
+const HomePageLayout = () => {
 
     return (
         <>
@@ -14,4 +14,4 @@ const HomePage = () => {
     )
 };
 
-export default HomePage;
+export default HomePageLayout;

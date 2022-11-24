@@ -15,6 +15,7 @@ const Navbar = () => {
                     <li><Link to="/login" className="nav-link px-2 link-dark">Service</Link></li>
                     <li><Link to="/login" className="nav-link px-2 link-dark">About</Link></li>
                     <li><Link to="/login" className="nav-link px-2 link-dark">Constact</Link></li>
+                    <li><Link to="/booking" className="btn btn-outline-success">Booking</Link></li>
                 </ul>
 
                 <div className="col-md-3 text-end">
