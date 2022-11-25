@@ -1,12 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAll } from "../../../../redux/slice/roomtype-slice";
+import { toast } from "react-toastify";
+import { addOrUpdateRoomtype } from "../../../../redux/slice/booking-slice";
+import { findAll, roomtypeFilter, saveRoomtypeTemp } from "../../../../redux/slice/roomtype-slice";
 import FullPageLoader from "../../../custom/FullPageLoader";
 
-const RoomTypeOrderList = () => {
+const RoomTypeOrderList = ({closeModal}) => {
 
     const dispatch = useDispatch();
-    const { roomtypes, loading, error } = useSelector(state => ({ ...state.roomtype }));
+    const roomtypeReducer = useSelector(state => ({ ...state.roomtype }));
+    const bookingReducer = useSelector(state => ({ ...state.booking }));
+    const roomtypeBookings = bookingReducer.bookingRequest.roomTypeBookings;
+    const roomtypes = roomtypeReducer.roomtypes;
+    const roomtypeSearch = roomtypeReducer.roomtypeSearch;
 
     useEffect(() => {
         dispatch(findAll({
@@ -17,25 +23,56 @@ const RoomTypeOrderList = () => {
         }));
     }, []);
 
+    useEffect(() => {
+        dispatch(roomtypeFilter({
+            checkin: bookingReducer.bookingRequest.checkin,
+            checkout: bookingReducer.bookingRequest.checkout,
+            adultGuest: bookingReducer.bookingRequest.adultGuest,
+            childGuest: bookingReducer.bookingRequest.childGuest
+        }));
+    }, []);
+
+    const getCountRoomByIdRoomType = (idRoomType) => {
+        const roomtypeSearchItem = roomtypeSearch.find(rts => rts.id === idRoomType);
+        return roomtypeSearchItem && roomtypeSearchItem.countRoom;
+    }
+
+    const getQuantityByIdRoomType = (idRoomType) => {
+        const roomtypeBooking = roomtypeBookings.find(rtb => rtb.id === idRoomType);
+        return roomtypeBooking && roomtypeBooking.quantity || 0;
+    }
+
+    const handleSaveRoomtypeTemp = (id, name, quantity, countRoom, price) => {
+        dispatch(saveRoomtypeTemp({id, name, quantity, countRoom, price}));
+    }
+
+    const handleSaveRoomtypesOption = () => {
+        const roomTypeBookings = roomtypeReducer.roomtypeBookings;
+        dispatch(addOrUpdateRoomtype({roomTypeBookings}));
+        closeModal(false);
+        toast.success('Saved');
+    }
+
     return (
         <>
-            {roomtypes && roomtypes.map(item => (
-                <div key={item.id} className="card mb-3 mx-auto" style={{maxWidth: '540px'}}>
-                    <div className="row g-0">
-                        <div className="col-md-4">
-                            <img src={item.thumbnail} className="img-fluid rounded-start" alt="..." />
-                        </div>
-                        <div className="col-md-8">
-                            <div className="card-body">
-                                <h5 className="card-title">{item.name}</h5>
-                                <h4 className="font-weight-light" style={{ color: '#d77b5d' }}>Giá: ${item.price}</h4>
-                                <input type="number" min={0} max={50} defaultValue={0}/>
-                            </div>
-                        </div>
+            {roomtypes && roomtypes.map((item, index) => (
+                <div class="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
+                    <img src={item.thumbnail} width="50%" class="flex-shrink-0 me-3" alt="..." />
+                    <div>
+                        <h5 class="mt-0">{item.name}</h5>
+                        <p className="font-weight-light">Tình trạng: {getCountRoomByIdRoomType(item.id) ? `Còn ${getCountRoomByIdRoomType(item.id)} phòng` : 'Hết phòng'}</p>
+                        <h4 className="font-weight-light" style={{ color: '#d77b5d' }}>Giá: ${item.price}</h4>
+                        <input type="number" min={0} max={getCountRoomByIdRoomType(item.id) || 20}
+                            defaultValue={getQuantityByIdRoomType(item.id)} 
+                            onChange={(e) => handleSaveRoomtypeTemp(item.id, item.name, +e.target.value, item.countRoom, item.price)}/>
                     </div>
                 </div>
             ))}
-            {loading && <FullPageLoader />}
+            <div className="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-outline-success" 
+                    onClick={() => handleSaveRoomtypesOption()}>Lưu</button>
+            </div>
+            {roomtypeReducer.loading && <FullPageLoader />}
         </>
     )
 };

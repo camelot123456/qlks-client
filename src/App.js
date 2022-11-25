@@ -15,6 +15,7 @@ import ServiceDetail from './component/home/bodys/home-page/ServiceDetail';
 import BookingLayout from './component/home/bodys/booking-order/BookingLayout';
 import RoomBookingLayout from './component/home/bodys/room-booking/RoomBookingLayout';
 import HomePageLayout from './component/home/bodys/home-page/HomePageLayout';
+import NotFound from './component/error/bodys/NotFound';
 
 // https://preview.themeforest.net/item/triper-creative-tour-travel-hotel-booking-agency-react-template/full_screen_preview/25335777?_ga=2.46860001.75497068.1669143948-1579485344.1669043010
 function App() {
@@ -49,7 +50,8 @@ function App() {
               <Route path="error" element={<ErrorLayout />}>
                 <Route path="unauthorized" element={<Unauthorized />}></Route>
               </Route>
-
+              
+              <Route path="*" element={<NotFound />}></Route>
             </Route>
           </Routes>
         </Suspense>

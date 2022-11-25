@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { addOrUpdateDiscount } from "../../../../redux/slice/booking-slice";
+import { findByGiftCode, isExpireByGiftCode } from "../../../../redux/slice/discount-slice";
 import FullPageLoader from "../../../custom/FullPageLoader";
 import Modal from "../../../custom/Modal";
 import RoomTypeOrderList from "./RoomTypeOrderList";
@@ -7,21 +10,43 @@ import ServiceOrderList from "./ServiceOrderList";
 
 const BookingDetail = () => {
 
+    const giftCodeRef = useRef();
+    const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
     const [modeContentModal, setModeContentModal] = useState(0);
-    const { loading, roomtypeSearch } = useSelector(state => ({ ...state.roomtype }));
+    const { loading } = useSelector(state => ({ ...state.roomtype }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const bookingRequest = bookingReducer.bookingRequest;
 
-    useEffect(() => {
-
-    }, [loading, roomtypeSearch, bookingReducer]);
 
     const handleOpenModel = (title, modeContent) => {
         setTitleModal(title);
         setModeContentModal(modeContent);
         setOpenModal(true);
+    }
+
+    const handleAddDiscount = () => {
+        const giftCode = giftCodeRef.current.value;
+        Promise.all([
+            dispatch(isExpireByGiftCode(giftCode)),
+            dispatch(findByGiftCode(giftCode))
+        ])
+            .then(([expireRes, giftCodeInfo]) => {
+                if (expireRes.payload) {
+                    dispatch(addOrUpdateDiscount({
+                        isExpireGiftCode: expireRes.payload,
+                        giftCode: giftCodeInfo.payload.giftCode,
+                        name: giftCodeInfo.payload.name,
+                        percent: giftCodeInfo.payload.percent,
+                        description: giftCodeInfo.payload.description
+                    }));
+                    toast.success('Added gift code');
+                    giftCodeRef.current.value = '';
+                } else {
+                    toast.error('The gift code was be expired or not found');
+                }
+            });
     }
 
     return (
@@ -57,9 +82,9 @@ const BookingDetail = () => {
                         <tbody>
                             {bookingRequest && bookingRequest.roomTypeBookings.map(item => (
                                 <tr key={item.id}>
-                                    <th scope="row">{item.id}</th>
-                                    <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
+                                    <th scope="row">{item.name}</th>
+                                    <td>X {item.quantity}</td>
+                                    <td>$ {item.price}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -76,9 +101,9 @@ const BookingDetail = () => {
                         <tbody>
                             {bookingRequest && bookingRequest.serviceBookings.map(item => (
                                 <tr key={item.id}>
-                                    <th scope="row">{item.id}</th>
-                                    <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
+                                    <th scope="row">{item.name}</th>
+                                    <td>X {item.quantity}</td>
+                                    <td>$ {item.price}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -95,21 +120,22 @@ const BookingDetail = () => {
                 </div>
                 <div className="v-stack gap-3">
                     <div>Mã giảm giá:</div>
-                    <div className="d-flex justify-content-between">
-                        <input type="text" />
-                        <button className="btn btn-sm btn-outline-dark">Thêm</button>
-                    </div>
                     <table className="table table-hover">
                         <tbody>
                             {bookingRequest && bookingRequest.discountBookings.map(item => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.id}</th>
-                                    <td>{item.giftCode}</td>
-                                    <td>{item.percent}</td>
+                                <tr key={item.giftCode} title={`${item.name}-${item.description}`}>
+                                    <th scope="row">{item.giftCode}</th>
+                                    <td>Giảm {item.percent}%</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                    <div className="d-flex justify-content-between">
+                        <input type="text" ref={giftCodeRef} />
+                        <button className="btn btn-sm btn-outline-dark"
+                            onClick={() => handleAddDiscount()}
+                        >Thêm</button>
+                    </div>
                 </div>
                 <hr />
                 <div className="d-flex justify-content-between">
@@ -137,8 +163,10 @@ const BookingDetail = () => {
                     <div>$ 0</div>
                 </div>
             </div>
-            {openModal && <Modal closeModal={setOpenModal} title={titleModal} 
-                content={modeContentModal ? <ServiceOrderList /> : <RoomTypeOrderList />} />}
+            {openModal && <Modal closeModal={setOpenModal} title={titleModal}
+                content={modeContentModal ? 
+                <ServiceOrderList closeModal={setOpenModal} /> : 
+                <RoomTypeOrderList closeModal={setOpenModal} />} />}
             {loading && <FullPageLoader />}
         </>
     )

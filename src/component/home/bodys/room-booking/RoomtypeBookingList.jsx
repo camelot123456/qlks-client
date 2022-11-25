@@ -1,24 +1,30 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { addOrUpdateRoomtype } from "../../../../redux/slice/booking-slice";
+import { saveRoomtypeTemp } from "../../../../redux/slice/roomtype-slice";
 import FullPageLoader from "../../../custom/FullPageLoader";
 
 const RoomtypeBookingList = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const roomtypeReducer = useSelector(state => ({ ...state.roomtype }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
+    const roomTypeBookings = roomtypeReducer.roomtypeBookings;
 
     useEffect(() => {
-        console.log(bookingReducer.bookingRequest);
     }, [roomtypeReducer.loading, 
         roomtypeReducer.roomtypeSearch,
         bookingReducer.bookingRequest
     ]);
 
-    const handleAddOrUpdateRoomtypeBooking = (id, name, quantity) => {
-        dispatch(addOrUpdateRoomtype({id, name, quantity}));
+    const handleSaveRoomtypeTemp = (id, name, quantity, countRoom, price) => {
+        dispatch(saveRoomtypeTemp({id, name, quantity, countRoom, price}));
+    }
+
+    const handleSaveRoomtypesOption = () => {
+        dispatch(addOrUpdateRoomtype({roomTypeBookings}));
+        navigate('/booking/detail')
     }
 
     return (
@@ -41,7 +47,7 @@ const RoomtypeBookingList = () => {
                             <div className="col-auto">
                                 <input type="number" className="form-control" id={item.id} defaultValue={0}
                                     min={0} max={item.countRoom}
-                                    onChange={(e) => handleAddOrUpdateRoomtypeBooking(item.id, item.name, +e.target.value)}
+                                    onChange={(e) => handleSaveRoomtypeTemp(item.id, item.name, +e.target.value, item.countRoom, item.price)}
                                 />
                             </div>
                         </div>
@@ -50,7 +56,8 @@ const RoomtypeBookingList = () => {
             ))}
 
             {roomtypeReducer.roomtypeSearch.length > 0 && <div className="d-flex flex-row-reverse">
-                <Link to={'/booking/detail'} className="btn btn-primary ms-3">Booking</Link>
+                <button className="btn btn-primary ms-3"
+                    onClick={() => handleSaveRoomtypesOption()}>Booking</button>
                 <button className="btn btn-primary">Cancel</button>
             </div>}
             {roomtypeReducer.loading && <FullPageLoader />}

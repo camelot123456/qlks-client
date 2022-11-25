@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { ROOMTYPE_CART } from "../../constants/constants";
 import * as roomtypeService from '../../service/roomtype-service';
 
@@ -54,7 +54,7 @@ export const addRoomIntoCart = (idRoomtype) => {
     try {
         if (!localStorage.getItem(ROOMTYPE_CART)) {
             const initCart = [];
-            initCart.push({idRoomtype, quantity: 1});
+            initCart.push({ idRoomtype, quantity: 1 });
             localStorage.setItem(ROOMTYPE_CART, JSON.stringify(initCart));
             return true;
         }
@@ -70,7 +70,7 @@ export const addRoomIntoCart = (idRoomtype) => {
                 return true;
             } else {
                 if (roomtypeCarts.every(iter => iter.idRoomtype !== idRoomtype)) {
-                    roomtypeCarts.push({idRoomtype, quantity: 1});
+                    roomtypeCarts.push({ idRoomtype, quantity: 1 });
                     localStorage.setItem(ROOMTYPE_CART, JSON.stringify(roomtypeCarts));
                     return true;
                 }
@@ -83,9 +83,37 @@ export const addRoomIntoCart = (idRoomtype) => {
     }
 };
 
+const saveRoomtypeTemporary = (roomTypeBookings, id, name, quantity, countRoom, price) => {
+    if (!roomTypeBookings.length) {
+        roomTypeBookings.push({ id, quantity, name, countRoom, price });
+        return roomTypeBookings;
+    }
+    roomTypeBookings.forEach((item, index) => {
+        if (item.id === id) {
+            if (!quantity) {
+                roomTypeBookings.splice(index, 1);
+                return roomTypeBookings;
+            };
+            item = {
+                ...item,
+                quantity
+            };
+            roomTypeBookings.splice(index, 1, item);
+            return roomTypeBookings;
+        } else {
+            if (roomTypeBookings.every(iter => iter.id !== id)) {
+                roomTypeBookings.push({ id, quantity, name, countRoom, price });
+                return roomTypeBookings;
+            }
+        }
+    });
+    return roomTypeBookings;
+};
+
 const roomtypeSlice = createSlice({
     name: 'roomtype',
     initialState: {
+        roomtypeBookings: [],
         roomtypeSelect: [],
         roomtypeSearch: [],
         roomtypeCart: [],
@@ -97,6 +125,16 @@ const roomtypeSlice = createSlice({
     reducers: {
         addRoomIntoCart: (state, payload) => {
             state.roomtypeCart = payload;
+        },
+        saveRoomtypeTemp: (state, { payload }) => {
+            state.roomtypeBookings = saveRoomtypeTemporary(
+                state.roomtypeBookings,
+                payload.id,
+                payload.name,
+                payload.quantity,
+                payload.countRoom,
+                payload.price
+            )
         }
     },
     extraReducers: {
@@ -104,7 +142,7 @@ const roomtypeSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [roomtypeFilter.fulfilled]: (state, {payload}) => {
+        [roomtypeFilter.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
             state.roomtypeSearch = payload;
@@ -117,7 +155,7 @@ const roomtypeSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [findById.fulfilled]: (state, {payload}) => {
+        [findById.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
             state.roomtype = payload;
@@ -130,7 +168,7 @@ const roomtypeSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [findAll.fulfilled]: (state, {payload}) => {
+        [findAll.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
             state.roomtypes = payload;
@@ -143,7 +181,7 @@ const roomtypeSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [findAllObjectSelect.fulfilled]: (state, {payload}) => {
+        [findAllObjectSelect.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
             state.roomtypeSelect = payload;
@@ -155,6 +193,6 @@ const roomtypeSlice = createSlice({
     }
 });
 
-export const roomtypeAction = roomtypeSlice.actions;
+export const { saveRoomtypeTemp } = roomtypeSlice.actions;
 
 export default roomtypeSlice;

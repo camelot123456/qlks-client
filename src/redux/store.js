@@ -4,6 +4,7 @@ import userJwtSlice from './slice/user-jwt-slice';
 import roomtypeSlice from "./slice/roomtype-slice";
 import serviceSlice from './slice/service-slice';
 import bookingSlice from './slice/booking-slice';
+import discountSlice from './slice/discount-slice';
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         auth: authSlice.reducer,
         roomtype: roomtypeSlice.reducer,
         service: serviceSlice.reducer,
-        booking: bookingSlice.reducer
+        booking: bookingSlice.reducer,
+        discount: discountSlice.reducer,
     }
 });
 

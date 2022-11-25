@@ -25,23 +25,59 @@ export const findById = createAsyncThunk(
     }
 );
 
+const saveServiceTemporary = (serviceBookings, id, name, quantity, price) => {
+    if (!serviceBookings.length) {
+        serviceBookings.push({ id, quantity, name, price });
+        return serviceBookings;
+    }
+    serviceBookings.forEach((item, index) => {
+        if (item.id === id) {
+            if (!quantity) {
+                serviceBookings.splice(index, 1);
+                return serviceBookings;
+            };
+            item = {
+                ...item,
+                quantity
+            };
+            serviceBookings.splice(index, 1, item);
+            return serviceBookings;
+        } else {
+            if (serviceBookings.every(iter => iter.id !== id)) {
+                serviceBookings.push({ id, quantity, name, price });
+                return serviceBookings;
+            }
+        }
+    });
+    return serviceBookings;
+};
+
 const serviceSlice = createSlice({
     name: 'service',
     initialState: {
+        serviceBookings: [],
         services: [],
         service: {},
         loading: false,
         error: false
     },
     reducers: {
-
+        saveServiceTemp: (state, { payload }) => {
+            state.serviceBookings = saveServiceTemporary(
+                state.serviceBookings,
+                payload.id,
+                payload.name,
+                payload.quantity,
+                payload.price
+            )
+        }
     },
     extraReducers: {
         [findAll.pending]: (state, acction) => {
             state.loading = true;
             state.error = false;
         },
-        [findAll.fulfilled]: (state, {payload}) => {
+        [findAll.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
             state.services = payload;
@@ -54,7 +90,7 @@ const serviceSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [findById.fulfilled]: (state, {payload}) => {
+        [findById.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
             state.service = payload;
@@ -66,6 +102,6 @@ const serviceSlice = createSlice({
     }
 });
 
-export const serviceAction = serviceSlice.actions;
+export const { saveServiceTemp } = serviceSlice.actions;
 
 export default serviceSlice;
