@@ -16,6 +16,8 @@ import BookingLayout from './component/home/bodys/booking-order/BookingLayout';
 import RoomBookingLayout from './component/home/bodys/room-booking/RoomBookingLayout';
 import HomePageLayout from './component/home/bodys/home-page/HomePageLayout';
 import NotFound from './component/error/bodys/NotFound';
+import PaymentReturn from "./component/home/bodys/payment/PaymentReturn";
+import BillDetail from "./component/home/bodys/payment/BillDetails";
 
 // https://preview.themeforest.net/item/triper-creative-tour-travel-hotel-booking-agency-react-template/full_screen_preview/25335777?_ga=2.46860001.75497068.1669143948-1579485344.1669043010
 function App() {
@@ -39,6 +41,8 @@ function App() {
                 <Route path="service/:id" element={<ServiceDetail />}></Route>
                 <Route path="booking" element={<RoomBookingLayout />}></Route>
                 <Route path="booking/detail" element={<BookingLayout />}></Route>
+                <Route path="payment/return" element={<PaymentReturn />}></Route>
+                <Route path="bill/detail" element={<BillDetail />}></Route>
               </Route>
 
               <Route path="" element={<AuthLayout />}>

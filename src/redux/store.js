@@ -5,6 +5,7 @@ import roomtypeSlice from "./slice/roomtype-slice";
 import serviceSlice from './slice/service-slice';
 import bookingSlice from './slice/booking-slice';
 import discountSlice from './slice/discount-slice';
+import paymentSice from "./slice/payment-slice";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         service: serviceSlice.reducer,
         booking: bookingSlice.reducer,
         discount: discountSlice.reducer,
+        payment: paymentSice.reducer
     }
 });
 

@@ -9,7 +9,7 @@ const Modal = ({ closeModal, title, content, onCancel, onSubmit }) => {
                 <div className="modal-box border rounded shadow-lg mx-auto">
                     <div className="d-flex justify-content-between">
                         <h5 className="modal-title">{title}</h5>
-                        <button type="button" class="btn-close" aria-label="Close"
+                        <button type="button" className="btn-close" aria-label="Close"
                             onClick={() => closeModal(false)}
                         ></button>
                     </div>

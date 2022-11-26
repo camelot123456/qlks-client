@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addOrUpdateService } from "../../../../redux/slice/booking-slice";
@@ -40,10 +40,10 @@ const ServiceOrderList = ({closeModal}) => {
     return (
         <>
             {services && services.map(item => (
-                <div class="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
-                    <img src={item.thumbnail} width="30%" class="flex-shrink-0 me-3" alt="..." />
+                <div key={item.id} className="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
+                    <img src={item.thumbnail} width="30%" className="flex-shrink-0 me-3" alt="..." />
                     <div>
-                        <h5 class="mt-0">{item.name}</h5>
+                        <h5 className="mt-0">{item.name}</h5>
                         <h4 className="font-weight-light" style={{ color: '#d77b5d' }}>Giá: ${item.price}</h4>
                         <input type="number" min={0} max={20} id={item.id} ref={quantityRef}
                             defaultValue={getQuantityByIdService(item.id)} 
@@ -52,7 +52,7 @@ const ServiceOrderList = ({closeModal}) => {
                 </div>
             ))}
             <div className="d-flex flex-row-reverse">
-                <button type="button" class="btn btn-outline-success" 
+                <button type="button" className="btn btn-outline-success"
                     onClick={() => handleSaveServicesOption()}>Lưu</button>
             </div>
             {loading && <FullPageLoader />}

@@ -1,6 +1,9 @@
 const ACCESS_TOKEN = 'access_token';
 const LOCAL_TIME_REGEX = /(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)/i;
 const ROOMTYPE_CART = 'roomtype_cart';
+const TOKEN_PAYPAL = 'token';
+const PAYER_ID_PAYPAL = 'PayerID';
+const ID_ORDER_PAYMENT = 'idOrderPayment';
 const PAYMENT_METHOD = {
     CASH: 'CASH',
     CHECKS: 'CHECKS',
@@ -19,5 +22,8 @@ export {
     LOCAL_TIME_REGEX,
     ROOMTYPE_CART,
     PAYMENT_METHOD,
-    PAYMENT_TYPE
+    PAYMENT_TYPE,
+    TOKEN_PAYPAL,
+    PAYER_ID_PAYPAL,
+    ID_ORDER_PAYMENT
 };

@@ -1,14 +1,17 @@
-import { Outlet } from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 import Navbar from '../fragments/Navbar';
 import Footer from '../fragments/Footer';
+import React from "react";
 
 const HomeLayout = () => {
 
     return (
         <>
-            <Navbar />
-            <Outlet />
-            <Footer />
+            <Navbar/>
+            <div style={{marginTop: '100px'}}>
+                <Outlet/>
+            </div>
+            <Footer/>
         </>
     );
 

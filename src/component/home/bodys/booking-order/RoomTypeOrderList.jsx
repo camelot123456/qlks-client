@@ -56,10 +56,10 @@ const RoomTypeOrderList = ({closeModal}) => {
     return (
         <>
             {roomtypes && roomtypes.map((item, index) => (
-                <div class="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
-                    <img src={item.thumbnail} width="50%" class="flex-shrink-0 me-3" alt="..." />
+                <div key={index} className="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
+                    <img src={item.thumbnail} width="50%" className="flex-shrink-0 me-3" alt="..." />
                     <div>
-                        <h5 class="mt-0">{item.name}</h5>
+                        <h5 className="mt-0">{item.name}</h5>
                         <p className="font-weight-light">Tình trạng: {getCountRoomByIdRoomType(item.id) ? `Còn ${getCountRoomByIdRoomType(item.id)} phòng` : 'Hết phòng'}</p>
                         <h4 className="font-weight-light" style={{ color: '#d77b5d' }}>Giá: ${item.price}</h4>
                         <input type="number" min={0} max={getCountRoomByIdRoomType(item.id) || 20}
@@ -69,7 +69,7 @@ const RoomTypeOrderList = ({closeModal}) => {
                 </div>
             ))}
             <div className="d-flex flex-row-reverse">
-                <button type="button" class="btn btn-outline-success" 
+                <button type="button" className="btn btn-outline-success"
                     onClick={() => handleSaveRoomtypesOption()}>Lưu</button>
             </div>
             {roomtypeReducer.loading && <FullPageLoader />}
