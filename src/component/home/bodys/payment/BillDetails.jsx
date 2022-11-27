@@ -1,6 +1,4 @@
 import {useEffect} from "react";
-import BookingDetail from "../booking-order/BookingDetail";
-import GuestDetailForm from "../booking-order/GuestDetailForm";
 
 const BillDetail = () => {
 
@@ -9,9 +7,10 @@ const BillDetail = () => {
 
     return (
         <>
-            <div className="hstack gap-3">
-                <BookingDetail />
-                <GuestDetailForm />
+            <div className="vstack gap-3 text-center">
+                <h1>GIAO DỊCH THÀNH CÔNG</h1>
+                <p>Hóa đơn đặt phòng sẽ gửi qua Email của bạn, vui lòng kiểm tra Email</p>
+                <h4>Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi</h4>
             </div>
 
         </>

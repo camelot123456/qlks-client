@@ -1,17 +1,22 @@
 import { FastField, Form, Formik } from "formik";
 import * as Yup from 'yup';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FormField from "../../custom/FormField";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from '../../../redux/slice/user-jwt-slice';
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import FullPageLoader from '../../custom/FullPageLoader';
+import useAuth from "../../../hooks/useAuth";
+import { getAccountMe } from "../../../redux/slice/auth-slice";
 
 const Login = () => {
+    const { setAuth } = useAuth();
     const dispatch = useDispatch();
     const { loading, jwtToken, error } = useSelector((state) => ({ ...state.userJwt }));
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
     }, [loading, error]);
@@ -28,27 +33,33 @@ const Login = () => {
         rememberMe: Yup.boolean()
     });
 
+    const haneleLogin = (values) => {
+        let loginForm = {
+            login: values.login,
+            password: values.password,
+            rememberMe: values.rememberMe,
+        };
+        dispatch(login(loginForm))
+            .then(() => {
+                dispatch(getAccountMe())
+                    .then(accountRes => {
+                        if (!accountRes?.error) {
+                            const roles = accountRes?.payload?.authorities;
+                            setAuth({ roles });
+                            toast.success('Login Successfully');
+                            navigate(from, { replace: true });
+                        } else {
+                            toast.error('Login Failure');
+                        }
+                    });
+            });
+    }
+
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-                let loginForm = {
-                    login: values.login,
-                    password: values.password,
-                    rememberMe: values.rememberMe,
-                };
-                dispatch(login(loginForm))
-                    .then(res => {
-                        if (!res.error) {
-                            toast.success('Login Successfully');
-                            navigate('/');
-                        } else {
-                            toast.error('Login Failure');
-                        }
-                    })
-
-            }}
+            onSubmit={values => haneleLogin(values)}
         >
             {(formikProps) => {
                 const { errors, values, touched, handleSubmit, handleBlur, handleChange } = formikProps;

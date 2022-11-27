@@ -1,9 +1,9 @@
 import {TOKEN_PAYPAL} from "../../../../constants/constants";
 import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {captureOrderPaypal} from "../../../../redux/slice/payment-slice";
 import FullPageLoader from "../../../custom/FullPageLoader";
 import {useNavigate, useSearchParams} from "react-router-dom";
+import { billPayment } from "../../../../redux/slice/order-slice";
 
 const PaymentReturn = () => {
 
@@ -12,22 +12,18 @@ const PaymentReturn = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        handlePayment();
-    }, []);
-
-    const handlePayment = () => {
         const token = searchParams.get(TOKEN_PAYPAL);
-        dispatch(captureOrderPaypal(token))
+        dispatch(billPayment(token))
             .then(() => {
                 navigate('/bill/detail');
             });
-    };
+    }, []);
 
     return (
-        <>
-            <h3>HÓA ĐƠN ĐANG XỬ LÝ ....</h3>
+        <div style={{height: '100%'}}>
+            <h3 className="mx-auto">HÓA ĐƠN ĐANG XỬ LÝ ....</h3>
             <FullPageLoader/>
-        </>
+        </div>
     )
 };
 

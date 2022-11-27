@@ -43,6 +43,18 @@ const addDiscountBooking = (discountBookings, isExpireGiftCode, giftCode, name, 
     return discountBookings;
 };
 
+export const findById = createAsyncThunk(
+    '/booking/findById',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.findById(idBooking);
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 export const createBookingRequest = createAsyncThunk(
     '/booking/create',
     async (bookingForm, { rejectedWithValue }) => {
@@ -55,9 +67,22 @@ export const createBookingRequest = createAsyncThunk(
     }
 );
 
+export const findAllNotSetTheRooms = createAsyncThunk(
+    '/booking/findAllNotSetTheRooms',
+    async (params, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.findAllNotSetTheRooms();
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 const bookingSlice = createSlice({
     name: 'booking',
     initialState: {
+        bookingNotSetRooms: [],
         booking: {},
         idTemp: null,
         bookingRequest: {
@@ -75,6 +100,7 @@ const bookingSlice = createSlice({
             roomTypeBookings: [],
             serviceBookings: [],
         },
+        bookingInfo: {},
         loading: false,
         error: false
     },
@@ -117,6 +143,32 @@ const bookingSlice = createSlice({
             state.booking = payload;
         },
         [createBookingRequest.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [findById.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [findById.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.bookingInfo = payload;
+        },
+        [findById.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [findAllNotSetTheRooms.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [findAllNotSetTheRooms.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.bookingNotSetRooms = payload;
+        },
+        [findAllNotSetTheRooms.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },

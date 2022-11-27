@@ -6,6 +6,8 @@ import serviceSlice from './slice/service-slice';
 import bookingSlice from './slice/booking-slice';
 import discountSlice from './slice/discount-slice';
 import paymentSice from "./slice/payment-slice";
+import orderSlice from './slice/order-slice';
+import roomSlice from './slice/room-slice';
 
 const store = configureStore({
     reducer: {
@@ -15,7 +17,9 @@ const store = configureStore({
         service: serviceSlice.reducer,
         booking: bookingSlice.reducer,
         discount: discountSlice.reducer,
-        payment: paymentSice.reducer
+        payment: paymentSice.reducer,
+        order: orderSlice.reducer,
+        room: roomSlice.reducer,
     }
 });
 

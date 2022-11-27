@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { ACCESS_TOKEN } from "../../constants/constants";
 import * as authService from '../../service/auth-service';
 import * as userJwtService from '../../service/user-jwt-service';
 
@@ -7,6 +8,7 @@ export const login = createAsyncThunk(
     async (loginFrom, { rejectWithValue }) => {
         try {
             const jwtToken = await userJwtService.getAccessToken(loginFrom);
+            localStorage.setItem(ACCESS_TOKEN, jwtToken.data.access_token);
             return jwtToken.data;
         } catch (error) {
             return rejectWithValue(error.response.data);

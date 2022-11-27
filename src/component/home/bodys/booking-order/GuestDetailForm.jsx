@@ -7,19 +7,26 @@ import {createBookingRequest} from '../../../../redux/slice/booking-slice';
 import FormField from '../../../custom/FormField';
 import FullPageLoader from '../../../custom/FullPageLoader';
 import {createOrderPaypal} from "../../../../redux/slice/payment-slice";
-import {useNavigate} from "react-router";
+import { useEffect, useState } from 'react';
+import { getAccountMe } from '../../../../redux/slice/auth-slice';
 
 const GuestDetailForm = () => {
-    const navigate = useNavigate();
+    const [showLoading, setShowLoading] = useState(false);
     const dispatch = useDispatch();
     const {loading, bookingRequest} = useSelector(state => ({...state.booking}));
     const paymentSlice = useSelector(state => ({...state.payment}));
+    const authSlice = useSelector(state => ({...state.auth}));
+    let accountMe = authSlice.accountMe;
+
+    useEffect(() => {
+        dispatch(getAccountMe());
+    }, []);
 
     const initialValues = {
-        fullName: '',
-        email: '',
-        phoneNumber: '',
-        country: '',
+        fullName: (accountMe.firstName + ' ' + accountMe.lastName) || '',
+        email: accountMe.email || '',
+        phoneNumber: accountMe.phoneNumber || '',
+        country: accountMe.country || '',
         paymentType: '',
         paymentMethod: '',
         note: ''
@@ -35,15 +42,12 @@ const GuestDetailForm = () => {
         note: Yup.string(),
     });
 
-    const handleUrlReturn = () => {
-        navigate('/bill/detail');
-    };
-
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values) => {
+                setShowLoading(true);
                 const discountMapper = bookingRequest.discountBookings.map(item => {
                     return item.giftCode;
                 });
@@ -84,6 +88,7 @@ const GuestDetailForm = () => {
                                 .then(paymentResponse => {
                                     const approvedLink = paymentResponse.payload.links.find(link => link.rel.includes('approve')).href;
                                     window.location.href = approvedLink;
+                                    
                                 })
                         } else {
                             toast.error('Yêu cầu chưa được xử lý');
@@ -98,13 +103,13 @@ const GuestDetailForm = () => {
                     <Form className="bg-light rounded p-3 border" style={{width: '65%'}}>
                         <h3 className='mb-4'>Thông tin khách hàng</h3>
                         <FastField id="fullName" name="fullName" label="Fullname" placeholder="Fullname" type="text"
-                                   component={FormField.InputField1}/>
+                                   component={FormField.InputField1} value={values.fullName}/>
                         <FastField id="email" name="email" label="Email" placeholder="Email" type="email"
-                                   component={FormField.InputField1}/>
+                                   component={FormField.InputField1} value={values.email}/>
                         <FastField id="country" name="country" label="Country" placeholder="Country" type="text"
-                                   component={FormField.InputField1}/>
+                                   component={FormField.InputField1} value={values.country}/>
                         <FastField id="phoneNumber" name="phoneNumber" label="Phone number" placeholder="Phone number"
-                                   type="text" component={FormField.InputField1}/>
+                                   type="text" component={FormField.InputField1} value={values.phoneNumber}/>
                         <FastField id="note" name="note" label="Note" placeholder="Note" type="textarea"
                                    component={FormField.TextareaField}/>
                         <div className="mt-3">
@@ -131,7 +136,7 @@ const GuestDetailForm = () => {
                         <div className="mt-4 text-end">
                             <button type='submit' className='btn btn-outline-primary'>ĐẶT NGAY</button>
                         </div>
-                        {paymentSlice.loading && loading && <FullPageLoader/>}
+                        {showLoading && <FullPageLoader/>}
                     </Form>
                 )
             }}

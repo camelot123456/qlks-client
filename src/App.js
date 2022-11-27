@@ -2,7 +2,8 @@ import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { ROLES } from './constants/authority';
 import MainLayout from './component/MainLayout';
 import HomeLayout from './component/home/layouts/HomeLayout';
 import ErrorLayout from './component/error/layouts/ErrorLayout';
@@ -18,6 +19,16 @@ import HomePageLayout from './component/home/bodys/home-page/HomePageLayout';
 import NotFound from './component/error/bodys/NotFound';
 import PaymentReturn from "./component/home/bodys/payment/PaymentReturn";
 import BillDetail from "./component/home/bodys/payment/BillDetails";
+import AccountLayout from "./component/home/bodys/account/AccountLaytout";
+import AccountMe from './component/home/bodys/account/AccounMe';
+import DraftBooking from './component/home/bodys/account/DraftBooking';
+import HistoryBooking from './component/home/bodys/account/HistoryBooking';
+import Feedback from './component/home/bodys/account/Feedback';
+import RequireAuth from './component/protected/RequireAuth';
+import AdminLayout from './component/admin/layouts/AdminLayout';
+import RoomLayout from './component/admin/bodys/room/RoomLayout';
+import RoomConsoleLayout from './component/admin/bodys/room/room-console/RoomConsoleLayout';
+import RoomBookingRequest from './component/admin/bodys/room/room-booking/RoomBookingRequest';
 
 // https://preview.themeforest.net/item/triper-creative-tour-travel-hotel-booking-agency-react-template/full_screen_preview/25335777?_ga=2.46860001.75497068.1669143948-1579485344.1669043010
 function App() {
@@ -43,6 +54,16 @@ function App() {
                 <Route path="booking/detail" element={<BookingLayout />}></Route>
                 <Route path="payment/return" element={<PaymentReturn />}></Route>
                 <Route path="bill/detail" element={<BillDetail />}></Route>
+                <Route element={
+                  <RequireAuth allowedRoles={[ROLES.USER, ROLES.ADMIN]} />}
+                >
+                  <Route path="account" element={<AccountLayout />}>
+                    <Route path="me" element={<AccountMe />} />
+                    <Route path="history" element={<HistoryBooking />} />
+                    <Route path="draft" element={<DraftBooking />} />
+                    <Route path="feedback" element={<Feedback />} />
+                  </Route>
+                </Route>
               </Route>
 
               <Route path="" element={<AuthLayout />}>
@@ -50,11 +71,22 @@ function App() {
                 <Route path="register" element={<Register />}></Route>
               </Route>
 
+              <Route element={<RequireAuth allowedRoles={[
+                ROLES.ADMIN, ROLES.ACCOUNTANT, ROLES.HOUSEKEEPING, ROLES.HR, ROLES.RECEPTIONIST, ROLES.SERVICE
+              ]}/>}>
+                <Route path="admin" element={<AdminLayout />}>
+                  <Route path="room" element={<RoomLayout />}>
+                    <Route path="room-console" element={<RoomConsoleLayout />}/>
+                    <Route path="room-booking-request" element={<RoomBookingRequest />}/>
+                  </Route>
+                </Route>
+              </Route>
 
-              <Route path="error" element={<ErrorLayout />}>
+
+              <Route path="" element={<ErrorLayout />}>
                 <Route path="unauthorized" element={<Unauthorized />}></Route>
               </Route>
-              
+
               <Route path="*" element={<NotFound />}></Route>
             </Route>
           </Routes>

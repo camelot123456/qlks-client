@@ -72,7 +72,7 @@ const HeaderSlide = () => {
                                 <select id='idRoomType' name="idRoomType" className="form-select form-select-lg mb-3"
                                     onChange={handleChange} style={{ minHeight: '58px', minWidth: '200px' }}>
                                     <option value={''}>Tất cả</option>
-                                    {roomtypeSearch && roomtypeSelect.map(itemSelect => (
+                                    {roomtypeSelect && roomtypeSelect.map(itemSelect => (
                                         <option key={itemSelect.id} value={itemSelect.id}>{itemSelect.name}</option>
                                     ))}
                                 </select>
