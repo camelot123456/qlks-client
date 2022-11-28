@@ -12,6 +12,13 @@ const roomsConsole = (filterForm) => {
     }});
 };
 
+const findAllRoomsToAddByIdBooking = (idBooking) => {
+    return httpClient().get('/api/rooms/filter/rooms-to-add/' + idBooking);
+};
+
+
+
 export {
-    roomsConsole
+    roomsConsole,
+    findAllRoomsToAddByIdBooking
 };

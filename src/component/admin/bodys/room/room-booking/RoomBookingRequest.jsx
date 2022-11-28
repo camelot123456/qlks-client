@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findAllNotSetTheRooms } from "../../../../../redux/slice/booking-slice";
+import { findAllRoomsToAddByIdBooking } from "../../../../../redux/slice/room-slice";
 import FullPageLoader from '../../../../custom/FullPageLoader';
+import Modal from '../../../../custom/Modal';
+import AddRoomBookingModal from "./AddRoomBookingModal";
 
 const RoomBookingRequest = () => {
     const dispatch = useDispatch();
@@ -12,6 +15,11 @@ const RoomBookingRequest = () => {
     useEffect(() => {
         dispatch(findAllNotSetTheRooms());
     }, []);
+
+    const handleOpenModal = (idBooking) => {
+        setShowModal(true);
+        dispatch(findAllRoomsToAddByIdBooking(idBooking));
+    }
 
     return (
         <>
@@ -45,12 +53,17 @@ const RoomBookingRequest = () => {
                                 <span class="badge text-bg-success">{booking.state}</span>
                             </td>
                             <td>
-                                <button className="btn btn-outline-primary btn-sm">Xử lý</button>
+                                <button className="btn btn-outline-primary btn-sm"
+                                    onClick={() => handleOpenModal(booking.id)}
+                                >Xử lý</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {showModal && <Modal closeModal={setShowModal} 
+                content={<AddRoomBookingModal />} 
+                title={'CÁC PHÒNG HỢP LỆ'} />}
             {loading && <FullPageLoader />}
         </>
     )

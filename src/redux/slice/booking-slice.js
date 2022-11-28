@@ -79,6 +79,18 @@ export const findAllNotSetTheRooms = createAsyncThunk(
     }
 );
 
+export const addRoomsIntoBooking = createAsyncThunk(
+    '/booking/addRoomsIntoBooking',
+    async (bookingForm, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.addRoomsIntoBooking(bookingForm);
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 const bookingSlice = createSlice({
     name: 'booking',
     initialState: {
@@ -169,6 +181,18 @@ const bookingSlice = createSlice({
             state.bookingNotSetRooms = payload;
         },
         [findAllNotSetTheRooms.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [addRoomsIntoBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [addRoomsIntoBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [addRoomsIntoBooking.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },

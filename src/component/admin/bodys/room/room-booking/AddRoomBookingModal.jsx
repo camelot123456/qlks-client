@@ -1,26 +1,65 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const AddRoomBookingModal = ({ closeModal }) => {
+const AddRoomBookingModal = () => {
 
     const dispatch = useDispatch();
-    const { roomsConsole, loading, error } = useSelector(state => ({ ...state.room }));
+    const { roomsToAdd, loading, error } = useSelector(state => ({ ...state.room }));
 
+    useEffect(() => {
 
+    }, []);
 
     return (
         <>
-            <div class="card" style={{width: '100%'}}>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
+            {roomsToAdd && roomsToAdd.map(item => (
+                <div key={item?.roomType}>
+                    <h3>{item?.roomType}</h3>
+                    <RoomDetail rooms={item?.rooms} />
                 </div>
-            </div>
+            ))}
         </>
     )
 
 };
 
 export default AddRoomBookingModal;
+
+export const RoomDetail = ({ rooms }) => {
+    console.log(rooms);
+    return (
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">ROOM TYPE</th>
+                        <th scope="col">ROOM NUMBER</th>
+                        <th scope="col">MAX</th>
+                        <th scope="col">FLOOR</th>
+                        <th scope="col">PRICE</th>
+                        <th scope="col">#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rooms && rooms.map((room, index) => (
+                        <tr key={index}>
+                            <th scope="row">{room?.idRoom}</th>
+                            <th scope="row">{room?.name}</th>
+                            <td>{room?.numberOfPeople}</td>
+                            <td>{room?.roomName}</td>
+                            <td>{room?.floor}</td>
+                            <td>{room?.price}</td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id={room?.idRoom} />
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <button className="float-end btn btn-outline-primary">LƯU</button>
+        </div>
+    );
+}

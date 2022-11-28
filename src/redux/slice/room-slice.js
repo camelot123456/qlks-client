@@ -5,8 +5,19 @@ export const roomConsole = createAsyncThunk(
     'room/roomConsole',
     async (filterForm, { rejectWithValue }) => {
         try {
-            console.log(filterForm);
             const roomResponse = await roomService.roomsConsole(filterForm);
+            return roomResponse.data;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+);
+
+export const findAllRoomsToAddByIdBooking = createAsyncThunk(
+    'room/findAllRoomsToAddByIdBooking',
+    async (idBooking, { rejectWithValue }) => {
+        try {
+            const roomResponse = await roomService.findAllRoomsToAddByIdBooking(idBooking);
             return roomResponse.data;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
@@ -27,6 +38,7 @@ const roomSlice = createSlice({
         loading: false,
         error: false,
         roomsConsole: [],
+        roomsToAdd: [],
         rooms: [],
         room: {}
     },
@@ -37,12 +49,24 @@ const roomSlice = createSlice({
             state.error = false;
         },
         [roomConsole.fulfilled]: (state, {payload}) => {
-            console.log(payload);
             state.loading = false;
             state.error = false;
             state.roomsConsole = payload;
         },
         [roomConsole.rejected]: (state, payload) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [findAllRoomsToAddByIdBooking.pending]: (state, payload) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [findAllRoomsToAddByIdBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.roomsToAdd = payload;
+        },
+        [findAllRoomsToAddByIdBooking.rejected]: (state, payload) => {
             state.loading = false;
             state.error = true;
         },

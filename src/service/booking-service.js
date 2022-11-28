@@ -12,8 +12,13 @@ const findAllNotSetTheRooms = () => {
     return httpClient().get('/api/booking/not-set-the-room');
 };
 
+const addRoomsIntoBooking = (bookingForm) => {
+    return httpClient().post('/api/booking/room', bookingForm);
+};
+
 export {
     createBookingRequest,
     findById,
-    findAllNotSetTheRooms
+    findAllNotSetTheRooms,
+    addRoomsIntoBooking
 };
