@@ -27,7 +27,7 @@ const findById = (id) => {
 };
 
 const billPayment = (idOrderPaypal) => {
-    return httpClient().post('/api/orders/bill-payment/' + idOrderPaypal);
+    return httpClient().get('/api/orders/bill-payment/' + idOrderPaypal);
 };
 
 export {

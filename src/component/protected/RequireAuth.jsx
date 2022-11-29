@@ -1,33 +1,31 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { ACCESS_TOKEN } from "../../constants/constants";
-import useAuth from "../../hooks/useAuth";
-import { getAccountMe } from "../../redux/slice/auth-slice";
+import React, {useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import {ACCESS_TOKEN} from "../../constants/constants";
+import {getAccountMe} from "../../redux/slice/auth-slice";
 
-const RequireAuth = ({ allowedRoles }) => {
-    const { auth, setAuth } = useAuth();
-    const location = useLocation();
+const RequireAuth = ({allowedRoles}) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const accessToken = localStorage.getItem(ACCESS_TOKEN);
         if (accessToken) {
             dispatch(getAccountMe())
                 .then(accountRes => {
-                    const roles = accountRes?.payload?.authorities;
-                    setAuth({roles});
+                    const authorities = accountRes?.payload?.authorities;
+                    const check = authorities.some(role => allowedRoles.includes(role));
+                    if (!check) navigate('/unauthorized', {replace: true, state: {from: location}});
                 });
+        } else {
+            navigate('/login', {replace: true, state: {from: location}});
         }
     }, []);
-    
+
     return (
-        auth?.roles?.some(role => allowedRoles?.includes(role))
-            ? <Outlet />
-            : auth?.user
-                ? <Navigate to="/unauthorized" state={{ from: location }} replace />
-                : <Navigate to="/login" state={{ from: location }} replace />
+        <Outlet/>
     );
-}
+};
 
 export default RequireAuth;

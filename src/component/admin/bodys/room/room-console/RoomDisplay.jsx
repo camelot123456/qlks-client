@@ -1,20 +1,30 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import FullPageLoader from "../../../../custom/FullPageLoader";
+import {getDatetimeNow} from "../../../../../util/util";
+import {roomConsole} from "../../../../../redux/slice/room-slice";
 
 const RoomDisplay = () => {
 
+    const dispatch = useDispatch();
     const {roomsConsole, loading, error} = useSelector(state => ({ ...state.room }));
 
     useEffect(() => {
-        console.log(roomsConsole);
-        // dispatch(roomConsole());
-    }, [roomsConsole, loading]);
+        dispatch(roomConsole({
+            datetime: getDatetimeNow(),
+            roomName: '',
+            idRoomType: '',
+            floor: '',
+            minGuest: 0,
+            maxGuest: 100,
+            state: ''
+        }));
+    }, []);
 
     return (
         <div className="d-flex align-content-start flex-wrap">
-            {roomsConsole && roomsConsole.map(room => (
-                <div className="card text-bg-secondary mb-3 me-3" style={{ maxWidth: '200px' }}>
+            {roomsConsole && roomsConsole.map((room, index) => (
+                <div key={index} className="card text-bg-secondary mb-3 me-3" style={{ maxWidth: '200px' }}>
                     <div className="card-header hstack">
                         <button className="btn btn-outline-light btn-sm me-auto">
                             <i className="fa fa-info-circle" aria-hidden="true"></i>

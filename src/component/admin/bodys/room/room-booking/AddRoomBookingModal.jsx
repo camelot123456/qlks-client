@@ -1,65 +1,50 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    addRoomsIntoBooking,
+    findAllNotSetTheRooms
+} from "../../../../../redux/slice/booking-slice";
+import {toast} from "react-toastify";
+import FullPageLoader from "../../../../custom/FullPageLoader";
+import RoomDetailModal from "./RoomDetailModal";
+import React from "react";
 
-const AddRoomBookingModal = () => {
+const AddRoomBookingModal = ({idBooking, closeModal}) => {
 
     const dispatch = useDispatch();
-    const { roomsToAdd, loading, error } = useSelector(state => ({ ...state.room }));
+    const {roomsToAdd} = useSelector(state => ({...state.room}));
+    const {roomsToAddRequest, loading, error} = useSelector(state => ({...state.booking}));
 
-    useEffect(() => {
+    const handleSaveRequest = () => {
+        dispatch(addRoomsIntoBooking(roomsToAddRequest))
+            .then(response => {
+                if (!response?.error) {
+                    dispatch(findAllNotSetTheRooms());
+                    toast.success('Saved');
+                    closeModal(false);
+                } else {
+                    toast.error('Failure');
+                }
+            });
 
-    }, []);
+    };
 
     return (
         <>
-            {roomsToAdd && roomsToAdd.map(item => (
-                <div key={item?.roomType}>
-                    <h3>{item?.roomType}</h3>
-                    <RoomDetail rooms={item?.rooms} />
+            {roomsToAdd && roomsToAdd.map((item, index) => (
+                <div key={index}>
+                    <h3>{`${item?.roomType} - `}<span className="text-danger">{`SỐ LƯỢNG: ${item?.quantity}`}</span>
+                    </h3>
+                    <RoomDetailModal rooms={item?.rooms} idBooking={idBooking}/>
                 </div>
             ))}
+            <button className="float-end btn btn-outline-primary"
+                    onClick={() => handleSaveRequest()}
+            >LƯU
+            </button>
+            {loading && <FullPageLoader/>}
         </>
     )
 
 };
 
 export default AddRoomBookingModal;
-
-export const RoomDetail = ({ rooms }) => {
-    console.log(rooms);
-    return (
-        <div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">ROOM TYPE</th>
-                        <th scope="col">ROOM NUMBER</th>
-                        <th scope="col">MAX</th>
-                        <th scope="col">FLOOR</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">#</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rooms && rooms.map((room, index) => (
-                        <tr key={index}>
-                            <th scope="row">{room?.idRoom}</th>
-                            <th scope="row">{room?.name}</th>
-                            <td>{room?.numberOfPeople}</td>
-                            <td>{room?.roomName}</td>
-                            <td>{room?.floor}</td>
-                            <td>{room?.price}</td>
-                            <td>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id={room?.idRoom} />
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <button className="float-end btn btn-outline-primary">LƯU</button>
-        </div>
-    );
-}

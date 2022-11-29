@@ -7,11 +7,9 @@ import { login } from '../../../redux/slice/user-jwt-slice';
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import FullPageLoader from '../../custom/FullPageLoader';
-import useAuth from "../../../hooks/useAuth";
 import { getAccountMe } from "../../../redux/slice/auth-slice";
 
 const Login = () => {
-    const { setAuth } = useAuth();
     const dispatch = useDispatch();
     const { loading, jwtToken, error } = useSelector((state) => ({ ...state.userJwt }));
     const navigate = useNavigate();
@@ -35,17 +33,15 @@ const Login = () => {
 
     const haneleLogin = (values) => {
         let loginForm = {
-            login: values.login,
-            password: values.password,
-            rememberMe: values.rememberMe,
+            login: values?.login,
+            password: values?.password,
+            rememberMe: values?.rememberMe,
         };
         dispatch(login(loginForm))
             .then(() => {
                 dispatch(getAccountMe())
                     .then(accountRes => {
                         if (!accountRes?.error) {
-                            const roles = accountRes?.payload?.authorities;
-                            setAuth({ roles });
                             toast.success('Login Successfully');
                             navigate(from, { replace: true });
                         } else {

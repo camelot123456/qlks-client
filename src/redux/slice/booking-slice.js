@@ -112,6 +112,10 @@ const bookingSlice = createSlice({
             roomTypeBookings: [],
             serviceBookings: [],
         },
+        roomsToAddRequest: {
+            id: null,
+            roomBookings: []
+        },
         bookingInfo: {},
         loading: false,
         error: false
@@ -142,6 +146,12 @@ const bookingSlice = createSlice({
                 payload.percent,
                 payload.description
             );
+        },
+        addRoomsIntoBookingRequest: (state, {payload}) => {
+            state.roomsToAddRequest.roomBookings = payload;
+        },
+        addIdBookingIntoBookingRequest: (state, {payload}) => {
+            state.roomsToAddRequest.id = payload;
         }
     },
     extraReducers: {
@@ -203,5 +213,8 @@ export const {
     updateTimeBooking, 
     addOrUpdateRoomtype, 
     addOrUpdateService,
-    addOrUpdateDiscount } = bookingSlice.actions;
+    addOrUpdateDiscount,
+    addRoomsIntoBookingRequest,
+    addIdBookingIntoBookingRequest
+} = bookingSlice.actions;
 export default bookingSlice;

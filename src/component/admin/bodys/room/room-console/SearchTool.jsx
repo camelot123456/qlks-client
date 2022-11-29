@@ -16,7 +16,6 @@ const SearchTool = () => {
 
     useEffect(() => {
         dispatch(findAllObjectSelect());
-        // dispatch(roomConsole());
     }, []);
 
     const initialValues = {
@@ -38,9 +37,9 @@ const SearchTool = () => {
             maxGuest: values.maxGuest || 100,
             datetime: addTimeSuffixes(values.datetime),
             states: values.states.join(',')
-        }
+        };
         dispatch(roomConsole(filterForm));
-    }
+    };
 
     return (
         <>

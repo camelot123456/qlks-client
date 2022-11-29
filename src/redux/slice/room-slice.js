@@ -42,7 +42,8 @@ const roomSlice = createSlice({
         rooms: [],
         room: {}
     },
-    reducers: {},
+    reducers: {
+    },
     extraReducers: {
         [roomConsole.pending]: (state, payload) => {
             state.loading = true;
@@ -73,6 +74,6 @@ const roomSlice = createSlice({
     }
 });
 
-export const roomActions = roomSlice.actions;
+export const {} = roomSlice.actions;
 
 export default roomSlice;
