@@ -4,18 +4,18 @@ import { Link } from "react-router-dom";
 const AccountLayout = () => {
     return (
         <div className="container">
-            <ul class="nav nav-tabs ">
-                <li class="nav-item">
-                    <Link to={'/account/me'} class="nav-link active" href="#">TÔI</Link>
+            <ul className="nav nav-tabs ">
+                <li className="nav-item">
+                    <Link to={'/account/me'} className="nav-link" href="#">TÔI</Link>
                 </li>
-                <li class="nav-item">
-                    <Link to={'/account/draft'} class="nav-link" href="#">NHÁP</Link>
+                <li className="nav-item">
+                    <Link to={'/account/draft'} className="nav-link" href="#">NHÁP</Link>
                 </li>
-                <li class="nav-item">
-                    <Link to={'/account/history'} class="nav-link" href="#">LỊCH SỬ</Link>
+                <li className="nav-item">
+                    <Link to={'/account/history'} className="nav-link" href="#">LỊCH SỬ</Link>
                 </li>
-                <li class="nav-item">
-                    <Link to={'/account/feedback'} class="nav-link" href="#">ĐÁNH GIÁ</Link>
+                <li className="nav-item">
+                    <Link to={'/account/feedback'} className="nav-link" href="#">ĐÁNH GIÁ</Link>
                 </li>
             </ul>
             <Outlet />

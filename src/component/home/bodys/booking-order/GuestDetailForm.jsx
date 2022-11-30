@@ -73,7 +73,7 @@ const GuestDetailForm = () => {
                     email: values.email,
                     phoneNumber: values.phoneNumber,
                     country: values.country,
-                    discountBookings: discountMapper,
+                    giftCodes: discountMapper,
                     roomBookingVMs: [],
                     roomTypeBookingVMs: roomTypeMapper,
                     serviceBookingVMs: serviceMapper,
@@ -88,7 +88,7 @@ const GuestDetailForm = () => {
                                 .then(paymentResponse => {
                                     const approvedLink = paymentResponse.payload.links.find(link => link.rel.includes('approve')).href;
                                     window.location.href = approvedLink;
-                                    
+
                                 })
                         } else {
                             toast.error('Yêu cầu chưa được xử lý');

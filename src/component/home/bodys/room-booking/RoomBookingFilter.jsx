@@ -24,7 +24,8 @@ const RoomBookingFilter = () => {
         checkin: '',
         checkout: '',
         adultGuest: '',
-        childGuest: ''
+        childGuest: '',
+        idRoomType: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -41,7 +42,7 @@ const RoomBookingFilter = () => {
             validationSchema={validationSchema}
             onSubmit={(values => {
                 let filterForm = {
-                    checkin: addTimeSuffixes(values.checkin),
+                    checkin: addTimeSuffixes(values.checkin, '14:00:00'),
                     checkout: addTimeSuffixes(values.checkout, '12:00:00'),
                     adultGuest: values.adultGuest || 1,
                     childGuest: values.childGuest || 0,
