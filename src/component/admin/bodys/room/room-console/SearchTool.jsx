@@ -29,13 +29,14 @@ const SearchTool = () => {
     };
 
     const handleSubmit = (values) => {
+        console.log(values.datetime);
         const filterForm = {
             roomName: values.roomName,
             idRoomType: values.idRoomType,
             floor: values.floor || '',
             minGuest: values.minGuest || 0,
             maxGuest: values.maxGuest || 100,
-            datetime: addTimeSuffixes(values.datetime),
+            datetime: values.datetime,
             states: values.states.join(',')
         };
         dispatch(roomConsole(filterForm));

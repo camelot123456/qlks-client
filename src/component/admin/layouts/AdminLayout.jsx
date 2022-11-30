@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
-import Sidebar from "../fragments/Sidebar";
 import Navbar from "../fragments/Navbar";
+import SidebarLeft from "../fragments/SidebarLeft";
 
 const AdminLayout = () => {
     return (
         <div className="hstack" style={{height: '100vh'}}>
-            <Sidebar />
+            <SidebarLeft />
             <div className="vstack gap-3 px-3 overflow-auto">
                 <Navbar />
                 <Outlet />

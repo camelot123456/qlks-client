@@ -5,6 +5,7 @@ import FullPageLoader from '../../../custom/FullPageLoader';
 import {findById} from "../../../../redux/slice/booking-slice";
 import Modal from "../../../custom/Modal";
 import HistoryDetail from "./HistoryDetail";
+import Pagination from '../../../custom/Pagination';
 
 const HistoryBooking = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const HistoryBooking = () => {
         dispatch(findAllByUser({
             page: 0,
             size: 20,
-            sort: 'id,asc',
+            sort: 'modified_at,desc',
             search: ''
         }));
     }, []);
@@ -28,7 +29,7 @@ const HistoryBooking = () => {
     };
 
     return (
-        <>
+        <div className='bg-light p-3 rounded border mt-4'>
             <table className="table table-hover">
                 <thead>
                 <tr>
@@ -61,10 +62,11 @@ const HistoryBooking = () => {
                 ))}
                 </tbody>
             </table>
+            <Pagination />
             {showModal && <Modal closeModal={setShowModal}
                                  content={<HistoryDetail/>} width={'1200'}/>}
             {loading && <FullPageLoader/>}
-        </>
+        </div>
     )
 };
 
