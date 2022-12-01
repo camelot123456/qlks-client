@@ -20,7 +20,10 @@ const store = configureStore({
         payment: paymentSice.reducer,
         order: orderSlice.reducer,
         room: roomSlice.reducer,
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false
+    })
 });
 
 export default store;

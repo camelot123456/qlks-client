@@ -18,7 +18,7 @@ export const findAllByUser = createAsyncThunk(
     async (pageable, { rejectWithValue }) => {
         try {
             const orderResponse = await orderService.findAllByUser(pageable);
-            return orderResponse.data;
+            return orderResponse;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
@@ -54,10 +54,11 @@ const orderSlice = createSlice({
     initialState: {
         pageable: {
             page: 0,
-            size: 0,
-            sort: 'id,asc',
+            size: 20,
+            sort: 'modified_at,desc',
             count: 0,
-            pages: 0
+            pages: 0,
+            search: ''
         },
         orders: [],
         order: {},
@@ -65,7 +66,18 @@ const orderSlice = createSlice({
         error: false,
         orderPaypal: {}
     },
-    reducers: {},
+    reducers: {
+        onPageable: (state, {payload}) => {
+            console.log(payload);
+            state.pageable = {
+                ...state.pageable,
+                page: payload.page,
+                size: payload.size,
+                sort: payload.sort,
+                search: payload.search
+            }
+        },
+    },
     extraReducers: {
         [findAll.pending]: (state, payload) => {
             state.loading = true;
@@ -97,10 +109,21 @@ const orderSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [findAllByUser.fulfilled]: (state, {payload}) => {
+        [findAllByUser.fulfilled]: (state, action) => {
             state.loading = false;
             state.error = false;
-            state.orders = payload;
+            state.orders = action.payload.data;
+            state.pageable = {
+                ...state.pageable,
+                count: action.payload.headers.count,
+                page: action.payload.headers.page,
+                pages: action.payload.headers.pages,
+                size: action.payload.headers.size,
+                sort: action.payload.headers.sort
+            }
+        },
+        [findAllByUser.prototype]: (state, action) => {
+            console.log(action);
         },
         [findAllByUser.rejected]: (state, payload) => {
             state.loading = false;
@@ -122,6 +145,8 @@ const orderSlice = createSlice({
     }
 });
 
-export const orderActions = orderSlice.actions;
+export const {
+    onPageable,
+} = orderSlice.actions;
 
 export default orderSlice;

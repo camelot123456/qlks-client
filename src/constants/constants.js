@@ -16,7 +16,15 @@ const PAYMENT_TYPE = {
     PREPAID: 'PREPAID',
     POSTPAID: 'POSTPAID',
     DEPOSIT: 'DEPOSIT'
-}
+};
+
+const ORDER_FIELDS = [
+    {key: 'createdAt', value: 'Ngày tạo'},
+    {key: 'modifiedAt', value: 'Ngày sửa'},
+    {key: 'paidAt', value: 'Ngày thanh toán'},
+    {key: 'idBooking', value: 'Mã booking'},
+    {key: 'idOrder', value: 'Mã hóa đơn'},
+];
 export {
     ACCESS_TOKEN,
     LOCAL_TIME_REGEX,
@@ -25,5 +33,6 @@ export {
     PAYMENT_TYPE,
     TOKEN_PAYPAL,
     PAYER_ID_PAYPAL,
-    ID_ORDER_PAYMENT
+    ID_ORDER_PAYMENT,
+    ORDER_FIELDS
 };
