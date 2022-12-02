@@ -9,6 +9,10 @@ const roomsConsole = (filterForm) => {
         maxGuest: filterForm.maxGuest,
         datetime: filterForm.datetime,
         states: filterForm.states,
+        page: filterForm.page,
+        size: filterForm.size,
+        sort: filterForm.sort,
+        search: filterForm.search,
     }});
 };
 

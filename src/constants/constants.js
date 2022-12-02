@@ -25,6 +25,18 @@ const ORDER_FIELDS = [
     {key: 'idBooking', value: 'Mã booking'},
     {key: 'idOrder', value: 'Mã hóa đơn'},
 ];
+
+const ROOM_FIELDS = [
+    {key: 'createdAt', value: 'Ngày tạo'},
+    {key: 'modifiedAt', value: 'Ngày sửa'},
+    {key: 'fullname', value: 'Tên khách'},
+    {key: 'idRoom', value: 'Mã phòng'},
+    {key: 'roomName', value: 'Số phòng'},
+    {key: 'name', value: 'Hạng phòng'},
+    {key: 'checkIn', value: 'Ngày đặt'},
+    {key: 'checkOut', value: 'Ngày trả'},
+];
+
 export {
     ACCESS_TOKEN,
     LOCAL_TIME_REGEX,
@@ -34,5 +46,6 @@ export {
     TOKEN_PAYPAL,
     PAYER_ID_PAYPAL,
     ID_ORDER_PAYMENT,
-    ORDER_FIELDS
+    ORDER_FIELDS,
+    ROOM_FIELDS
 };

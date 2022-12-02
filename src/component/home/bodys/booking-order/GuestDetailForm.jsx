@@ -9,12 +9,13 @@ import FullPageLoader from '../../../custom/FullPageLoader';
 import {createOrderPaypal} from "../../../../redux/slice/payment-slice";
 import { useEffect, useState } from 'react';
 import { getAccountMe } from '../../../../redux/slice/auth-slice';
+import { useNavigate } from 'react-router';
 
 const GuestDetailForm = () => {
     const [showLoading, setShowLoading] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {loading, bookingRequest} = useSelector(state => ({...state.booking}));
-    const paymentSlice = useSelector(state => ({...state.payment}));
     const authSlice = useSelector(state => ({...state.auth}));
     let accountMe = authSlice.accountMe;
 
@@ -27,8 +28,8 @@ const GuestDetailForm = () => {
         email: accountMe.email || '',
         phoneNumber: accountMe.phoneNumber || '',
         country: accountMe.country || '',
-        paymentType: '',
-        paymentMethod: '',
+        paymentType: PAYMENT_TYPE.PREPAID,
+        paymentMethod: PAYMENT_METHOD.CREDIT_CARDS,
         note: ''
     };
 
@@ -42,60 +43,68 @@ const GuestDetailForm = () => {
         note: Yup.string(),
     });
 
+    const handleSubmit = (values) => {
+        setShowLoading(true);
+        const discountMapper = bookingRequest.discountBookings.map(item => {
+            return item.giftCode;
+        });
+        const roomTypeMapper = bookingRequest.roomTypeBookings.map(item => {
+            return {
+                id: item.id,
+                quantity: item.quantity
+            }
+        });
+        const serviceMapper = bookingRequest.serviceBookings.map(item => {
+            return {
+                id: item.id,
+                quantity: item.quantity
+            }
+        });
+        const bookingForm = {
+            checkIn: bookingRequest.checkin,
+            checkOut: bookingRequest.checkout,
+            adultGuest: bookingRequest.adultGuest,
+            childGuest: bookingRequest.childGuest,
+            note: values.note,
+            fullName: values.fullName,
+            email: values.email,
+            phoneNumber: values.phoneNumber,
+            country: values.country,
+            giftCodes: discountMapper,
+            roomBookingVMs: [],
+            roomTypeBookingVMs: roomTypeMapper,
+            serviceBookingVMs: serviceMapper,
+            paymentType: values.paymentType,
+            paymentMethod: values.paymentMethod,
+        };
+        dispatch(createBookingRequest(bookingForm))
+            .then(bookingResponse => {
+                if (!bookingResponse.error) {
+                    toast.success('Yêu cầu đã được xử lý');
+                    return bookingResponse?.payload?.id;
+                } else {
+                    toast.error('Yêu cầu chưa được xử lý');
+                    throw new Error('Đã xảy ra lỗi trong thi xử lý yêu cầu đặt phòng');
+                }
+            })
+            .then(idBooking => {
+                if (idBooking && values.paymentType === PAYMENT_TYPE.PREPAID 
+                        && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {
+                    dispatch(createOrderPaypal(idBooking))
+                        .then(paymentResponse => {
+                            const approvedLink = paymentResponse?.payload?.links?.find(link => link?.rel?.includes('approve'))?.href;
+                            window.location.href = approvedLink;
+                        });
+                }
+                navigate('/bill/detail');
+            });
+    }
+
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-                setShowLoading(true);
-                const discountMapper = bookingRequest.discountBookings.map(item => {
-                    return item.giftCode;
-                });
-                const roomTypeMapper = bookingRequest.roomTypeBookings.map(item => {
-                    return {
-                        id: item.id,
-                        quantity: item.quantity
-                    }
-                });
-                const serviceMapper = bookingRequest.serviceBookings.map(item => {
-                    return {
-                        id: item.id,
-                        quantity: item.quantity
-                    }
-                });
-                const bookingForm = {
-                    checkIn: bookingRequest.checkin,
-                    checkOut: bookingRequest.checkout,
-                    adultGuest: bookingRequest.adultGuest,
-                    childGuest: bookingRequest.childGuest,
-                    note: values.note,
-                    fullName: values.fullName,
-                    email: values.email,
-                    phoneNumber: values.phoneNumber,
-                    country: values.country,
-                    giftCodes: discountMapper,
-                    roomBookingVMs: [],
-                    roomTypeBookingVMs: roomTypeMapper,
-                    serviceBookingVMs: serviceMapper,
-                    paymentType: values.paymentType,
-                    paymentMethod: values.paymentMethod,
-                };
-                dispatch(createBookingRequest(bookingForm))
-                    .then(bookingResponse => {
-                        if (!bookingResponse.error) {
-                            toast.success('Yêu cầu đã được xử lý');
-                            dispatch(createOrderPaypal(bookingResponse.payload.id))
-                                .then(paymentResponse => {
-                                    const approvedLink = paymentResponse.payload.links.find(link => link.rel.includes('approve')).href;
-                                    window.location.href = approvedLink;
-
-                                })
-                        } else {
-                            toast.error('Yêu cầu chưa được xử lý');
-                        }
-                    });
-
-            }}
+            onSubmit={values => handleSubmit(values)}
         >
             {(formikProps) => {
                 const {errors, values, touched, handleSubmit, handleBlur, handleChange} = formikProps;
@@ -115,26 +124,20 @@ const GuestDetailForm = () => {
                         <div className="mt-3">
                             <select className="form-select form-select-lg mb-3 rounded-pill"
                                     onChange={handleChange} id='paymentType' name='paymentType'>
-                                <option defaultValue>Open this select menu</option>
                                 <option value={PAYMENT_TYPE.PREPAID}>TRẢ TRƯỚC</option>
                                 <option value={PAYMENT_TYPE.POSTPAID}>TRẢ SAU</option>
-                                <option value={PAYMENT_TYPE.DEPOSIT}>ĐẶT CỌC</option>
                             </select>
                         </div>
                         <div className="mt-3">
-                            <select className="form-select form-select-lg mb-3 rounded-pill"
+                            {values.paymentType === PAYMENT_TYPE.PREPAID && 
+                            (<select className="form-select form-select-lg mb-3 rounded-pill"
                                     onChange={handleChange} id='paymentMethod' name='paymentMethod'>
-                                <option defaultValue>Open this select menu</option>
+                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>PAYPAL</option>
                                 <option value={PAYMENT_METHOD.CASH}>TIỀN MẶT</option>
-                                <option value={PAYMENT_METHOD.CHECKS}>SÉC</option>
-                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>THẺ TÍN DỤNG</option>
-                                <option value={PAYMENT_METHOD.DEBIT_CARDS}>THẺ GHI NỢ</option>
-                                <option value={PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}>CHUYỂN TIỀN NGÂN HÀNG</option>
-                                <option value={PAYMENT_METHOD.MOBILE_PAYMENTS}>THANH TOÁN DI ĐỘNG</option>
-                            </select>
+                            </select>)}
                         </div>
                         <div className="mt-4 text-end">
-                            <button type='submit' className='btn btn-outline-primary'>ĐẶT NGAY</button>
+                            {errors !== true && <button type='submit' className='btn btn-outline-primary'>ĐẶT NGAY</button>}
                         </div>
                         {showLoading && <FullPageLoader/>}
                     </Form>

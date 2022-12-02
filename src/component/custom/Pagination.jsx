@@ -8,6 +8,7 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
     const searchRef = useRef();
 
     useEffect(() => {
+        console.log({ page, size, sort, pages, count, search } );
         if (onChange) {
             onChange(true);
         }

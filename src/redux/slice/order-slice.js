@@ -68,7 +68,6 @@ const orderSlice = createSlice({
     },
     reducers: {
         onPageable: (state, {payload}) => {
-            console.log(payload);
             state.pageable = {
                 ...state.pageable,
                 page: payload.page,
