@@ -1,14 +1,13 @@
+import { memo } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Pagination = ({pageable, onPageable, onChange, fields}) => {
-    const { page, size, sort, pages, count, search } = pageable;
     const dispatch = useDispatch();
-    const [pageableOption, setPageableOption] = useState({ page, size, sort, pages, count, search });
+    const [pageableOption, setPageableOption] = useState({ ...pageable });
     const searchRef = useRef();
 
     useEffect(() => {
-        console.log({ page, size, sort, pages, count, search } );
         if (onChange) {
             onChange(true);
         }
@@ -19,14 +18,14 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
     
     const getArrayMapper = () => {
         const arrResult = [];
-        for (let index = 0; index < pages; index++) {
+        for (let index = 0; index < pageable.pages; index++) {
             arrResult.push(index);
         }
         return arrResult;
     };
 
     const isActive = (_page) => {
-        return _page === +page ? 'active' : '';
+        return _page === +pageable.page ? 'active' : '';
     };
 
     const onChangePage = (_page) => {
@@ -44,7 +43,6 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
     }
 
     const onChangeField = (_field) => {
-        console.log(_field);
         setPageableOption(prev => ({
             ...prev,
             sort: [_field, prev.sort.split(',')[1]].join(',')
@@ -72,6 +70,7 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
                     <span style={{minWidth: '70px'}}>Sắp xếp: </span>
                     <select className="form-select form-select-sm me-3" aria-label=".form-select-sm example"
                         onChange={(e) => onChangeField(e.target.value)}
+                        value={pageable?.sort?.split(',')[0]}
                     >
                         {fields.map(orderField => (
                             <option key={orderField.key} value={orderField.key}
@@ -81,17 +80,19 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
                     <span style={{minWidth: '50px'}}>Chiều: </span>
                     <select className="form-select form-select-sm me-3" aria-label=".form-select-sm example"
                         onChange={(e) => onChangeDir(e.target.value)}
+                        // value={pageable?.sort?.split(',')[1]}
                     >
-                        <option value="asc" defaultValue>TĂNG</option>
                         <option value="desc">GIẢM</option>
+                        <option value="asc">TĂNG</option>
                     </select>
                     <span style={{minWidth: '70px'}}>Hiển thị: </span>
                     <select className="form-select form-select-sm" aria-label=".form-select-sm example"
                         onChange={(e) => onChangeSize(e.target.value)}
+                        value={pageable?.size}
                     >
                         <option value="5">5</option>
                         <option value="10">10</option>
-                        <option value="20" defaultValue>20</option>
+                        <option value="20">20</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                         <option value="200">200</option>
@@ -111,7 +112,7 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
             </div>
             <div className="mt-3 d-flex justify-content-between">
                 <p className="">
-                    {`Tổng ${pages} trang, ${count} phần tử, sắp xếp theo ${sort}, số phần tử hiển thị ${size}`}
+                    {`Tổng ${pageable.pages} trang, ${pageable.count} phần tử, sắp xếp theo ${pageable.sort}, số phần tử hiển thị ${pageable.size}`}
                 </p>
                 <nav aria-label="Page navigation example">
                     <ul className="pagination pagination-sm">
@@ -125,7 +126,7 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
                                 <i className="fa fa-angle-left" aria-hidden="true"></i>
                             </a>
                         </li>
-                        {pages && getArrayMapper().map(pageItem => (
+                        {pageable.pages && getArrayMapper().map(pageItem => (
                             <li className={`page-item ${isActive(pageItem)}`} key={pageItem}>
                                 <a className="page-link" href={`#page-${pageItem + 1}`}
                                     onClick={() => onChangePage(pageItem)}
@@ -149,4 +150,4 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
     )
 };
 
-export default Pagination;
+export default memo(Pagination);

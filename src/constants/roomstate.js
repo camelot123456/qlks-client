@@ -1,4 +1,6 @@
 const ROOM_STATE = [
+    {color: '#198754', name: 'OVERDUE'},
+    {color: '#198754', name: 'BOOKED'},
     {color: '#198754', name: 'OCCUPIED'},
     {color: '#0d6efd', name: 'DO_NOT_DISTURB'},
     {color: '#0dcaf0', name: 'CLEANING_IN_PROGRESS'},
