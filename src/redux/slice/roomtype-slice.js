@@ -145,6 +145,7 @@ const roomtypeSlice = createSlice({
         [roomtypeFilter.fulfilled]: (state, { payload }) => {
             state.loading = false;
             state.error = false;
+            state.roomtypeSearch = [];
             state.roomtypeSearch = payload;
         },
         [roomtypeFilter.rejected]: (state, acction) => {

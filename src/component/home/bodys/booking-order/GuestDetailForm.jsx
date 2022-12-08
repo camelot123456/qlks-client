@@ -84,6 +84,7 @@ const GuestDetailForm = () => {
                     return bookingResponse?.payload?.id;
                 } else {
                     toast.error('Yêu cầu chưa được xử lý');
+                    setShowLoading(false);
                     throw new Error('Đã xảy ra lỗi trong thi xử lý yêu cầu đặt phòng');
                 }
             })
@@ -95,8 +96,7 @@ const GuestDetailForm = () => {
                             const approvedLink = paymentResponse?.payload?.links?.find(link => link?.rel?.includes('approve'))?.href;
                             window.location.href = approvedLink;
                         });
-                }
-                navigate('/bill/detail');
+                } else navigate('/bill/detail');
             });
     }
 
