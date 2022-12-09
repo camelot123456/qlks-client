@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
+import { ROOM_STATE } from "../../constants/roomstate";
 import * as roomService from "../../service/room-service";
 
 export const roomSchedule = createAsyncThunk(
@@ -52,9 +54,9 @@ const roomSlice = createSlice({
             floor: '',
             minGuest: 0,
             maxGuest: 100,
-            from: new Date().toISOString().substr(0, 10),
-            to: new Date().toISOString().substr(0, 10),
-            states: ''
+            from: moment(new Date()).startOf('month').format('YYYY-MM-DD'),
+            to: moment(new Date()).endOf('month').format('YYYY-MM-DD'),
+            states: ROOM_STATE.map(state => `${state.name}`).join(',')
         },
         loading: false,
         error: false,

@@ -8,6 +8,7 @@ import {
   handleScheduleFilter,
   roomSchedule,
 } from "../../../../../redux/slice/room-slice";
+import moment from "moment/moment";
 
 const SearchTool = () => {
   const dispatch = useDispatch();
@@ -26,9 +27,9 @@ const SearchTool = () => {
     floor: "",
     minGuest: 0,
     maxGuest: 100,
-    from: new Date().toISOString().substr(0, 10),
-    to: new Date().toISOString().substr(0, 10),
-    states: [],
+    from: moment(new Date()).startOf('month').format('YYYY-MM-DD'),
+    to: moment(new Date()).endOf('month').format('YYYY-MM-DD'),
+    states: ROOM_STATE.map(state => `${state.name}`),
   };
 
   const handleSubmit = (values) => {
