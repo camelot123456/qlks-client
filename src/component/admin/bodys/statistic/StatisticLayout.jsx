@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getRevenueStatisticsByYear } from "../../../../redux/slice/paymentlog-slice";
+import { getMonthlyRevenue, getMonthlyRevenueOfCurrentYear, getMonthlyRevenueOfTheYearWithTheHighestRevenue, getMonthOfTheYearWithTheHighestRevenue, getQuarterlyRevenueForTheCurrentYear, getQuarterlyRevenueOfEachYear, getQuarterOfTheYearWithTheHighestRevenue, getRevenueStatisticsByYear } from "../../../../redux/slice/paymentlog-slice";
 import RevenueYears from "./years/RevenueYears";
+import RevenueQuarters from "./quarters/RevenueQuarters";
+import RevenueMonths from "./months/RevenueMonths";
 
 const StatisticLayout = () => {
 
@@ -9,6 +11,13 @@ const StatisticLayout = () => {
 
   useEffect(() => {
     dispatch(getRevenueStatisticsByYear());
+    dispatch(getQuarterlyRevenueOfEachYear());
+    dispatch(getQuarterlyRevenueForTheCurrentYear());
+    dispatch(getQuarterOfTheYearWithTheHighestRevenue());
+    dispatch(getMonthlyRevenue());
+    dispatch(getMonthlyRevenueOfTheYearWithTheHighestRevenue());
+    dispatch(getMonthlyRevenueOfCurrentYear());
+    dispatch(getMonthOfTheYearWithTheHighestRevenue());
   }, []);
 
   return (
@@ -44,7 +53,7 @@ const StatisticLayout = () => {
             aria-expanded="false"
             aria-controls="panelsStayOpen-collapseTwo"
           >
-            Accordion Item #2
+            Thống kê doanh thu theo quý
           </button>
         </h2>
         <div
@@ -52,16 +61,7 @@ const StatisticLayout = () => {
           class="accordion-collapse collapse"
           aria-labelledby="panelsStayOpen-headingTwo"
         >
-          <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is
-            hidden by default, until the collapse plugin adds the appropriate
-            classes that we use to style each element. These classes control the
-            overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or
-            overriding our default variables. It's also worth noting that just
-            about any HTML can go within the <code>.accordion-body</code>,
-            though the transition does limit overflow.
-          </div>
+          <RevenueQuarters width={'100%'} height={'auto'} />
         </div>
       </div>
       <div class="accordion-item">
@@ -74,7 +74,7 @@ const StatisticLayout = () => {
             aria-expanded="false"
             aria-controls="panelsStayOpen-collapseThree"
           >
-            Accordion Item #3
+            Thống kê doanh thu theo tháng
           </button>
         </h2>
         <div
@@ -82,16 +82,7 @@ const StatisticLayout = () => {
           class="accordion-collapse collapse"
           aria-labelledby="panelsStayOpen-headingThree"
         >
-          <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is
-            hidden by default, until the collapse plugin adds the appropriate
-            classes that we use to style each element. These classes control the
-            overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or
-            overriding our default variables. It's also worth noting that just
-            about any HTML can go within the <code>.accordion-body</code>,
-            though the transition does limit overflow.
-          </div>
+          <RevenueMonths width={'100%'} height={'auto'} />
         </div>
       </div>
     </div>

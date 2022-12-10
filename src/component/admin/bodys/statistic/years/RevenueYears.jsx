@@ -18,10 +18,6 @@ const RevenueYears = ({width, height}) => {
   const revenueStatisticsByYear =
     paymentLogReducer.revenue.revenueStatisticsByYear;
 
-  useEffect(() => {
-    console.log(revenueStatisticsByYear);
-  }, [revenueStatisticsByYear]);
-
   return (
     <div style={{width: width, height: height}}>
       
