@@ -8,6 +8,7 @@ import discountSlice from './slice/discount-slice';
 import paymentSice from "./slice/payment-slice";
 import orderSlice from './slice/order-slice';
 import roomSlice from './slice/room-slice';
+import paymentLogSlice from './slice/paymentlog-slice';
 
 const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
         payment: paymentSice.reducer,
         order: orderSlice.reducer,
         room: roomSlice.reducer,
+        paymentLog: paymentLogSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

@@ -30,6 +30,7 @@ import RoomLayout from './component/admin/bodys/room/RoomLayout';
 import RoomConsoleLayout from './component/admin/bodys/room/room-console/RoomConsoleLayout';
 import RoomBookingRequest from './component/admin/bodys/room/room-booking/RoomBookingRequest';
 import HistoryDetail from "./component/home/bodys/account/HistoryDetail";
+import StatisticLayout from './component/admin/bodys/statistic/StatisticLayout';
 
 // https://preview.themeforest.net/item/triper-creative-tour-travel-hotel-booking-agency-react-template/full_screen_preview/25335777?_ga=2.46860001.75497068.1669143948-1579485344.1669043010
 function App() {
@@ -79,6 +80,9 @@ function App() {
                   <Route path="room" element={<RoomLayout />}>
                     <Route path="room-console" element={<RoomConsoleLayout />}/>
                     <Route path="room-booking-request" element={<RoomBookingRequest />}/>
+                  </Route>
+                  <Route path="statistic" element={<StatisticLayout />}>
+                      
                   </Route>
                 </Route>
               </Route>

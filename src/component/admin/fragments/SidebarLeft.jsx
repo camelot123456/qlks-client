@@ -19,6 +19,11 @@ const SidebarLeft = () => {
     <div style={{ display: "flex", height: "100%", minHeight: "400px" }}>
       <Sidebar defaultCollapsed>
         <Menu>
+          <MenuItem routerLink={<Link to="/admin/dashboard" />} 
+            icon={<i className="fa fa-tachometer" aria-hidden="true"></i>}
+          >
+            Dashboard
+          </MenuItem>
           <SubMenu
             label="QUẢN LÝ NHÂN SỰ"
             icon={<i className="fa fa-user" aria-hidden="true"></i>}
@@ -50,13 +55,11 @@ const SidebarLeft = () => {
             label="QUẢN LÝ THỐNG KÊ"
             icon={<i className="fa fa-bar-chart" aria-hidden="true"></i>}
           >
-            <MenuItem routerLink={<Link to="/admin/room/room-console" />}>
-              Giám sát phòng
+            <MenuItem routerLink={<Link to="/admin/statistic" />}>
+              Thống kê doanh thu
             </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/admin/room/room-booking-request" />}
-            >
-              Yêu cầu đặt phòng
+            <MenuItem routerLink={<Link to="/admin/payment-log" />}>
+              Danh sách thống kê
             </MenuItem>
           </SubMenu>
         </Menu>

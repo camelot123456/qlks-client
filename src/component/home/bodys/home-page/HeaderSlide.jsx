@@ -1,91 +1,87 @@
-import { FastField, Form, Formik } from 'formik';
-import FormField from '../../../custom/FormField';
-import './HeaderSlide.css';
-import * as Yup from "yup";
-import { addTimeSuffixes } from "../../../../util/util";
-import { useDispatch, useSelector } from "react-redux";
-import { findAllObjectSelect, roomtypeFilter } from "../../../../redux/slice/roomtype-slice";
-import { useEffect } from "react";
-
 const HeaderSlide = () => {
-
-    const dispatch = useDispatch();
-    const { roomtypeSearch, loading, error, roomtypeSelect } = useSelector(state => ({ ...state.roomtype }));
-
-    useEffect(() => {
-        dispatch(findAllObjectSelect());
-    }, []);
-
-    useEffect(() => {
-    }, [loading, error, roomtypeSearch]);
-
-    const initialValues = {
-        checkin: '',
-        checkout: '',
-        adultGuest: '',
-        childGuest: '',
-        idRoomType: ''
-    };
-
-    const validationSchema = Yup.object().shape({
-        checkin: Yup.string(),
-        checkout: Yup.string(),
-        adultGuest: Yup.number().min(1).max(20),
-        childGuest: Yup.number().min(0).max(20),
-        idRoomType: Yup.string(),
-    });
-
-    return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values => {
-                let filterForm = {
-                    checkin: addTimeSuffixes(values.checkin),
-                    checkout: addTimeSuffixes(values.checkout, '12:00:00'),
-                    adultGuest: values.adultGuest || 1,
-                    childGuest: values.childGuest || 0,
-                    idRoomType: values.idRoomType || ''
-                };
-
-                dispatch(roomtypeFilter(filterForm))
-                    .then(res => {
-                        console.log(res);
-                    });
-            })}
-        >
-            {(formikProps) => {
-                const { errors, values, touched, handleSubmit, handleBlur, handleChange } = formikProps;
-                return (
-                    <div className='header-container'>
-                        <div className="image-container" />
-                        <Form className='d-flex justify-content-around align-items-center form-filter'>
-                            <FastField id="checkin" name="checkin" placeholder="Ngày đặt" label="Ngày đặt" type="date"
-                                onChange={handleChange} component={FormField.InputField2} />
-                            <FastField id="checkout" name="checkout" placeholder="Ngày trả" label="Ngày trả" type="date"
-                                onChange={handleChange} component={FormField.InputField2} />
-                            <FastField id="adultGuest" name="adultGuest" placeholder="Người lớn" label="Người lớn"
-                                type="number" min={1} max={20} component={FormField.InputField2} />
-                            <FastField id="childGuest" name="childGuest" placeholder="Trẻ em" label="Trẻ em"
-                                type="number" min={0} max={20} component={FormField.InputField2} def />
-                            <div className="">
-                                <select id='idRoomType' name="idRoomType" className="form-select form-select-lg mb-3"
-                                    onChange={handleChange} style={{ minHeight: '58px', minWidth: '200px' }}>
-                                    <option value={''}>Tất cả</option>
-                                    {roomtypeSelect && roomtypeSelect.map(itemSelect => (
-                                        <option key={itemSelect.id} value={itemSelect.id}>{itemSelect.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="mb-3">
-                                <button type="submit" className="btn btn-light rounded-pill">CHECK AVAILABILITY</button>
-                            </div>
-                        </Form>
-                    </div >
-                )
-            }}
-        </Formik >
-    );
+  return (
+    <div
+      id="carouselExampleDark"
+      className="carousel carousel-dark slide container"
+      data-bs-ride="carousel"
+    >
+      <div className="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleDark"
+          data-bs-slide-to="0"
+          className="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleDark"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleDark"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div className="carousel-inner">
+        <div className="carousel-item active" data-bs-interval="10000">
+          <img
+            src="https://eaglehotel.webhotel.vn/files/images/Room/Classic%20(1).jpg"
+            className="d-block w-100"
+            alt="..."
+          />
+          <div className="carousel-caption d-none d-md-block">
+            <h5>First slide label</h5>
+            <p>Some representative placeholder content for the first slide.</p>
+          </div>
+        </div>
+        <div className="carousel-item" data-bs-interval="2000">
+          <img
+            src="https://eaglehotel.webhotel.vn/files/images/Room/Suite%20(1).jpg"
+            className="d-block w-100"
+            alt="..."
+          />
+          <div className="carousel-caption d-none d-md-block">
+            <h5>Second slide label</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div className="carousel-item">
+          <img
+            src="https://eaglehotel.webhotel.vn/files/images/Room/Deluxe%20(1).jpg"
+            className="d-block w-100"
+            alt="..."
+          />
+          <div className="carousel-caption d-none d-md-block">
+            <h5>Third slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button
+        className="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleDark"
+        data-bs-slide="prev"
+      >
+        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span className="visually-hidden">Previous</span>
+      </button>
+      <button
+        className="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleDark"
+        data-bs-slide="next"
+      >
+        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        <span className="visually-hidden">Next</span>
+      </button>
+    </div>
+  );
 };
 
 export default HeaderSlide;
