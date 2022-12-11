@@ -10,6 +10,7 @@ import {createOrderPaypal} from "../../../../redux/slice/payment-slice";
 import { useEffect, useState } from 'react';
 import { getAccountMe } from '../../../../redux/slice/auth-slice';
 import { useNavigate } from 'react-router';
+import moment from 'moment';
 
 const GuestDetailForm = () => {
     const [showLoading, setShowLoading] = useState(false);
@@ -42,6 +43,15 @@ const GuestDetailForm = () => {
         paymentMethod: Yup.string().required("Trường này không được để trống."),
         note: Yup.string(),
     });
+
+    const checkDisabledForPostpaid = () => {
+        const start = moment(new Date());
+        const end = moment(bookingRequest.checkin);
+        console.log(end.diff(start, 'hours'));
+        if (end.diff(start, 'hours') <= 24)
+            return false;
+        return true;
+    }
 
     const handleSubmit = (values) => {
         setShowLoading(true);
@@ -125,7 +135,9 @@ const GuestDetailForm = () => {
                             <select className="form-select form-select-lg mb-3 rounded-pill"
                                     onChange={handleChange} id='paymentType' name='paymentType'>
                                 <option value={PAYMENT_TYPE.PREPAID}>TRẢ TRƯỚC</option>
-                                <option value={PAYMENT_TYPE.POSTPAID}>TRẢ SAU</option>
+                                <option value={PAYMENT_TYPE.POSTPAID}
+                                    disabled={checkDisabledForPostpaid()}
+                                >TRẢ SAU</option>
                             </select>
                         </div>
                         <div className="mt-3">
@@ -133,7 +145,6 @@ const GuestDetailForm = () => {
                             (<select className="form-select form-select-lg mb-3 rounded-pill"
                                     onChange={handleChange} id='paymentMethod' name='paymentMethod'>
                                 <option value={PAYMENT_METHOD.CREDIT_CARDS}>PAYPAL</option>
-                                <option value={PAYMENT_METHOD.CASH}>TIỀN MẶT</option>
                             </select>)}
                         </div>
                         <div className="mt-4 text-end">

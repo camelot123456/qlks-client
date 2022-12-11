@@ -20,6 +20,18 @@ const checkinBooking = (idBooking) => {
     return httpClient().get('/api/booking/checkin/' + idBooking);
 };
 
+const checkoutBooking = (idBooking) => {
+    return httpClient().get('/api/booking/checkout/' + idBooking);
+};
+
+const cleanRoomBooking = (idBooking) => {
+    return httpClient().get('/api/booking/clean/' + idBooking);
+};
+
+const cleanFinishBooking = (idBooking) => {
+    return httpClient().get('/api/booking/finish/' + idBooking);
+};
+
 const changeRoomBooking = (changeRoomBookingPayload) => {
     return httpClient().post('/api/booking/change/room', changeRoomBookingPayload);
 };
@@ -30,5 +42,8 @@ export {
     findAllNotSetTheRooms,
     addRoomsIntoBooking,
     checkinBooking,
-    changeRoomBooking
+    checkoutBooking,
+    changeRoomBooking,
+    cleanRoomBooking,
+    cleanFinishBooking
 };

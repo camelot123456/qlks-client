@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -56,11 +57,11 @@ const BookingDetail = () => {
                 <hr />
                 <div className="d-flex justify-content-between">
                     <div>Ngày đặt</div>
-                    <div>{bookingRequest.checkin || ''}</div>
+                    <div>{moment(bookingRequest.checkin).format('DD/MM/YYYY HH:mm') || ''}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Ngày trả</div>
-                    <div>{bookingRequest.checkout || ''}</div>
+                    <div>{moment(bookingRequest.checkout).format('DD/MM/YYYY HH:mm') || ''}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Người lớn</div>

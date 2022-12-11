@@ -1,6 +1,7 @@
 import {useSelector} from "react-redux";
 import React from "react";
 import FullPageLoader from "../../../custom/FullPageLoader";
+import moment from "moment";
 
 const HistoryDetail = () => {
     const {bookingInfo, loading} = useSelector(state => ({...state.booking}));
@@ -13,11 +14,11 @@ const HistoryDetail = () => {
                     <hr/>
                     <div className="d-flex justify-content-between">
                         <div>THỜI GIAN TẠO:</div>
-                        <div>{bookingInfo?.createdAt}</div>
+                        <div>{moment(bookingInfo?.createdAt).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>CẬP NHẬP GẦN NHẤT:</div>
-                        <div>{bookingInfo?.modifiedAt}</div>
+                        <div>{moment(bookingInfo?.modifiedAt).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>MÃ ĐẶT PHÒNG:</div>
@@ -25,11 +26,11 @@ const HistoryDetail = () => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGÀY ĐẶT:</div>
-                        <div>{bookingInfo?.checkIn}</div>
+                        <div>{moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGÀY TRẢ:</div>
-                        <div>{bookingInfo?.checkOut}</div>
+                        <div>{moment(bookingInfo?.checkOut).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGƯỜI LỚN:</div>
@@ -73,11 +74,11 @@ const HistoryDetail = () => {
                     <hr/>
                     <div className="d-flex justify-content-between">
                         <div>THỜI GIAN TẠO:</div>
-                        <div>{bookingInfo?.order?.createdAt}</div>
+                        <div>{moment(bookingInfo?.order?.createdAt).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>CẬP NHẬP GẦN NHẤT:</div>
-                        <div>{bookingInfo?.order?.modifiedAt}</div>
+                        <div>{moment(bookingInfo?.order?.modifiedAt).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>MÃ HÓA ĐƠN:</div>
@@ -93,7 +94,7 @@ const HistoryDetail = () => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>THƠI GIAN THANH TOÁN:</div>
-                        <div>{bookingInfo?.order?.paidAt}</div>
+                        <div>{moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>HÌNH THỨC:</div>

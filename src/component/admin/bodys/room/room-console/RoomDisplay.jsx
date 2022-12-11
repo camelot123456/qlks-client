@@ -7,9 +7,8 @@ import {
 } from "../../../../../redux/slice/room-slice";
 import Pagination from "../../../../custom/Pagination";
 import { ROOM_FIELDS } from "../../../../../constants/constants";
-import { ROOM_STATE } from "../../../../../constants/roomstate";
 import { toast } from "react-toastify";
-import { checkinBooking } from "../../../../../redux/slice/booking-slice";
+import { checkinBooking, checkoutBooking, cleanFinishBooking, cleanRoomBooking } from "../../../../../redux/slice/booking-slice";
 import moment from "moment";
 
 const RoomDisplay = () => {
@@ -53,6 +52,36 @@ const RoomDisplay = () => {
       });
   };
 
+  const handleCheckout = (idBooking) => {
+    dispatch(checkoutBooking(idBooking))
+      .then(() => {
+        if (!bookingReducer.error) {
+          toast.success(idBooking);
+          setChange(prev => !prev);
+        } else toast.error('failure');
+      });
+  };
+
+  const handleClean = (idBooking) => {
+    dispatch(cleanRoomBooking(idBooking))
+      .then(() => {
+        if (!bookingReducer.error) {
+          toast.success(idBooking);
+          setChange(prev => !prev);
+        } else toast.error('failure');
+      });
+  };
+
+  const handleCleanFinish = (idBooking) => {
+    dispatch(cleanFinishBooking(idBooking))
+      .then(() => {
+        if (!bookingReducer.error) {
+          toast.success(idBooking);
+          setChange(prev => !prev);
+        } else toast.error('failure');
+      });
+  };
+
   return (
     <div className="vstack gap-3">
       <div className="d-flex align-content-start flex-wrap">
@@ -74,8 +103,8 @@ const RoomDisplay = () => {
               <div className="card-body text-center" style={{lineHeight: '0.5'}}>
                 <h5 className="card-title">PHÒNG {room.roomName}</h5>
                 <p className="card-text">{room.state}</p>
-                <p className="card-text">{moment(room.checkIn).format('DD/MM/YYYY hh:mm')}</p>
-                <p className="card-text">{moment(room.checkOut).format('DD/MM/YYYY hh:mm')}</p>
+                <p className="card-text">{moment(room.checkIn).format('DD/MM/YYYY HH:mm')}</p>
+                <p className="card-text">{moment(room.checkOut).format('DD/MM/YYYY HH:mm')}</p>
                 <p className="card-text">{room.fullName}</p>
               </div>
               {room?.state === "BOOKED" && (
@@ -92,8 +121,58 @@ const RoomDisplay = () => {
               )}
               {room?.state === "OCCUPIED" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-light btn-sm "
+                    onClick={() => handleCheckout(room.idBooking)}
+                  >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
+                  </button>
+                  <button className="btn btn-outline-light btn-sm ">
+                    <i className="fa fa-ban" aria-hidden="true"></i>
+                  </button>
+                </div>
+              )}
+              {room?.state === "DUE_OUT" && (
+                <div className="card-footer d-flex justify-content-evenly">
+                  <button className="btn btn-outline-light btn-sm "
+                    onClick={() => handleCheckout(room.idBooking)}
+                  >
+                    <i className="fa fa-sign-out" aria-hidden="true"></i>
+                  </button>
+                  <button className="btn btn-outline-light btn-sm ">
+                    <i className="fa fa-ban" aria-hidden="true"></i>
+                  </button>
+                </div>
+              )}
+              {room?.state === "OVERDUE" && (
+                <div className="card-footer d-flex justify-content-evenly">
+                  <button className="btn btn-outline-light btn-sm "
+                    onClick={() => handleCheckout(room.idBooking)}
+                  >
+                    <i className="fa fa-sign-out" aria-hidden="true"></i>
+                  </button>
+                  <button className="btn btn-outline-light btn-sm ">
+                    <i className="fa fa-ban" aria-hidden="true"></i>
+                  </button>
+                </div>
+              )}
+              {room?.state === "VACANT_DIRTY" && (
+                <div className="card-footer d-flex justify-content-evenly">
+                  <button className="btn btn-outline-light btn-sm "
+                    onClick={() => handleClean(room.idBooking)}
+                    >
+                    <i className="fa fa-refresh" aria-hidden="true"></i>
+                  </button>
+                  <button className="btn btn-outline-light btn-sm ">
+                    <i className="fa fa-ban" aria-hidden="true"></i>
+                  </button>
+                </div>
+              )}
+              {room?.state === "CLEANING_IN_PROGRESS" && (
+                <div className="card-footer d-flex justify-content-evenly">
+                  <button className="btn btn-outline-light btn-sm "
+                    onClick={() => handleCleanFinish(room.idBooking)}
+                  >
+                    <i className="fa fa-check" aria-hidden="true"></i>
                   </button>
                   <button className="btn btn-outline-light btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>

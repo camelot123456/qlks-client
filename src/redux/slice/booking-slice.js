@@ -102,6 +102,39 @@ export const checkinBooking = createAsyncThunk(
     }
 );
 
+export const checkoutBooking = createAsyncThunk(
+    '/booking/checkoutBooking',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            return await bookingService.checkoutBooking(idBooking);
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
+export const cleanRoomBooking = createAsyncThunk(
+    '/booking/cleanRoomBooking',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            return await bookingService.cleanRoomBooking(idBooking);
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
+export const cleanFinishBooking = createAsyncThunk(
+    '/booking/cleanFinishBooking',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            return await bookingService.cleanFinishBooking(idBooking);
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 export const changeRoomBooking = createAsyncThunk(
     '/booking/changeRoomBooking',
     async (bookingForm, { rejectedWithValue }) => {
@@ -249,6 +282,42 @@ const bookingSlice = createSlice({
             state.error = false;
         },
         [checkinBooking.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [checkoutBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [checkoutBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [checkoutBooking.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [cleanRoomBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [cleanRoomBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [cleanRoomBooking.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [cleanFinishBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [cleanFinishBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [cleanFinishBooking.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },
