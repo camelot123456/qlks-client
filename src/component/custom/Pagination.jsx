@@ -9,7 +9,7 @@ const Pagination = ({pageable, onPageable, onChange, fields}) => {
 
     useEffect(() => {
         if (onChange) {
-            onChange(true);
+            onChange(prev => !prev);
         }
         if (onPageable) {
             dispatch(onPageable(pageableOption));

@@ -40,7 +40,8 @@ const RoomBookingRequest = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {bookings && bookings.map(booking => (
+                {bookings?.length > 0 
+                ? (bookings.map(booking => (
                     <tr key={booking.id}>
                         <th scope="row">{booking.id}</th>
                         <td>{booking.createdAt}</td>
@@ -60,7 +61,13 @@ const RoomBookingRequest = () => {
                             </button>
                         </td>
                     </tr>
-                ))}
+                ))) 
+                : (
+                    <tr>
+                        <td colSpan={10}><p className="text-center">Danh sách trống</p></td>
+                    </tr>
+                )
+                }
                 </tbody>
             </table>
             {showModal && <Modal closeModal={setShowModal}

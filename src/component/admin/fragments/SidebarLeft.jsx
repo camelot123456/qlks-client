@@ -25,17 +25,6 @@ const SidebarLeft = () => {
             Dashboard
           </MenuItem>
           <SubMenu
-            label="QUẢN LÝ NHÂN SỰ"
-            icon={<i className="fa fa-user" aria-hidden="true"></i>}
-          >
-            <MenuItem routerLink={<Link to="/documentation" />}>
-              Quản lý tài khoản
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/documentation" />}>
-              Quản lý nhân viên
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
             label="QUẢN LÝ PHÒNG"
             icon={<i className="fa fa-calendar" aria-hidden="true"></i>}
           >

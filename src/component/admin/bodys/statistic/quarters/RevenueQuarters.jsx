@@ -43,7 +43,7 @@ const RevenueYears = ({ width, height }) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="quarters" />
-          <YAxis />
+          <YAxis unit="$"/>
           <Tooltip />
           <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
           <ReferenceLine y={0} stroke="#000" />
@@ -52,7 +52,7 @@ const RevenueYears = ({ width, height }) => {
         </BarChart>
       </ResponsiveContainer>
       <ScatterChart
-        width={500}
+        width={1000}
         height={250}
         margin={{
           top: 20,
@@ -75,11 +75,11 @@ const RevenueYears = ({ width, height }) => {
           shape="dot"
         />
         <Scatter
-          name="Quý của năm vàng"
+          name="Quý đạt doanh thu cao nhất"
           data={quarterOfTheYearWithTheHighestRevenue}
-          fill="#82ca9d"
+          fill="#ff0000"
           line
-          shape="dot"
+          shape="star"
         />
       </ScatterChart>
       

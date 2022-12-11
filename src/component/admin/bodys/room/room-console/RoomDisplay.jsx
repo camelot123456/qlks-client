@@ -8,12 +8,19 @@ import {
 import Pagination from "../../../../custom/Pagination";
 import { ROOM_FIELDS } from "../../../../../constants/constants";
 import { ROOM_STATE } from "../../../../../constants/roomstate";
+import { toast } from "react-toastify";
+import { checkinBooking } from "../../../../../redux/slice/booking-slice";
+import moment from "moment";
 
 const RoomDisplay = () => {
   const [change, setChange] = useState(false);
   const dispatch = useDispatch();
   const { roomsSchedule, loading, pageableSchedule } = useSelector((state) => ({
     ...state.room,
+  }));
+
+  const bookingReducer = useSelector((state) => ({
+    ...state.booking,
   }));
 
   useEffect(() => {
@@ -36,6 +43,16 @@ const RoomDisplay = () => {
     setChange(false);
   }, [change]);
 
+  const handleCheckin = (idBooking) => {
+    dispatch(checkinBooking(idBooking))
+      .then(() => {
+        if (!bookingReducer.error) {
+          toast.success(idBooking);
+          setChange(prev => !prev);
+        } else toast.error('failure');
+      });
+  };
+
   return (
     <div className="vstack gap-3">
       <div className="d-flex align-content-start flex-wrap">
@@ -54,16 +71,18 @@ const RoomDisplay = () => {
                   <i className="fa fa-commenting" aria-hidden="true"></i>
                 </button>
               </div>
-              <div className="card-body text-center">
+              <div className="card-body text-center" style={{lineHeight: '0.5'}}>
                 <h5 className="card-title">PHÒNG {room.roomName}</h5>
                 <p className="card-text">{room.state}</p>
-                <p className="card-text">{room.checkIn}</p>
-                <p className="card-text">{room.checkOut}</p>
+                <p className="card-text">{moment(room.checkIn).format('DD/MM/YYYY hh:mm')}</p>
+                <p className="card-text">{moment(room.checkOut).format('DD/MM/YYYY hh:mm')}</p>
                 <p className="card-text">{room.fullName}</p>
               </div>
               {room?.state === "BOOKED" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-light btn-sm "
+                    onClick={() => handleCheckin(room.idBooking)}
+                  >
                     <i className="fa fa-sign-in" aria-hidden="true"></i>
                   </button>
                   <button className="btn btn-outline-light btn-sm ">

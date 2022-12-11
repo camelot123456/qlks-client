@@ -16,9 +16,19 @@ const addRoomsIntoBooking = (bookingForm) => {
     return httpClient().post('/api/booking/room', bookingForm);
 };
 
+const checkinBooking = (idBooking) => {
+    return httpClient().get('/api/booking/checkin/' + idBooking);
+};
+
+const changeRoomBooking = (changeRoomBookingPayload) => {
+    return httpClient().post('/api/booking/change/room', changeRoomBookingPayload);
+};
+
 export {
     createBookingRequest,
     findById,
     findAllNotSetTheRooms,
-    addRoomsIntoBooking
+    addRoomsIntoBooking,
+    checkinBooking,
+    changeRoomBooking
 };

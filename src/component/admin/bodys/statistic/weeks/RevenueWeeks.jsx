@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   BarChart,
@@ -18,15 +17,15 @@ import {
   ReferenceLine,
 } from "recharts";
 
-const RevenueMonths = ({ width, height }) => {
+const RevenueWeeks = ({ width, height }) => {
   const paymentLogReducer = useSelector((state) => ({ ...state.paymentLog }));
-  const monthlyRevenue = paymentLogReducer.revenue.monthlyRevenue;
-  const monthlyRevenueOfTheYearWithTheHighestRevenue =
-    paymentLogReducer.revenue.monthlyRevenueOfTheYearWithTheHighestRevenue;
-  const monthlyRevenueOfCurrentYear =
-    paymentLogReducer.revenue.monthlyRevenueOfCurrentYear;
-  const monthOfTheYearWithTheHighestRevenue =
-    paymentLogReducer.revenue.monthOfTheYearWithTheHighestRevenue;
+  const weeklyRevenue = paymentLogReducer.revenue.weeklyRevenue;
+  const weekOfTheYearWithTheHighestRevenue =
+    paymentLogReducer.revenue.weekOfTheYearWithTheHighestRevenue;
+  const weeklyRevenueOfTheYearWithTheHighestRevenue =
+    paymentLogReducer.revenue.weeklyRevenueOfTheYearWithTheHighestRevenue;
+  const currentYearsWeeklyRevenue =
+    paymentLogReducer.revenue.currentYearsWeeklyRevenue;
 
   return (
     <div style={{ width: width, height: "100%" }}>
@@ -34,7 +33,7 @@ const RevenueMonths = ({ width, height }) => {
         <BarChart
           width={500}
           height={300}
-          data={monthlyRevenue}
+          data={weeklyRevenue}
           margin={{
             top: 5,
             right: 30,
@@ -43,8 +42,8 @@ const RevenueMonths = ({ width, height }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="months" />
-          <YAxis unit="$"/>
+          <XAxis dataKey="weeks" />
+          <YAxis unit="$" />
           <Tooltip />
           <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
           <ReferenceLine y={0} stroke="#000" />
@@ -63,29 +62,29 @@ const RevenueMonths = ({ width, height }) => {
         }}
       >
         <CartesianGrid />
-        <XAxis type="number" dataKey="months" name="months" unit="" />
+        <XAxis type="number" dataKey="weeks" name="weeks" unit="" />
         <YAxis type="number" dataKey="total" name="total" unit="$" />
-        <XAxis type="number" dataKey="months" name="months" unit="" />
-        <ZAxis type="number" range={[100]} />
+        <XAxis type="number" dataKey="weeks" name="weeks" unit="" />
+        <ZAxis type="number" range={[50]} />
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
         <Legend />
         <Scatter
-          name="Tháng của năm hiện tại"
-          data={monthlyRevenueOfCurrentYear}
+          name="Tuần của năm hiện tại"
+          data={currentYearsWeeklyRevenue}
           fill="#8884d8"
           line
-          shape="dot"
+          shape="star"
         />
         <Scatter
-          name="Tháng đạt doanh thu cao nhất"
-          data={monthOfTheYearWithTheHighestRevenue}
+          name="Tuần đạt doanh thu cao nhất"
+          data={weekOfTheYearWithTheHighestRevenue}
           fill="#ff0000"
           line
           shape="star"
         />
         <Scatter
-          name="Năm có doanh thu cao nhất"
-          data={monthlyRevenueOfTheYearWithTheHighestRevenue}
+          name="Năm có tuần doanh thu cao nhất"
+          data={weeklyRevenueOfTheYearWithTheHighestRevenue}
           fill="#82ca9d"
           line
           shape="square"
@@ -95,4 +94,4 @@ const RevenueMonths = ({ width, height }) => {
   );
 };
 
-export default RevenueMonths;
+export default RevenueWeeks;

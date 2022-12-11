@@ -68,36 +68,7 @@ const SearchTool = () => {
           } = formikProps;
           return (
             <Form>
-              <div className="hstack gap-3">
-                <FastField
-                  id="roomName"
-                  name="roomName"
-                  placeholder="Số phòng"
-                  label="Số phòng"
-                  type="text"
-                  onChange={handleChange}
-                  component={FormField.InputField2}
-                />
-                <FastField
-                  id="minGuest"
-                  name="minGuest"
-                  placeholder="Khách (min)"
-                  label="Khách (min)"
-                  type="number"
-                  min={0}
-                  onChange={handleChange}
-                  component={FormField.InputField2}
-                />
-                <FastField
-                  id="maxGuest"
-                  name="maxGuest"
-                  placeholder="Khách (max)"
-                  label="Khách (max)"
-                  type="number"
-                  min={0}
-                  onChange={handleChange}
-                  component={FormField.InputField2}
-                />
+              <div className="d-flex flex-wrap justify-content-evenly">
                 <FastField
                   id="from"
                   name="from"
@@ -152,6 +123,35 @@ const SearchTool = () => {
                       ))}
                   </select>
                 </div>
+                <FastField
+                  id="roomName"
+                  name="roomName"
+                  placeholder="Số phòng"
+                  label="Số phòng"
+                  type="text"
+                  onChange={handleChange}
+                  component={FormField.InputField2}
+                />
+                <FastField
+                  id="minGuest"
+                  name="minGuest"
+                  placeholder="Khách (min)"
+                  label="Khách (min)"
+                  type="number"
+                  min={0}
+                  onChange={handleChange}
+                  component={FormField.InputField2}
+                />
+                <FastField
+                  id="maxGuest"
+                  name="maxGuest"
+                  placeholder="Khách (max)"
+                  label="Khách (max)"
+                  type="number"
+                  min={0}
+                  onChange={handleChange}
+                  component={FormField.InputField2}
+                />
               </div>
               <div className="dropdown">
                 <button

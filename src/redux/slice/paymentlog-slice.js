@@ -305,7 +305,7 @@ const paymentLogSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        [getWeeklyRevenue.fulfilled]: (state, {payload}) => {
+        [getWeeklyRevenueOfTheYearWithTheHighestRevenue.fulfilled]: (state, {payload}) => {
             state.loading = false;
             state.error = false;
             state.revenue.weeklyRevenueOfTheYearWithTheHighestRevenue = payload;

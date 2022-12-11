@@ -91,6 +91,28 @@ export const addRoomsIntoBooking = createAsyncThunk(
     }
 );
 
+export const checkinBooking = createAsyncThunk(
+    '/booking/checkinBooking',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            return await bookingService.checkinBooking(idBooking);
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
+export const changeRoomBooking = createAsyncThunk(
+    '/booking/changeRoomBooking',
+    async (bookingForm, { rejectedWithValue }) => {
+        try {
+            return await bookingService.changeRoomBooking(bookingForm);
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 const bookingSlice = createSlice({
     name: 'booking',
     initialState: {
@@ -203,6 +225,30 @@ const bookingSlice = createSlice({
             state.error = false;
         },
         [addRoomsIntoBooking.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [changeRoomBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [changeRoomBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [changeRoomBooking.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [checkinBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [checkinBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [checkinBooking.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },

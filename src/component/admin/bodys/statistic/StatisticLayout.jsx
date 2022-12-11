@@ -1,13 +1,31 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getMonthlyRevenue, getMonthlyRevenueOfCurrentYear, getMonthlyRevenueOfTheYearWithTheHighestRevenue, getMonthOfTheYearWithTheHighestRevenue, getQuarterlyRevenueForTheCurrentYear, getQuarterlyRevenueOfEachYear, getQuarterOfTheYearWithTheHighestRevenue, getRevenueStatisticsByYear } from "../../../../redux/slice/paymentlog-slice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCurrentYearsWeeklyRevenue,
+  getHighestRevenueDay,
+  getMonthlyRevenue,
+  getMonthlyRevenueOfCurrentYear,
+  getMonthlyRevenueOfTheYearWithTheHighestRevenue,
+  getMonthOfTheYearWithTheHighestRevenue,
+  getQuarterlyRevenueForTheCurrentYear,
+  getQuarterlyRevenueOfEachYear,
+  getQuarterOfTheYearWithTheHighestRevenue,
+  getRevenueStatisticsByYear,
+  getTodaysRevenue,
+  getWeeklyRevenue,
+  getWeeklyRevenueOfTheYearWithTheHighestRevenue,
+  getWeekOfTheYearWithTheHighestRevenue,
+} from "../../../../redux/slice/paymentlog-slice";
 import RevenueYears from "./years/RevenueYears";
 import RevenueQuarters from "./quarters/RevenueQuarters";
 import RevenueMonths from "./months/RevenueMonths";
+import RevenueWeeks from "./weeks/RevenueWeeks";
+import RevenueDays from "./days/RevenueDays";
+import FullPageLoader from "../../../custom/FullPageLoader";
 
 const StatisticLayout = () => {
-
   const dispatch = useDispatch();
+  const {loading, error} = useSelector((state) => ({ ...state.paymentLog }));
 
   useEffect(() => {
     dispatch(getRevenueStatisticsByYear());
@@ -18,6 +36,12 @@ const StatisticLayout = () => {
     dispatch(getMonthlyRevenueOfTheYearWithTheHighestRevenue());
     dispatch(getMonthlyRevenueOfCurrentYear());
     dispatch(getMonthOfTheYearWithTheHighestRevenue());
+    dispatch(getWeeklyRevenue());
+    dispatch(getWeeklyRevenueOfTheYearWithTheHighestRevenue());
+    dispatch(getWeekOfTheYearWithTheHighestRevenue());
+    dispatch(getCurrentYearsWeeklyRevenue());
+    dispatch(getHighestRevenueDay());
+    dispatch(getTodaysRevenue());
   }, []);
 
   return (
@@ -40,7 +64,7 @@ const StatisticLayout = () => {
           class="accordion-collapse collapse show"
           aria-labelledby="panelsStayOpen-headingOne"
         >
-          <RevenueYears width={'100%'} height={400} />
+          <RevenueYears width={"100%"} height={400} />
         </div>
       </div>
       <div class="accordion-item">
@@ -61,7 +85,7 @@ const StatisticLayout = () => {
           class="accordion-collapse collapse"
           aria-labelledby="panelsStayOpen-headingTwo"
         >
-          <RevenueQuarters width={'100%'} height={'auto'} />
+          <RevenueQuarters width={"100%"} height={"auto"} />
         </div>
       </div>
       <div class="accordion-item">
@@ -82,9 +106,52 @@ const StatisticLayout = () => {
           class="accordion-collapse collapse"
           aria-labelledby="panelsStayOpen-headingThree"
         >
-          <RevenueMonths width={'100%'} height={'auto'} />
+          <RevenueMonths width={"100%"} height={"auto"} />
         </div>
       </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseheadingFour"
+            aria-expanded="false"
+            aria-controls="panelsStayOpen-collapseheadingFour"
+          >
+            Thống kê doanh thu theo tuần
+          </button>
+        </h2>
+        <div
+          id="panelsStayOpen-collapseheadingFour"
+          class="accordion-collapse collapse"
+          aria-labelledby="panelsStayOpen-headingheadingFour"
+        >
+          <RevenueWeeks width={"100%"} height={"auto"} />
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseheadingFive"
+            aria-expanded="false"
+            aria-controls="panelsStayOpen-collapseheadingFive"
+          >
+            Thống kê doanh thu theo ngày
+          </button>
+        </h2>
+        <div
+          id="panelsStayOpen-collapseheadingFive"
+          class="accordion-collapse collapse"
+          aria-labelledby="panelsStayOpen-headingheadingFive"
+        >
+          <RevenueDays width={"100%"} height={"auto"} />
+        </div>
+      </div>
+      {loading && <FullPageLoader />}
     </div>
   );
 };
