@@ -6,7 +6,7 @@ import {
   SubMenu,
   useProSidebar,
 } from "react-pro-sidebar";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const SidebarLeft = () => {
   const [openIcon, setOpenIcon] = useState(false);

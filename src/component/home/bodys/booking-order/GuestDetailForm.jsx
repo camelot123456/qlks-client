@@ -9,7 +9,7 @@ import FullPageLoader from '../../../custom/FullPageLoader';
 import {createOrderPaypal} from "../../../../redux/slice/payment-slice";
 import { useEffect, useState } from 'react';
 import { getAccountMe } from '../../../../redux/slice/auth-slice';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
 const GuestDetailForm = () => {

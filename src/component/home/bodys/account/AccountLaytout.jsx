@@ -1,5 +1,4 @@
-import { Outlet } from "react-router";
-import { Link } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 const AccountLayout = () => {
     return (
