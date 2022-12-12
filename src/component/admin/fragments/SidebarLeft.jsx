@@ -28,6 +28,9 @@ const SidebarLeft = () => {
             label="QUẢN LÝ PHÒNG"
             icon={<i className="fa fa-calendar" aria-hidden="true"></i>}
           >
+            <MenuItem routerLink={<Link to="/admin/room/room-booking-offline" />}>
+              Đặt phòng
+            </MenuItem>
             <MenuItem routerLink={<Link to="/admin/room/room-console" />}>
               Giám sát phòng
             </MenuItem>
