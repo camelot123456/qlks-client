@@ -42,14 +42,14 @@ const RevenueDays = ({ width, height }) => {
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
         <Legend />
         <Scatter
-          name="Tuần của năm hiện tại"
+          name="Ngày của năm hiện tại"
           data={todaysRevenue}
           fill="#8884d8"
           line
           shape="star"
         />
         <Scatter
-          name="Tuần đạt doanh thu cao nhất"
+          name="Ngày đạt doanh thu cao nhất"
           data={highestRevenueDay}
           fill="#ff0000"
           line

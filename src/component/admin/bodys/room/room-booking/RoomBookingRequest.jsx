@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addIdBookingIntoBookingRequest, findAllNotSetTheRooms} from "../../../../../redux/slice/booking-slice";
@@ -44,9 +45,9 @@ const RoomBookingRequest = () => {
                 ? (bookings.map(booking => (
                     <tr key={booking.id}>
                         <th scope="row">{booking.id}</th>
-                        <td>{booking.createdAt}</td>
-                        <td>{booking.checkIn}</td>
-                        <td>{booking.checkOut}</td>
+                        <td>{moment(booking.createdAt).startOf('month').format('DD/MM/YYYY HH:mm')}</td>
+                        <td>{moment(booking.checkIn).startOf('month').format('DD/MM/YYYY HH:mm')}</td>
+                        <td>{moment(booking.checkOut).startOf('month').format('DD/MM/YYYY HH:mm')}</td>
                         <td>{booking.adultGuest}</td>
                         <td>{booking.childGuest}</td>
                         <td>{booking.fullName}</td>

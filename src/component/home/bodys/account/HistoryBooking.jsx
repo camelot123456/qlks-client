@@ -7,6 +7,7 @@ import Modal from "../../../custom/Modal";
 import HistoryDetail from "./HistoryDetail";
 import Pagination from '../../../custom/Pagination';
 import { ORDER_FIELDS } from '../../../../constants/constants';
+import moment from 'moment';
 
 const HistoryBooking = () => {
     const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const HistoryBooking = () => {
                         <td><span className="badge text-bg-success">{item?.state}</span></td>
                         <td><span className="badge text-bg-primary">{item?.paymentType}</span></td>
                         <td><span className="badge text-bg-info">{item?.paymentMethod}</span></td>
-                        <td>{item?.paidAt || ''}</td>
+                        <td>{item?.paidAt ? moment(item?.paidAt).format('DD/MM/YYYY HH:mm') : '--'}</td>
                         <td>$ {item?.surcharge}</td>
                         <td>$ {item?.grandTotal}</td>
                         <td>
