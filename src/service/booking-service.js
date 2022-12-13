@@ -4,6 +4,10 @@ const createBookingRequest = (bookingForm) => {
     return httpClient().post('/api/booking', bookingForm);
 };
 
+const createAdminBookingRequest = (bookingForm) => {
+    return httpClient().post('/api/admin/booking', bookingForm);
+};
+
 const findById = (idBooking) => {
     return httpClient().get('/api/booking/' + idBooking);
 };
@@ -45,5 +49,6 @@ export {
     checkoutBooking,
     changeRoomBooking,
     cleanRoomBooking,
-    cleanFinishBooking
+    cleanFinishBooking,
+    createAdminBookingRequest
 };

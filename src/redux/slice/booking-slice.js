@@ -67,6 +67,18 @@ export const createBookingRequest = createAsyncThunk(
     }
 );
 
+export const createAdminBookingRequest = createAsyncThunk(
+    '/booking/adminCreate',
+    async (bookingForm, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.createAdminBookingRequest(bookingForm);
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 export const findAllNotSetTheRooms = createAsyncThunk(
     '/booking/findAllNotSetTheRooms',
     async (params, { rejectedWithValue }) => {
@@ -220,6 +232,19 @@ const bookingSlice = createSlice({
             state.booking = payload;
         },
         [createBookingRequest.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [createAdminBookingRequest.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [createAdminBookingRequest.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.booking = payload;
+        },
+        [createAdminBookingRequest.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },

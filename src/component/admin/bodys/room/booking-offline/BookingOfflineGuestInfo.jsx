@@ -91,23 +91,17 @@ const BookingOfflineGuestInfo = () => {
             .then(bookingResponse => {
                 if (!bookingResponse.error) {
                     toast.success('Yêu cầu đã được xử lý');
-                    return bookingResponse?.payload?.id;
+                    if (values.paymentType === PAYMENT_TYPE.PREPAID 
+                        && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {
+                        const approvedLink = bookingResponse?.payload?.links?.find(link => link?.rel?.includes('approve'))?.href;
+                        window.location.href = approvedLink;
+                    } else navigate('/admin/room/room-booking-request');
                 } else {
                     toast.error('Yêu cầu chưa được xử lý');
                     setShowLoading(false);
                     throw new Error('Đã xảy ra lỗi trong thi xử lý yêu cầu đặt phòng');
                 }
             })
-            .then(idBooking => {
-                if (idBooking && values.paymentType === PAYMENT_TYPE.PREPAID 
-                        && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {
-                    dispatch(createOrderPaypal(idBooking))
-                        .then(paymentResponse => {
-                            const approvedLink = paymentResponse?.payload?.links?.find(link => link?.rel?.includes('approve'))?.href;
-                            window.location.href = approvedLink;
-                        });
-                } else navigate('/admin/room/room-booking-request');
-            });
     }
 
     return (
