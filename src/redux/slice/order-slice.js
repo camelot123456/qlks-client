@@ -49,6 +49,18 @@ export const billPayment = createAsyncThunk(
     }
 );
 
+export const adminBillPayment = createAsyncThunk(
+    'order/adminBillPayment',
+    async (idOrder, { rejectWithValue }) => {
+        try {
+            const orderResponse = await orderService.adminBillPayment(idOrder);
+            return orderResponse.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const orderSlice = createSlice({
     name: 'order',
     initialState: {
@@ -138,6 +150,19 @@ const orderSlice = createSlice({
             state.orderPaypal = payload;
         },
         [billPayment.rejected]: (state, payload) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [adminBillPayment.pending]: (state, payload) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [adminBillPayment.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.orderPaypal = payload;
+        },
+        [adminBillPayment.rejected]: (state, payload) => {
             state.loading = false;
             state.error = true;
         },

@@ -8,12 +8,15 @@ import {
 import Pagination from "../../../../custom/Pagination";
 import { ROOM_FIELDS } from "../../../../../constants/constants";
 import { toast } from "react-toastify";
-import { checkinBooking, checkoutBooking, cleanFinishBooking, cleanRoomBooking } from "../../../../../redux/slice/booking-slice";
+import { checkinBooking, cleanFinishBooking, cleanRoomBooking, findById } from "../../../../../redux/slice/booking-slice";
 import moment from "moment";
+import RoomBillPayment from "./RoomBillPayment";
+import Modal from "../../../../custom/Modal";
 
 const RoomDisplay = () => {
   const [change, setChange] = useState(false);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
   const { roomsSchedule, loading, pageableSchedule } = useSelector((state) => ({
     ...state.room,
   }));
@@ -53,12 +56,9 @@ const RoomDisplay = () => {
   };
 
   const handleCheckout = (idBooking) => {
-    dispatch(checkoutBooking(idBooking))
+    dispatch(findById(idBooking))
       .then(() => {
-        if (!bookingReducer.error) {
-          toast.success(idBooking);
-          setChange(prev => !prev);
-        } else toast.error('failure');
+          setShowModal(true);
       });
   };
 
@@ -188,6 +188,9 @@ const RoomDisplay = () => {
         pageable={pageableSchedule}
         fields={ROOM_FIELDS}
       />
+      {showModal && <Modal closeModal={setShowModal}
+        setChange={setChange}
+        content={<RoomBillPayment />} width={'1200'}/>}
       {loading && <FullPageLoader />}
     </div>
   );

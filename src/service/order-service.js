@@ -30,9 +30,14 @@ const billPayment = (idOrderPaypal) => {
     return httpClient().get('/api/orders/bill-payment/' + idOrderPaypal);
 };
 
+const adminBillPayment = (idOrder) => {
+    return httpClient().get('/api/orders/admin/bill-payment/' + idOrder);
+};
+
 export {
     findAll,
     findById,
     findAllByUser,
-    billPayment
+    billPayment,
+    adminBillPayment
 };

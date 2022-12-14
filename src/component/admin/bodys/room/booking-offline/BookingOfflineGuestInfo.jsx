@@ -3,19 +3,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
 import * as Yup from 'yup';
 import {PAYMENT_METHOD, PAYMENT_TYPE} from '../../../../../constants/constants';
-import {createBookingRequest} from '../../../../../redux/slice/booking-slice';
+import {createAdminBookingRequest, findById} from '../../../../../redux/slice/booking-slice';
 import FormField from '../../../../custom/FormField';
 import FullPageLoader from '../../../../custom/FullPageLoader';
-import {createOrderPaypal} from "../../../../../redux/slice/payment-slice";
 import { useEffect, useState } from 'react';
 import { getAccountMe } from '../../../../../redux/slice/auth-slice';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../../../../custom/Modal';
 import moment from 'moment';
+import BookingOfflinePayment from './BookingOffilePayment';
 
 const BookingOfflineGuestInfo = () => {
     const [showLoading, setShowLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
     const {loading, bookingRequest} = useSelector(state => ({...state.booking}));
     const authSlice = useSelector(state => ({...state.auth}));
     let accountMe = authSlice.accountMe;
@@ -87,14 +89,16 @@ const BookingOfflineGuestInfo = () => {
             paymentType: values.paymentType,
             paymentMethod: values.paymentMethod,
         };
-        dispatch(createBookingRequest(bookingForm))
+        dispatch(createAdminBookingRequest(bookingForm))
             .then(bookingResponse => {
                 if (!bookingResponse.error) {
                     toast.success('Yêu cầu đã được xử lý');
                     if (values.paymentType === PAYMENT_TYPE.PREPAID 
                         && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {
-                        const approvedLink = bookingResponse?.payload?.links?.find(link => link?.rel?.includes('approve'))?.href;
-                        window.location.href = approvedLink;
+                        dispatch(findById(bookingResponse?.payload?.id))
+                            .then(() => {
+                                setShowModal(true);
+                            });
                     } else navigate('/admin/room/room-booking-request');
                 } else {
                     toast.error('Yêu cầu chưa được xử lý');
@@ -149,6 +153,8 @@ const BookingOfflineGuestInfo = () => {
                         <div className="mt-4 text-end">
                             {errors !== true && <button type='submit' className='btn btn-outline-primary'>ĐẶT NGAY</button>}
                         </div>
+                        {showModal && <Modal closeModal={setShowModal}
+                                 content={<BookingOfflinePayment />} width={'1200'}/>}
                         {showLoading && <FullPageLoader/>}
                     </Form>
                 )

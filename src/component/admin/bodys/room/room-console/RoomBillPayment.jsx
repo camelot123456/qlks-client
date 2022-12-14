@@ -1,22 +1,27 @@
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { PAYMENT_METHOD, PAYMENT_TYPE } from "../../../../../constants/constants";
+import { checkoutBooking } from "../../../../../redux/slice/booking-slice";
 import { adminBillPayment } from "../../../../../redux/slice/order-slice";
 import FullPageLoader from "../../../../custom/FullPageLoader";
 
 
-const BookingOfflinePayment = () => {
+const RoomBillPayment = ({setChange}) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const {bookingInfo, loading} = useSelector(state => ({...state.booking}));
+    const {bookingInfo, loading, error} = useSelector(state => ({...state.booking}));
 
     const handlePayment = (idOrder) => {
         dispatch(adminBillPayment(idOrder))
             .then(resp => {
                 if (!resp.error) {
-                    toast.success('Thanh toán thành công');
-                    navigate("/admin/room/room-booking-request");
+                    dispatch(checkoutBooking(idOrder))
+                        .then(() => {
+                            if (!error) {
+                                toast.success('Thanh toán thành công');
+                                setChange(prev => !prev);
+                            } else toast.error('Thanh toán thất bại');
+                        });
                 } else {
                     toast.success('Thanh toán thất bại');
                 }
@@ -124,9 +129,20 @@ const BookingOfflinePayment = () => {
                     <div className="d-flex justify-content-between">
                         <div>PHƯƠNG THỨC:</div>
                         <div>
-                            <span className="badge text-bg-success">
+                            {bookingInfo?.order.paymentType === PAYMENT_TYPE.POSTPAID ? 
+                            (<select className="form-select form-select-lg mb-3 rounded-pill"
+                                    id='paymentMethod' name='paymentMethod'>
+                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>CREDIT CARD</option>
+                                <option value={PAYMENT_METHOD.CASH}>CASH</option>
+                                <option value={PAYMENT_METHOD.CHECKS}>CHECKS</option>
+                                <option value={PAYMENT_METHOD.DEBIT_CARDS}>DEBIT CARD</option>
+                                <option value={PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}>ELECTRON BANK TRANFERS</option>
+                                <option value={PAYMENT_METHOD.MOBILE_PAYMENTS}>MOBILE PAYMENT</option>
+                            </select>)
+                            :
+                            (<span className="badge text-bg-success">
                                 {bookingInfo?.order?.paymentMethod}
-                            </span>
+                            </span>)}
                         </div>
                     </div>
                     <div className="d-flex justify-content-between">
@@ -221,4 +237,4 @@ const BookingOfflinePayment = () => {
     )
 }
 
-export default BookingOfflinePayment;
+export default RoomBillPayment;
