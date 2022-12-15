@@ -43,11 +43,35 @@ const addDiscountBooking = (discountBookings, isExpireGiftCode, giftCode, name, 
     return discountBookings;
 };
 
+export const findAll = createAsyncThunk(
+    '/booking/findAll',
+    async (pageable, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.findAll(pageable);
+            return bookingResponse;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 export const findById = createAsyncThunk(
     '/booking/findById',
     async (idBooking, { rejectedWithValue }) => {
         try {
             const bookingResponse = await bookingService.findById(idBooking);
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
+export const deleteById = createAsyncThunk(
+    '/booking/deleteById',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.deleteById(idBooking);
             return bookingResponse.data;
         } catch (error) {
             return rejectedWithValue(error);
@@ -161,6 +185,14 @@ export const changeRoomBooking = createAsyncThunk(
 const bookingSlice = createSlice({
     name: 'booking',
     initialState: {
+        pageable: {
+            page: 0,
+            pages: 0,
+            sort: 'modifiedAt,desc',
+            search: '',
+            count: 0,
+            size: 20
+        },
         bookingNotSetRooms: [],
         booking: {},
         idTemp: null,
@@ -183,11 +215,21 @@ const bookingSlice = createSlice({
             id: null,
             roomBookings: []
         },
+        bookings: [],
         bookingInfo: {},
         loading: false,
         error: false
     },
     reducers: {
+        onPageable: (state, {payload}) => {
+            state.pageable = {
+                ...state.pageable,
+                page: payload.page,
+                size: payload.size,
+                sort: payload.sort,
+                search: payload.search
+            }
+        },
         updateTimeBooking: (state, { payload }) => {
             state.idTemp = new Date().getTime();
             state.bookingRequest = {
@@ -248,6 +290,27 @@ const bookingSlice = createSlice({
             state.loading = false;
             state.error = true;
         },
+        [findAll.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [findAll.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.error = false;
+            state.bookings = action.payload.data;
+            state.pageable = {
+                ...state.pageable,
+                count: action.payload.headers.count,
+                page: action.payload.headers.page,
+                pages: action.payload.headers.pages,
+                size: action.payload.headers.size,
+                sort: action.payload.headers.sort
+            }
+        },
+        [findAll.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
         [findById.pending]: (state, {payload}) => {
             state.loading = true;
             state.error = false;
@@ -258,6 +321,18 @@ const bookingSlice = createSlice({
             state.bookingInfo = payload;
         },
         [findById.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [deleteById.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [deleteById.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [deleteById.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },
@@ -350,6 +425,7 @@ const bookingSlice = createSlice({
 });
 
 export const { 
+    onPageable,
     updateTimeBooking, 
     addOrUpdateRoomtype, 
     addOrUpdateService,

@@ -69,7 +69,7 @@ const HistoryBooking = () => {
             <Pagination pageable={pageable} onPageable={onPageable} 
                 onChange={setChange} fields={ORDER_FIELDS}/>
             {showModal && <Modal closeModal={setShowModal}
-                                 content={<HistoryDetail/>} width={'1200'}/>}
+                                 content={<HistoryDetail/>} width={'850'}/>}
             {loading && <FullPageLoader/>}
         </div>
     )

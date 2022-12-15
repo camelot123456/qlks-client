@@ -8,8 +8,23 @@ const createAdminBookingRequest = (bookingForm) => {
     return httpClient().post('/api/admin/booking', bookingForm);
 };
 
+const findAll = (pageable) => {
+    return httpClient().get('/api/booking/', {
+        params: {
+            page: pageable.page,
+            size: pageable.size,
+            sort: pageable.sort,
+            search: pageable.search,
+        }
+    });
+};
+
 const findById = (idBooking) => {
     return httpClient().get('/api/booking/' + idBooking);
+};
+
+const deleteById = (idBooking) => {
+    return httpClient().delete('/api/booking/' + idBooking);
 };
 
 const findAllNotSetTheRooms = () => {
@@ -43,6 +58,8 @@ const changeRoomBooking = (changeRoomBookingPayload) => {
 export {
     createBookingRequest,
     findById,
+    findAll,
+    deleteById,
     findAllNotSetTheRooms,
     addRoomsIntoBooking,
     checkinBooking,

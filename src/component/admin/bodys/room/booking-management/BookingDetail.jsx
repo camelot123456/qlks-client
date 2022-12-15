@@ -1,26 +1,29 @@
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminBillPayment } from "../../../../../redux/slice/order-slice";
-import FullPageLoader from "../../../../custom/FullPageLoader";
+import { PAYMENT_METHOD, PAYMENT_TYPE } from "constants/constants";
+import { deleteById, findAll } from "redux/slice/booking-slice";
+import FullPageLoader from "component/custom/FullPageLoader";
 
 
-const BookingOfflinePayment = () => {
+const BookingDetail = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const {bookingInfo, loading} = useSelector(state => ({...state.booking}));
+    const {bookingInfo, loading, error} = useSelector(state => ({...state.booking}));
 
-    const handlePayment = (idOrder) => {
-        dispatch(adminBillPayment(idOrder))
-            .then(resp => {
-                if (!resp.error) {
-                    toast.success('Thanh toán thành công');
-                    navigate("/admin/room/room-booking-request");
+    const handleDelete = (idBooking) => {
+        dispatch(deleteById(idBooking))
+            .then(res => {
+                if (!res.error) {
+                    toast.success('Xóa thành công');
+                    dispatch(findAll());
                 } else {
-                    toast.success('Thanh toán thất bại');
+                    toast.error('Xóa thất bại');
                 }
             })
+    }
+
+    const handleUpdate = (idBooking) => {
+        toast.success('Thanh toán thành công');
     }
 
     return (
@@ -111,10 +114,7 @@ const BookingOfflinePayment = () => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>THƠI GIAN THANH TOÁN:</div>
-                        <div>{
-                            bookingInfo?.order?.paidAt 
-                            ? moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm')
-                            : 'ĐANG CẬP NHẬP ...'}</div>
+                        <div>{moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>HÌNH THỨC:</div>
@@ -127,9 +127,20 @@ const BookingOfflinePayment = () => {
                     <div className="d-flex justify-content-between">
                         <div>PHƯƠNG THỨC:</div>
                         <div>
-                            <span className="badge text-bg-success">
+                            {bookingInfo?.order.paymentType === PAYMENT_TYPE.POSTPAID ? 
+                            (<select className="form-select form-select-lg mb-3 rounded-pill"
+                                    id='paymentMethod' name='paymentMethod'>
+                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>CREDIT CARD</option>
+                                <option value={PAYMENT_METHOD.CASH}>CASH</option>
+                                <option value={PAYMENT_METHOD.CHECKS}>CHECKS</option>
+                                <option value={PAYMENT_METHOD.DEBIT_CARDS}>DEBIT CARD</option>
+                                <option value={PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}>ELECTRON BANK TRANFERS</option>
+                                <option value={PAYMENT_METHOD.MOBILE_PAYMENTS}>MOBILE PAYMENT</option>
+                            </select>)
+                            :
+                            (<span className="badge text-bg-success">
                                 {bookingInfo?.order?.paymentMethod}
-                            </span>
+                            </span>)}
                         </div>
                     </div>
                     <div className="d-flex justify-content-between">
@@ -168,17 +179,11 @@ const BookingOfflinePayment = () => {
                             <th scope="row">{item?.name}</th>
                             <td>x {item?.quantity}</td>
                             <td>$ {item?.price}</td>
-                            <td>{item?.rooms.length > 0 ?
-                                (item?.rooms.map(room => (
-                                    <span className="badge text-bg-success" key={room?.id}>
-                                        {room?.roomName}
-                                    </span>
-                                ))) 
-                                : 
-                                (<span className="badge text-bg-secondary">
-                                    ĐANG CẬP NHẬP ...
-                                </span>)}
-                            </td>
+                            <td>{item?.rooms.map(room => (
+                                <span className="badge text-bg-success" key={room?.id}>
+                                    {room?.roomName}
+                                </span>
+                            ))}</td>
                         </tr>
                     ))}
                     </tbody>
@@ -223,11 +228,11 @@ const BookingOfflinePayment = () => {
                 </table>
             </div>
             <button className="btn btn-outline-primary"
-                onClick={() => handlePayment(bookingInfo?.order?.id)}
+                onClick={() => handleDelete(bookingInfo?.order?.id)}
             >Xác nhận thanh toán</button>
             {loading && <FullPageLoader />}
         </div>
     )
 }
 
-export default BookingOfflinePayment;
+export default BookingDetail;

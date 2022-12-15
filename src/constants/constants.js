@@ -26,6 +26,15 @@ const ORDER_FIELDS = [
     {key: 'idOrder', value: 'Mã hóa đơn'},
 ];
 
+const BOOKING_FIELDS = [
+    {key: 'createdAt', value: 'Ngày tạo'},
+    {key: 'modifiedAt', value: 'Ngày sửa'},
+    {key: 'checkIn', value: 'Ngày đặt'},
+    {key: 'checkOut', value: 'Ngày trả'},
+    {key: 'idBooking', value: 'Mã booking'},
+    {key: 'idOrder', value: 'Mã hóa đơn'},
+];
+
 const ROOM_FIELDS = [
     {key: 'createdAt', value: 'Ngày tạo'},
     {key: 'modifiedAt', value: 'Ngày sửa'},
@@ -47,5 +56,6 @@ export {
     PAYER_ID_PAYPAL,
     ID_ORDER_PAYMENT,
     ORDER_FIELDS,
-    ROOM_FIELDS
+    ROOM_FIELDS,
+    BOOKING_FIELDS
 };

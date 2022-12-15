@@ -2,14 +2,14 @@ import {FastField, Form, Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
 import * as Yup from 'yup';
-import {PAYMENT_METHOD, PAYMENT_TYPE} from '../../../../../constants/constants';
-import {createAdminBookingRequest, findById} from '../../../../../redux/slice/booking-slice';
-import FormField from '../../../../custom/FormField';
-import FullPageLoader from '../../../../custom/FullPageLoader';
+import {PAYMENT_METHOD, PAYMENT_TYPE} from 'constants/constants';
+import {createAdminBookingRequest, findById} from 'redux/slice/booking-slice';
+import FormField from 'component/custom/FormField';
+import FullPageLoader from 'component/custom/FullPageLoader';
 import { useEffect, useState } from 'react';
-import { getAccountMe } from '../../../../../redux/slice/auth-slice';
+import { getAccountMe } from 'redux/slice/auth-slice';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../../../../custom/Modal';
+import Modal from 'component/custom/Modal';
 import moment from 'moment';
 import BookingOfflinePayment from './BookingOffilePayment';
 
@@ -49,7 +49,6 @@ const BookingOfflineGuestInfo = () => {
     const checkDisabledForPostpaid = () => {
         const start = moment(new Date());
         const end = moment(bookingRequest.checkin);
-        console.log(end.diff(start, 'hours'));
         if (end.diff(start, 'hours') <= 24)
             return false;
         return true;
@@ -154,7 +153,7 @@ const BookingOfflineGuestInfo = () => {
                             {errors !== true && <button type='submit' className='btn btn-outline-primary'>ĐẶT NGAY</button>}
                         </div>
                         {showModal && <Modal closeModal={setShowModal}
-                                 content={<BookingOfflinePayment />} width={'1200'}/>}
+                                 content={<BookingOfflinePayment />} width={'850'}/>}
                         {showLoading && <FullPageLoader/>}
                     </Form>
                 )

@@ -148,11 +148,17 @@ const HistoryDetail = () => {
                             <th scope="row">{item?.name}</th>
                             <td>x {item?.quantity}</td>
                             <td>$ {item?.price}</td>
-                            <td>{item?.rooms.map(room => (
+                            <td>{item?.rooms.length > 0 ?
+                            (item?.rooms.map(room => (
                                 <span className="badge text-bg-success" key={room?.id}>
                                     {room?.roomName}
                                 </span>
-                            ))}</td>
+                            ))) 
+                            : 
+                            (<span className="badge text-bg-secondary">
+                                ĐANG CẬP NHẬP ...
+                            </span>)}
+                            </td>
                         </tr>
                     ))}
                     </tbody>

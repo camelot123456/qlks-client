@@ -31,6 +31,9 @@ const SidebarLeft = () => {
             <MenuItem routerLink={<Link to="/admin/room/room-booking-offline" />}>
               Đặt phòng
             </MenuItem>
+            <MenuItem routerLink={<Link to="/admin/booking-management" />}>
+              Quản lý booking
+            </MenuItem>
             <MenuItem routerLink={<Link to="/admin/room/room-console" />}>
               Giám sát phòng
             </MenuItem>
