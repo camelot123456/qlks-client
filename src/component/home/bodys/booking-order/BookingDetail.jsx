@@ -2,10 +2,10 @@ import moment from "moment";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateDiscount } from "../../../../redux/slice/booking-slice";
-import { findByGiftCode, isExpireByGiftCode } from "../../../../redux/slice/discount-slice";
-import FullPageLoader from "../../../custom/FullPageLoader";
-import Modal from "../../../custom/Modal";
+import { addOrUpdateDiscount } from "redux/slice/booking-slice";
+import { findByGiftCode, isExpireByGiftCode } from "redux/slice/discount-slice";
+import FullPageLoader from "component/custom/FullPageLoader";
+import Modal from "component/custom/Modal";
 import RoomTypeOrderList from "./RoomTypeOrderList";
 import ServiceOrderList from "./ServiceOrderList";
 

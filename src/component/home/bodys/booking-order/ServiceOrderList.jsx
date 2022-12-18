@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateService } from "../../../../redux/slice/booking-slice";
-import { findAll, saveServiceTemp } from "../../../../redux/slice/service-slice";
-import FullPageLoader from "../../../custom/FullPageLoader";
+import { addOrUpdateService } from "redux/slice/booking-slice";
+import { findAll, saveServiceTemp } from "redux/slice/service-slice";
+import FullPageLoader from "component/custom/FullPageLoader";
 
 const ServiceOrderList = ({closeModal}) => {
 

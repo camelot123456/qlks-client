@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAll } from "../../../../../redux/slice/room-slice";
+import { findAll } from "redux/slice/room-slice";
 
 const RoomSchedule = () => {
 

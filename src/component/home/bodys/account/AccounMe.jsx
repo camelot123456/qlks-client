@@ -1,6 +1,6 @@
 import React from "react";
 import {Formik, Form, FastField} from "formik";
-import FormField from "../../../custom/FormField";
+import FormField from "component/custom/FormField";
 
 const AccountMe = () => {
     const initialValues = {};

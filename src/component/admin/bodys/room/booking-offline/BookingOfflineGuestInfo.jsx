@@ -108,11 +108,12 @@ const BookingOfflineGuestInfo = () => {
     }
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={values => handleSubmit(values)}
-        >
+        <>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={values => handleSubmit(values)}
+            >
             {(formikProps) => {
                 const {errors, values, touched, handleSubmit, handleBlur, handleChange} = formikProps;
                 return (
@@ -152,14 +153,14 @@ const BookingOfflineGuestInfo = () => {
                         <div className="mt-4 text-end">
                             {errors !== true && <button type='submit' className='btn btn-outline-primary'>ĐẶT NGAY</button>}
                         </div>
-                        {showModal && <Modal closeModal={setShowModal}
-                                 content={<BookingOfflinePayment />} width={'850'}/>}
-                        {showLoading && <FullPageLoader/>}
                     </Form>
                 )
             }}
-
         </Formik>
+        {showModal && <Modal closeModal={setShowModal}
+            content={<BookingOfflinePayment />} width={'850'}/>}
+        {showLoading && <FullPageLoader/>}
+        </>
     )
 
 };

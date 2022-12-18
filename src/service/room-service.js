@@ -1,4 +1,4 @@
-import { httpClient } from "../config/axios-config";
+import { httpClient } from "config/axios-config";
 
 const roomsConsole = (filterForm) => {
     return httpClient().get('/api/rooms/console', {params: {

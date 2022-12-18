@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { addRoomIntoCart } from "../../../../redux/slice/roomtype-slice";
-import FullPageLoader from "../../../custom/FullPageLoader";
+import { addRoomIntoCart } from "redux/slice/roomtype-slice";
+import FullPageLoader from "component/custom/FullPageLoader";
 
 const RoomtypeList = () => {
 

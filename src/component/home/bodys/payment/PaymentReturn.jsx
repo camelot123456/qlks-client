@@ -1,9 +1,9 @@
-import {TOKEN_PAYPAL} from "../../../../constants/constants";
+import {TOKEN_PAYPAL} from "constants/constants";
 import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
-import FullPageLoader from "../../../custom/FullPageLoader";
+import FullPageLoader from "component/custom/FullPageLoader";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import { billPayment } from "../../../../redux/slice/order-slice";
+import { billPayment } from "redux/slice/order-slice";
 
 const PaymentReturn = () => {
 

@@ -2,10 +2,10 @@ import { FastField, Form, Formik } from 'formik';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import FormField from '../../custom/FormField';
-import FullPageLoader from '../../custom/FullPageLoader';
+import FormField from 'component/custom/FormField';
+import FullPageLoader from 'component/custom/FullPageLoader';
 import { toast } from 'react-toastify';
-import { register } from '../../../redux/slice/auth-slice';
+import { register } from 'redux/slice/auth-slice';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {

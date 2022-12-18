@@ -1,13 +1,13 @@
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { PAYMENT_METHOD, PAYMENT_TYPE } from "../../../../../constants/constants";
-import { checkoutBooking } from "../../../../../redux/slice/booking-slice";
-import { adminBillPayment } from "../../../../../redux/slice/order-slice";
-import FullPageLoader from "../../../../custom/FullPageLoader";
+import { PAYMENT_METHOD, PAYMENT_TYPE } from "constants/constants";
+import { checkoutBooking } from "redux/slice/booking-slice";
+import { adminBillPayment } from "redux/slice/order-slice";
+import FullPageLoader from "component/custom/FullPageLoader";
 
 
-const RoomBillPayment = ({setChange}) => {
+const RoomBillPayment = ({setChange, closeModal}) => {
     const dispatch = useDispatch();
     const {bookingInfo, loading, error} = useSelector(state => ({...state.booking}));
 
@@ -20,6 +20,7 @@ const RoomBillPayment = ({setChange}) => {
                             if (!error) {
                                 toast.success('Thanh toán thành công');
                                 setChange(prev => !prev);
+                                closeModal(false);
                             } else toast.error('Thanh toán thất bại');
                         });
                 } else {
@@ -229,9 +230,19 @@ const RoomBillPayment = ({setChange}) => {
                     </tbody>
                 </table>
             </div>
-            <button className="btn btn-outline-primary"
+            {bookingInfo?.order?.debitTotal ? (
+                <button className="btn btn-outline-warning"
                 onClick={() => handlePayment(bookingInfo?.order?.id)}
-            >Xác nhận thanh toán</button>
+                >
+                    Xác nhận thanh toán
+                </button>
+            ) : (
+                <button className="btn btn-outline-success"
+                onClick={() => handlePayment(bookingInfo?.order?.id)}
+                >
+                    Xác nhận trả phòng
+                </button>
+            )}
             {loading && <FullPageLoader />}
         </div>
     )

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as paymentLogService from '../../service/paymentlog-service';
+import * as paymentLogService from 'service/paymentlog-service';
 
 export const findAll = createAsyncThunk(
     'paymentLog/findAll',

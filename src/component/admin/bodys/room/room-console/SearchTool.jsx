@@ -1,13 +1,13 @@
 import { FastField, Field, Form, Formik } from "formik";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAllObjectSelect } from "../../../../../redux/slice/roomtype-slice";
-import FormField from "../../../../custom/FormField";
-import { ROOM_STATE } from "../../../../../constants/roomstate";
+import { findAllObjectSelect } from "redux/slice/roomtype-slice";
+import FormField from "component/custom/FormField";
+import { ROOM_STATE } from "constants/roomstate";
 import {
   handleScheduleFilter,
   roomSchedule,
-} from "../../../../../redux/slice/room-slice";
+} from "redux/slice/room-slice";
 import moment from "moment/moment";
 
 const SearchTool = () => {
@@ -50,6 +50,10 @@ const SearchTool = () => {
     dispatch(handleScheduleFilter(filterForm));
     dispatch(roomSchedule(filterForm));
   };
+
+  const getColorByRoomState = (state) => {
+    return ROOM_STATE.find(item => item.name.includes(state));
+  }
 
   return (
     <>
@@ -174,11 +178,24 @@ const SearchTool = () => {
                           id={state.name}
                         />
                         <label
-                          className="form-check-label"
+                          className="form-check-label f-lex"
                           htmlFor={state.name}
                         >
                           {state.name}
+                          <div 
+                            style={{
+                              backgroundColor: getColorByRoomState(state.name).color,
+                              color: getColorByRoomState(state.name).text,
+                              minWidth: '14px',
+                              minHeight: '14px',
+                              marginLeft: '14px',
+                              display: 'inline-flex',
+                              border: '1px solid black',
+                              borderRadius: '4px',
+                            }}
+                          ></div>
                         </label>
+                        
                       </div>
                     </li>
                   ))}

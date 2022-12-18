@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { findById } from "../../../../redux/slice/service-slice";
-import { convertByPercent } from "../../../../util/util";
-import FullPageLoader from "../../../custom/FullPageLoader";
+import { findById } from "redux/slice/service-slice";
+import { convertByPercent } from "util/util";
+import FullPageLoader from "component/custom/FullPageLoader";
 import ServiceList from "./ServiceList";
 
 const ServiceDetail = () => {

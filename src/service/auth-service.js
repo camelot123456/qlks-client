@@ -1,4 +1,4 @@
-import { httpClient } from "../config/axios-config";
+import { httpClient } from "config/axios-config";
 
 const register = (registerForm) => {
     return httpClient().post('/api/register', registerForm);

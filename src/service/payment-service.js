@@ -1,4 +1,4 @@
-import {httpClient} from "../config/axios-config";
+import {httpClient} from "config/axios-config";
 
 const createOrderPaypal = (idBooking) => {
     return httpClient().get('/api/payment/create-order/' + idBooking);

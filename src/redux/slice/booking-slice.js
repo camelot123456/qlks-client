@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as bookingService from '../../service/booking-service';
+import * as bookingService from 'service/booking-service';
 
 const addRoomtypeBooking = (roomTypeBookings, id, name, quantity, countRoom, price) => {
     if (!roomTypeBookings.length) {

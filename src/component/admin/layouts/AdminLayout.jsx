@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../fragments/Navbar";
-import SidebarLeft from "../fragments/SidebarLeft";
+import Navbar from "component/admin/fragments/Navbar";
+import SidebarLeft from "component/admin/fragments/SidebarLeft";
 
 const AdminLayout = () => {
     return (

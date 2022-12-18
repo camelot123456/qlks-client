@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FullPageLoader from "../../../../custom/FullPageLoader";
+import FullPageLoader from "component/custom/FullPageLoader";
 import {
   handlePageable,
   roomSchedule,
-} from "../../../../../redux/slice/room-slice";
-import Pagination from "../../../../custom/Pagination";
-import { ROOM_FIELDS } from "../../../../../constants/constants";
+} from "redux/slice/room-slice";
+import Pagination from "component/custom/Pagination";
+import { ROOM_FIELDS } from "constants/constants";
 import { toast } from "react-toastify";
-import { checkinBooking, cleanFinishBooking, cleanRoomBooking, findById } from "../../../../../redux/slice/booking-slice";
+import { checkinBooking, cleanFinishBooking, cleanRoomBooking, findById } from "redux/slice/booking-slice";
 import moment from "moment";
 import RoomBillPayment from "./RoomBillPayment";
-import Modal from "../../../../custom/Modal";
+import Modal from "component/custom/Modal";
+import { ROOM_STATE } from "constants/roomstate";
 
 const RoomDisplay = () => {
   const [change, setChange] = useState(false);
@@ -82,6 +83,10 @@ const RoomDisplay = () => {
       });
   };
 
+  const getColorByRoomState = (state) => {
+    return ROOM_STATE.find(item => item.name.includes(state));
+  }
+
   return (
     <div className="vstack gap-3">
       <div className="d-flex align-content-start flex-wrap">
@@ -89,14 +94,18 @@ const RoomDisplay = () => {
           roomsSchedule.map((room, index) => (
             <div
               key={index}
-              className="card text-bg-secondary mb-3 me-3"
-              style={{ maxWidth: "200px" }}
+              className="card mb-3 me-3"
+              style={{
+                maxWidth: '200px', 
+                backgroundColor: getColorByRoomState(room?.state).color, 
+                color: getColorByRoomState(room?.state).text
+              }}
             >
               <div className="card-header hstack">
-                <button className="btn btn-outline-light btn-sm me-auto">
+                <button className="btn btn-outline-dark btn-sm me-auto">
                   <i className="fa fa-info-circle" aria-hidden="true"></i>
                 </button>
-                <button className="btn btn-outline-light btn-sm ">
+                <button className="btn btn-outline-dark btn-sm ">
                   <i className="fa fa-commenting" aria-hidden="true"></i>
                 </button>
               </div>
@@ -109,72 +118,72 @@ const RoomDisplay = () => {
               </div>
               {room?.state === "BOOKED" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm "
+                  <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleCheckin(room.idBooking)}
                   >
                     <i className="fa fa-sign-in" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
               {room?.state === "OCCUPIED" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm "
+                  <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleCheckout(room.idBooking)}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
               {room?.state === "DUE_OUT" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm "
+                  <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleCheckout(room.idBooking)}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
               {room?.state === "OVERDUE" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm "
+                  <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleCheckout(room.idBooking)}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
               {room?.state === "VACANT_DIRTY" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm "
+                  <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleClean(room.idBooking)}
-                    >
+                  >
                     <i className="fa fa-refresh" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
               {room?.state === "CLEANING_IN_PROGRESS" && (
                 <div className="card-footer d-flex justify-content-evenly">
-                  <button className="btn btn-outline-light btn-sm "
+                  <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleCleanFinish(room.idBooking)}
                   >
                     <i className="fa fa-check" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-light btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm ">
                     <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -190,7 +199,7 @@ const RoomDisplay = () => {
       />
       {showModal && <Modal closeModal={setShowModal}
         setChange={setChange}
-        content={<RoomBillPayment />} width={'1200'}/>}
+        content={<RoomBillPayment setChange={setChange} closeModal={setShowModal}/>} width={'850'}/>}
       {loading && <FullPageLoader />}
     </div>
   );

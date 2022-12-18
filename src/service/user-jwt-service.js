@@ -1,4 +1,4 @@
-import { httpClient } from "../config/axios-config";
+import { httpClient } from "config/axios-config";
 
 const getAccessToken = (loginForm) => {
     return httpClient().post('/api/authenticate', loginForm);

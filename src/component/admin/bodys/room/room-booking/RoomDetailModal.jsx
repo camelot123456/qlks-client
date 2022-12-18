@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {addRoomsIntoBookingRequest} from "../../../../../redux/slice/booking-slice";
+import {addRoomsIntoBookingRequest} from "redux/slice/booking-slice";
 
 const RoomDetailModal = ({ rooms }) => {
     const dispatch = useDispatch();

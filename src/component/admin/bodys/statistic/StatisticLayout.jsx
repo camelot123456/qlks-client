@@ -15,13 +15,13 @@ import {
   getWeeklyRevenue,
   getWeeklyRevenueOfTheYearWithTheHighestRevenue,
   getWeekOfTheYearWithTheHighestRevenue,
-} from "../../../../redux/slice/paymentlog-slice";
+} from "redux/slice/paymentlog-slice";
 import RevenueYears from "./years/RevenueYears";
 import RevenueQuarters from "./quarters/RevenueQuarters";
 import RevenueMonths from "./months/RevenueMonths";
 import RevenueWeeks from "./weeks/RevenueWeeks";
 import RevenueDays from "./days/RevenueDays";
-import FullPageLoader from "../../../custom/FullPageLoader";
+import FullPageLoader from "component/custom/FullPageLoader";
 
 const StatisticLayout = () => {
   const dispatch = useDispatch();

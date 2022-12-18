@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ACCESS_TOKEN } from "../../constants/constants";
-import * as authService from '../../service/auth-service';
-import * as userJwtService from '../../service/user-jwt-service';
+import { ACCESS_TOKEN } from "constants/constants";
+import * as userJwtService from 'service/user-jwt-service';
 
 export const login = createAsyncThunk(
     'userJwt/login',

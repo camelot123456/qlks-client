@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { findAll } from "../../../../redux/slice/service-slice";
-import FullPageLoader from "../../../custom/FullPageLoader";
+import { findAll } from "redux/slice/service-slice";
+import FullPageLoader from "component/custom/FullPageLoader";
 
 const ServiceList = ({title}) => {
 

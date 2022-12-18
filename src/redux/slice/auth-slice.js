@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ACCESS_TOKEN } from "../../constants/constants";
-import * as authService from '../../service/auth-service';
+import { ACCESS_TOKEN } from "constants/constants";
+import * as authService from 'service/auth-service';
 
 export const register = createAsyncThunk(
     'auth/register',
