@@ -26,6 +26,12 @@ const ORDER_FIELDS = [
     {key: 'idOrder', value: 'Mã hóa đơn'},
 ];
 
+const FEEDBACK_FIELDS = [
+    {key: 'createdAt', value: 'Ngày tạo'},
+    {key: 'modifiedAt', value: 'Ngày sửa'},
+    {key: 'rating', value: 'Đánh giá'},
+];
+
 const BOOKING_FIELDS = [
     {key: 'createdAt', value: 'Ngày tạo'},
     {key: 'modifiedAt', value: 'Ngày sửa'},
@@ -57,5 +63,6 @@ export {
     ID_ORDER_PAYMENT,
     ORDER_FIELDS,
     ROOM_FIELDS,
-    BOOKING_FIELDS
+    BOOKING_FIELDS,
+    FEEDBACK_FIELDS
 };
