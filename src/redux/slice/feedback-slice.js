@@ -25,6 +25,18 @@ export const findById = createAsyncThunk(
     }
 );
 
+export const update = createAsyncThunk(
+    'feedback/update',
+    async (feedbackForm, { rejectedWithValue }) => {
+        try {
+            const feedback = await feedbackService.update(feedbackForm);
+            return feedback.data;
+        } catch (error) {
+            return rejectedWithValue(error.response.data);
+        }
+    }
+);
+
 const feedbackSlice = createSlice({
     name: 'feedback',
     initialState: {
@@ -34,7 +46,7 @@ const feedbackSlice = createSlice({
             page: 0,
             pages: 0,
             size: 20,
-            sort: 'modifiedAt,desc',
+            sort: 'modified_at,desc',
             count: 0,
             search: ''
         },
@@ -73,7 +85,7 @@ const feedbackSlice = createSlice({
         [findAll.fulfilled]: (state, action) => {
             state.loading = false;
             state.error = false;
-            state.feedback = action.payload.data;
+            state.feedbacks = action.payload.data;
             state.pageable = {
                 ...state.pageable,
                 count: action.payload.headers.count,
@@ -84,6 +96,18 @@ const feedbackSlice = createSlice({
             }
         },
         [findAll.rejected]: (state, acction) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [update.pending]: (state, acction) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [update.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [update.rejected]: (state, acction) => {
             state.loading = false;
             state.error = true;
         },

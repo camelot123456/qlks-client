@@ -94,7 +94,7 @@ const GuestDetailForm = () => {
                     && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {
                     const approvedLink = bookingResponse?.payload?.links?.find(link => link?.rel?.includes('approve'))?.href;
                     window.location.href = approvedLink;
-                } else navigate('/admin/room/room-booking-request');
+                } else navigate('/bill/detail');
             } else {
                 toast.error('Yêu cầu chưa được xử lý');
                 setShowLoading(false);

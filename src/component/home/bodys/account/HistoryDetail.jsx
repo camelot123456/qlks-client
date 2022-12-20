@@ -94,7 +94,7 @@ const HistoryDetail = () => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>THƠI GIAN THANH TOÁN:</div>
-                        <div>{moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm')}</div>
+                        <div>{bookingInfo?.order?.paidAt ? moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm') : 'ĐANG CẬP NHẬP...'}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>HÌNH THỨC:</div>

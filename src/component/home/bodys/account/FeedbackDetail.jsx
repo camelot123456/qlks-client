@@ -3,8 +3,9 @@ import FullPageLoader from "component/custom/FullPageLoader";
 import { FastField, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { findById } from "redux/slice/feedback-slice";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { findById, update } from "redux/slice/feedback-slice";
 import * as Yup from "yup";
 
 const FeedbackDetail = () => {
@@ -16,6 +17,7 @@ const FeedbackDetail = () => {
     });
     const dispatch = useDispatch();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(findById(id))
@@ -33,7 +35,19 @@ const FeedbackDetail = () => {
     });
 
     const handleSubmit = (values) => {
+        const feedbackForm = {
+            rating: values.rating,
+            content: values.content,
+            id
+        };
 
+        dispatch(update(feedbackForm))
+            .then(resp => {
+                if (!resp?.error) {
+                    toast.success('Đã cập nhập');
+                    navigate(-1);
+                } else toast.error('Đã xãy ra lỗi');
+            });
     };
 
     return (
@@ -46,7 +60,7 @@ const FeedbackDetail = () => {
                 {(formikProps) => {
                     const {errors, values, touched, handleSubmit, handleBlur, handleChange} = formikProps;
                     return (
-                        <Form className="bg-light rounded p-3 border" style={{width: '65%'}}>
+                        <Form className="bg-light rounded p-3 border mt-3">
                             <h3 className='mb-4'>Đánh giá phòng</h3>
                             <FastField id="rating" name="rating" label="Rating" placeholder="Rating" type="number"
                                     min="0" max="10"
