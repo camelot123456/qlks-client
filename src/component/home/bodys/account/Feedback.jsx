@@ -7,11 +7,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findAll, findById, onPageable } from "redux/slice/feedback-slice";
 import FeedbackDetail from "./FeedbackDetail";
+import { Link } from 'react-router-dom';
 
 const Feedback = () => {
 
     const dispatch = useDispatch();
-    const [showModal, setShowModal] = useState(false);
     const [change, setChange] = useState(false);
     const {feedbacks, loading, pageable} = useSelector(state => ({...state.feedback}));
 
@@ -24,13 +24,6 @@ const Feedback = () => {
         }));
         setChange(false);
     }, [change]);
-
-    const handleOpenFeedbackDetail = (id) => {
-        dispatch(findById(id))
-            .then(() => {
-                setShowModal(true);
-            });
-    };
 
     return (
         <div className='bg-light p-3 rounded border mt-4'>
@@ -55,9 +48,11 @@ const Feedback = () => {
                         <td>{item?.paidAt ? moment(item?.paidAt).format('DD/MM/YYYY HH:mm') : '--'}</td>
                         <td>{item?.content}</td>
                         <td>
-                            <button className="btn btn-outline-primary"
-                                    onClick={() => handleOpenFeedbackDetail(item?.id)}
-                            >CHI TIẾT</button>
+                            <Link className="btn btn-outline-primary"
+                                to={`/admin/account/feedback/${item?.id}/detail`}
+                            >
+                                CHI TIẾT
+                            </Link>
                         </td>
                     </tr>
                 ))}
