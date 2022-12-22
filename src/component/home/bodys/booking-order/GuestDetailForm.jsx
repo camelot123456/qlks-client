@@ -46,7 +46,6 @@ const GuestDetailForm = () => {
     const checkDisabledForPostpaid = () => {
         const start = moment(new Date());
         const end = moment(bookingRequest.checkin);
-        console.log(end.diff(start, 'hours'));
         if (end.diff(start, 'hours') <= 24)
             return false;
         return true;

@@ -67,6 +67,18 @@ export const findById = createAsyncThunk(
     }
 );
 
+export const getTemporaryBooking = createAsyncThunk(
+    '/booking/getTemporaryBooking',
+    async (bookingForm, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.getTemporaryBooking(bookingForm);
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 export const deleteById = createAsyncThunk(
     '/booking/deleteById',
     async (idBooking, { rejectedWithValue }) => {
@@ -211,6 +223,13 @@ const bookingSlice = createSlice({
             roomTypeBookings: [],
             serviceBookings: [],
         },
+        temporaryBooking: {
+            roomCharge: 0,
+            serviceCharge: 0,
+            surchargeTotal: 0,
+            grandTotal: 0,
+            debitTotal: 0
+        },
         roomsToAddRequest: {
             id: null,
             roomBookings: []
@@ -321,6 +340,19 @@ const bookingSlice = createSlice({
             state.bookingInfo = payload;
         },
         [findById.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [getTemporaryBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [getTemporaryBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.temporaryBooking = payload;
+        },
+        [getTemporaryBooking.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },

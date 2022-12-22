@@ -15,11 +15,12 @@ const BookingDetail = () => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
+    const [changeBookingState, setChangeBookingState] = useState({});
     const [modeContentModal, setModeContentModal] = useState(0);
     const { loading } = useSelector(state => ({ ...state.roomtype }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const bookingRequest = bookingReducer.bookingRequest;
-
+    const temporaryBooking = bookingReducer.temporaryBooking;
 
     const handleOpenModel = (title, modeContent) => {
         setTitleModal(title);
@@ -113,11 +114,11 @@ const BookingDetail = () => {
                 <hr />
                 <div className="d-flex justify-content-between">
                     <div>Tiền phòng</div>
-                    <div>$ 0</div>
+                    <div>$ {temporaryBooking.roomCharge || 0}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tiền dịch vụ</div>
-                    <div>$ 0</div>
+                    <div>$ {temporaryBooking.serviceCharge || 0}</div>
                 </div>
                 <div className="v-stack gap-3">
                     <div>Mã giảm giá:</div>
@@ -141,27 +142,15 @@ const BookingDetail = () => {
                 <hr />
                 <div className="d-flex justify-content-between">
                     <div>Tổng phụ</div>
-                    <div>$ 0</div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <div>Thuế dịch vụ</div>
-                    <div>$ 0</div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <div>Thuế VAT</div>
-                    <div>$ 0</div>
+                    <div>$ {temporaryBooking.surchargeTotal || 0}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tổng cộng</div>
-                    <div>$ 0</div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <div>Đặt cọc</div>
-                    <div>$ 0</div>
+                    <div>$ {temporaryBooking.grandTotal || 0}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Số dư phải trả khi đến nơi</div>
-                    <div>$ 0</div>
+                    <div>$ {temporaryBooking.debitTotal || 0}</div>
                 </div>
             </div>
             {openModal && <Modal closeModal={setOpenModal} title={titleModal}

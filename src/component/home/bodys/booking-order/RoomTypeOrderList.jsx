@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateRoomtype } from "redux/slice/booking-slice";
+import { addOrUpdateRoomtype, getTemporaryBooking } from "redux/slice/booking-slice";
 import { findAll, roomtypeFilter, saveRoomtypeTemp } from "redux/slice/roomtype-slice";
 import FullPageLoader from "component/custom/FullPageLoader";
 
@@ -11,6 +11,7 @@ const RoomTypeOrderList = ({closeModal}) => {
     const roomtypeReducer = useSelector(state => ({ ...state.roomtype }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const roomtypeBookings = bookingReducer.bookingRequest.roomTypeBookings;
+    const bookingRequest = bookingReducer.bookingRequest;
     const roomtypes = roomtypeReducer.roomtypes;
     const roomtypeSearch = roomtypeReducer.roomtypeSearch;
 
@@ -51,6 +52,32 @@ const RoomTypeOrderList = ({closeModal}) => {
         dispatch(addOrUpdateRoomtype({roomTypeBookings}));
         closeModal(false);
         toast.success('Saved');
+        const roomTypeMapper = bookingRequest.roomTypeBookings.map(item => {
+            return {
+                id: item.id,
+                quantity: item.quantity
+            }
+        });
+        const discountMapper = bookingRequest.discountBookings.map(item => {
+            return item.giftCode;
+        });
+        const serviceMapper = bookingRequest.serviceBookings.map(item => {
+            return {
+                id: item.id,
+                quantity: item.quantity
+            }
+        });
+        const bookingForm = {
+            checkIn: bookingRequest.checkin,
+            checkOut: bookingRequest.checkout,
+            adultGuest: bookingRequest.adultGuest,
+            childGuest: bookingRequest.childGuest,
+            roomBookingVMs: [],
+            roomTypeBookingVMs: roomTypeMapper,
+            serviceBookingVMs: serviceMapper,
+            discountBookings: discountMapper
+        };
+        dispatch(getTemporaryBooking(bookingForm));
     }
 
     return (

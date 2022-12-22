@@ -55,6 +55,10 @@ const changeRoomBooking = (changeRoomBookingPayload) => {
     return httpClient().post('/api/booking/change/room', changeRoomBookingPayload);
 };
 
+const getTemporaryBooking = (bookingForm) => {
+    return httpClient().post('/api/booking/temporary/', bookingForm);
+};
+
 export {
     createBookingRequest,
     findById,
@@ -67,5 +71,6 @@ export {
     changeRoomBooking,
     cleanRoomBooking,
     cleanFinishBooking,
-    createAdminBookingRequest
+    createAdminBookingRequest,
+    getTemporaryBooking
 };
