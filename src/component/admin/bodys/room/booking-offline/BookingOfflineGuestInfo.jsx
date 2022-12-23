@@ -7,7 +7,6 @@ import {createAdminBookingRequest, findById} from 'src/redux/slice/booking-slice
 import FormField from 'src/component/custom/FormField';
 import FullPageLoader from 'src/component/custom/FullPageLoader';
 import { useEffect, useState } from 'react';
-import { getAccountMe } from 'src/redux/slice/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'src/component/custom/Modal';
 import moment from 'moment';
@@ -19,18 +18,12 @@ const BookingOfflineGuestInfo = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const {loading, bookingRequest} = useSelector(state => ({...state.booking}));
-    const authSlice = useSelector(state => ({...state.auth}));
-    let accountMe = authSlice.accountMe;
-
-    useEffect(() => {
-        dispatch(getAccountMe());
-    }, []);
 
     const initialValues = {
-        fullName: (accountMe.firstName + ' ' + accountMe.lastName) || '',
-        email: accountMe.email || '',
-        phoneNumber: accountMe.phoneNumber || '',
-        country: accountMe.country || '',
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        country: '',
         paymentType: PAYMENT_TYPE.PREPAID,
         paymentMethod: PAYMENT_METHOD.CREDIT_CARDS,
         note: ''
@@ -105,7 +98,7 @@ const BookingOfflineGuestInfo = () => {
                     throw new Error('Đã xảy ra lỗi trong thi xử lý yêu cầu đặt phòng');
                 }
             })
-    }
+    };
 
     return (
         <>

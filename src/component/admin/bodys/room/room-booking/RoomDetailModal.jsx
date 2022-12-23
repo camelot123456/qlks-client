@@ -31,7 +31,7 @@ const RoomDetailModal = ({ rooms }) => {
                 </tr>
                 </thead>
                 <tbody>
-                {rooms && rooms.map((room, index) => (
+                {rooms.length ? rooms.map((room, index) => (
                     <tr key={index}>
                         <th scope="row">{room?.idRoom}</th>
                         <th scope="row">{room?.name}</th>
@@ -47,7 +47,11 @@ const RoomDetailModal = ({ rooms }) => {
                             </div>
                         </td>
                     </tr>
-                ))}
+                )) : (
+                    <tr>
+                        <th scope="row" colSpan={7} className="text-center">HẾT PHÒNG</th>
+                    </tr>
+                )}
                 </tbody>
             </table>
         </div>

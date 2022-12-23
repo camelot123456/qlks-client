@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { PAYMENT_METHOD, PAYMENT_TYPE } from "src/constants/constants";
 import { deleteById, findAll } from "src/redux/slice/booking-slice";
 import FullPageLoader from "src/component/custom/FullPageLoader";
+import {Link} from "react-router-dom";
 
 
 const BookingDetail = () => {
@@ -148,8 +149,8 @@ const BookingDetail = () => {
                         <div>{bookingInfo?.order?.note}</div>
                     </div>
                     <div className="d-flex justify-content-between">
-                        <div>PHỤ PHÍ:</div>
-                        <div>$ {bookingInfo?.order?.surcharge}</div>
+                        <div>PHỤ PHÍ (%):</div>
+                        <div>{bookingInfo?.order?.surcharge} %</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TỔNG TIỀN:</div>
@@ -227,7 +228,10 @@ const BookingDetail = () => {
                     </tbody>
                 </table>
             </div>
-            <button className="btn btn-outline-primary"
+            <Link className="btn btn-outline-primary"
+                  to={`/admin/booking-management/${bookingInfo?.id}/edit`}
+            >Chỉnh sửa</Link>
+            <button className="btn btn-outline-success"
                 onClick={() => handleDelete(bookingInfo?.order?.id)}
             >Xác nhận thanh toán</button>
             {loading && <FullPageLoader />}

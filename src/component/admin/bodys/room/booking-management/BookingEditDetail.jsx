@@ -8,8 +8,9 @@ import FullPageLoader from "src/component/custom/FullPageLoader";
 import Modal from "src/component/custom/Modal";
 import RoomTypeOrderList from "src/component/home/bodys/booking-order/RoomTypeOrderList";
 import ServiceOrderList from "src/component/home/bodys/booking-order/ServiceOrderList";
+import {initBookingInfoEdit} from "src/redux/slice/booking-slice";
 
-const BookingOfflineDetail = () => {
+const BookingEditDetail = () => {
 
     const checkinRef = useRef();
     const checkoutRef = useRef();
@@ -23,9 +24,14 @@ const BookingOfflineDetail = () => {
     const { loading } = useSelector(state => ({ ...state.roomtype }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const bookingRequest = bookingReducer.bookingRequest;
+    const bookingInfo = bookingReducer.bookingInfo;
 
     useEffect(() => {
-
+        dispatch(initBookingInfoEdit({
+            roomTypeBookings: bookingInfo.roomTypeBookings,
+            serviceBookings: bookingInfo.serviceBookings,
+            discountBookings: bookingInfo.discountBookings,
+        }));
     }, []);
 
     const handleOpenModel = (title, modeContent) => {
@@ -78,8 +84,8 @@ const BookingOfflineDetail = () => {
                     <div>Ngày đặt</div>
                     <div>
                         <input className="form-control form-control-sm" type="date"
-                            ref={checkinRef}
-                            defaultValue={moment(new Date()).subtract(0, 'day').format('YYYY-MM-DD')}
+                               ref={checkinRef}
+                               defaultValue={moment(bookingInfo.checkin).subtract(0, 'day').format('YYYY-MM-DD')}
                         />
                     </div>
                 </div>
@@ -87,8 +93,8 @@ const BookingOfflineDetail = () => {
                     <div>Ngày trả</div>
                     <div>
                         <input className="form-control form-control-sm" type="date"
-                            ref={checkoutRef}
-                            defaultValue={moment(new Date()).subtract(-1, 'day').format('YYYY-MM-DD')}
+                               ref={checkoutRef}
+                               defaultValue={moment(bookingInfo.checkout).subtract(-1, 'day').format('YYYY-MM-DD')}
                         />
                     </div>
                 </div>
@@ -96,8 +102,8 @@ const BookingOfflineDetail = () => {
                     <div>Người lớn</div>
                     <div>
                         <input className="form-control form-control-sm" type="number"
-                            ref={adultRef}
-                            defaultValue={1} min="1" max={20}
+                               ref={adultRef}
+                               defaultValue={bookingInfo.adultGuest} min="1" max={20}
                         />
                     </div>
                 </div>
@@ -105,8 +111,8 @@ const BookingOfflineDetail = () => {
                     <div>Trẻ em</div>
                     <div>
                         <input className="form-control form-control-sm" type="number"
-                            ref={childRef}
-                            defaultValue={0} min="0" max={20}
+                               ref={childRef}
+                               defaultValue={bookingInfo.childGuest} min="0" max={20}
                         />
                     </div>
                 </div>
@@ -120,13 +126,13 @@ const BookingOfflineDetail = () => {
                     </div>
                     <table className="table table-hover">
                         <tbody>
-                            {bookingRequest && bookingRequest.roomTypeBookings.map(item => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.name}</th>
-                                    <td>X {item.quantity}</td>
-                                    <td>$ {item.price}</td>
-                                </tr>
-                            ))}
+                        {bookingRequest && bookingRequest.roomTypeBookings.map(item => (
+                            <tr key={item.id}>
+                                <th scope="row">{item?.name || ''}</th>
+                                <td>X {item?.quantity || 0}</td>
+                                <td>$ {item?.price || 0}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
@@ -139,13 +145,13 @@ const BookingOfflineDetail = () => {
                     </div>
                     <table className="table table-hover">
                         <tbody>
-                            {bookingRequest && bookingRequest.serviceBookings.map(item => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.name}</th>
-                                    <td>X {item.quantity}</td>
-                                    <td>$ {item.price}</td>
-                                </tr>
-                            ))}
+                        {bookingRequest && bookingRequest.serviceBookings.map(item => (
+                            <tr key={item.id}>
+                                <th scope="row">{item.name}</th>
+                                <td>X {item.quantity}</td>
+                                <td>$ {item.price}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
@@ -162,18 +168,18 @@ const BookingOfflineDetail = () => {
                     <div>Mã giảm giá:</div>
                     <table className="table table-hover">
                         <tbody>
-                            {bookingRequest && bookingRequest.discountBookings.map(item => (
-                                <tr key={item.giftCode} title={`${item.name}-${item.description}`}>
-                                    <th scope="row">{item.giftCode}</th>
-                                    <td>Giảm {item.percent}%</td>
-                                </tr>
-                            ))}
+                        {bookingRequest && bookingRequest.discountBookings.map(item => (
+                            <tr key={item.giftCode} title={`${item.name}-${item.description}`}>
+                                <th scope="row">{item.giftCode}</th>
+                                <td>Giảm {item.percent}%</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                     <div className="d-flex justify-content-between">
                         <input type="text" ref={giftCodeRef} />
                         <button className="btn btn-sm btn-outline-dark"
-                            onClick={() => handleAddDiscount()}
+                                onClick={() => handleAddDiscount()}
                         >Thêm</button>
                     </div>
                 </div>
@@ -192,13 +198,13 @@ const BookingOfflineDetail = () => {
                 </div>
             </div>
             {openModal && <Modal closeModal={setOpenModal} title={titleModal}
-                content={modeContentModal ? 
-                <ServiceOrderList closeModal={setOpenModal} /> : 
-                <RoomTypeOrderList closeModal={setOpenModal} />} />}
+                                 content={modeContentModal ?
+                                     <ServiceOrderList closeModal={setOpenModal} /> :
+                                     <RoomTypeOrderList closeModal={setOpenModal} />} />}
             {loading && <FullPageLoader />}
         </>
     )
 
 };
 
-export default BookingOfflineDetail;
+export default BookingEditDetail;

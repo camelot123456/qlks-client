@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { adminBillPayment } from "src/redux/slice/order-slice";
 import FullPageLoader from "src/component/custom/FullPageLoader";
+import {resetState} from "src/redux/slice/booking-slice";
 
 
 const BookingOfflinePayment = () => {
@@ -16,12 +17,13 @@ const BookingOfflinePayment = () => {
             .then(resp => {
                 if (!resp.error) {
                     toast.success('Thanh toán thành công');
+                    dispatch(resetState());
                     navigate("/admin/room/room-booking-request");
                 } else {
                     toast.success('Thanh toán thất bại');
                 }
             })
-    }
+    };
 
     return (
         <div className="vstack gap-3">

@@ -34,6 +34,7 @@ import StatisticLayout from './component/admin/bodys/statistic/StatisticLayout';
 import BookingOffineLayout from './component/admin/bodys/room/booking-offline/BookingOffileLayout';
 import BookingList from './component/admin/bodys/room/booking-management/BookingList';
 import FeedbackDetail from './component/home/bodys/account/FeedbackDetail';
+import BookingEditLayout from "./component/admin/bodys/room/booking-management/BookingEditLayout";
 
 // https://preview.themeforest.net/item/triper-creative-tour-travel-hotel-booking-agency-react-template/full_screen_preview/25335777?_ga=2.46860001.75497068.1669143948-1579485344.1669043010
 function App() {
@@ -87,6 +88,7 @@ function App() {
                     <Route path="room-booking-offline" element={<BookingOffineLayout />}/>
                   </Route>
                   <Route path="booking-management" element={<BookingList />}/>
+                  <Route path="booking-management/:id/edit" element={<BookingEditLayout />}/>
                   <Route path="statistic" element={<StatisticLayout />}>
                       
                   </Route>

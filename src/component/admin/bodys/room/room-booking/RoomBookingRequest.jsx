@@ -10,6 +10,7 @@ import AddRoomBookingModal from "./AddRoomBookingModal";
 const RoomBookingRequest = () => {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState();
+    const [idBookingState, setIdBookingState] = useState(null);
     const {bookingNotSetRooms, error, loading} = useSelector(state => ({...state.booking}));
     const bookings = bookingNotSetRooms;
 
@@ -18,6 +19,7 @@ const RoomBookingRequest = () => {
     }, []);
 
     const handleOpenModal = (idBooking) => {
+        setIdBookingState(idBooking);
         setShowModal(true);
         dispatch(addIdBookingIntoBookingRequest(idBooking));
         dispatch(findAllRoomsToAddByIdBooking(idBooking));
@@ -72,7 +74,7 @@ const RoomBookingRequest = () => {
                 </tbody>
             </table>
             {showModal && <Modal closeModal={setShowModal}
-                content={<AddRoomBookingModal closeModal={setShowModal} />}
+                content={<AddRoomBookingModal closeModal={setShowModal} idBooking={idBookingState}/>}
                 title={'CÁC PHÒNG HỢP LỆ'} />}
             {loading && <FullPageLoader/>}
         </>

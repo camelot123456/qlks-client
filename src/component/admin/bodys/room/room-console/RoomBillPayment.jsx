@@ -55,17 +55,11 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGÀY ĐẶT:</div>
-                        <div>
-                            {moment(temporaryBooking?.checkIn).format('DD/MM/YYYY HH:mm') ||
-                            moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}
-                        </div>
+                        <div>{moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGÀY TRẢ:</div>
-                        <div>
-                            {moment(temporaryBooking?.checkOut).format('DD/MM/YYYY HH:mm') ||
-                            moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}
-                        </div>
+                        <div>{moment(bookingInfo?.checkOut).format('DD/MM/YYYY HH:mm')}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGƯỜI LỚN:</div>

@@ -47,45 +47,53 @@ const RoomDisplay = () => {
   }, [change]);
 
   const handleCheckin = (idBooking) => {
-    dispatch(checkinBooking(idBooking))
-      .then(() => {
-        if (!bookingReducer.error) {
-          toast.success(idBooking);
-          setChange(prev => !prev);
-        } else toast.error('failure');
-      });
+      if (window.confirm('Xác nhận khách đã nhận khóa phòng?'))
+        dispatch(checkinBooking(idBooking))
+          .then(() => {
+            if (!bookingReducer.error) {
+              toast.success(idBooking);
+              setChange(prev => !prev);
+            } else toast.error('failure');
+          });
+      else return;
   };
 
   const handleCheckout = (idBooking) => {
-    dispatch(findById(idBooking))
-      .then(() => {
-          setShowModal(true);
-      });
+      if (window.confirm('Xác nhận khách đang yêu cầu trả phòng?'))
+        dispatch(findById(idBooking))
+          .then(() => {
+              setShowModal(true);
+          });
+      else return;
   };
 
   const handleClean = (idBooking) => {
-    dispatch(cleanRoomBooking(idBooking))
-      .then(() => {
-        if (!bookingReducer.error) {
-          toast.success(idBooking);
-          setChange(prev => !prev);
-        } else toast.error('failure');
-      });
+      if (window.confirm('Đã yêu cầu nhân viên buồng phòng?'))
+        dispatch(cleanRoomBooking(idBooking))
+          .then(() => {
+            if (!bookingReducer.error) {
+              toast.success(idBooking);
+              setChange(prev => !prev);
+            } else toast.error('failure');
+          });
+      else return;
   };
 
   const handleCleanFinish = (idBooking) => {
-    dispatch(cleanFinishBooking(idBooking))
-      .then(() => {
-        if (!bookingReducer.error) {
-          toast.success(idBooking);
-          setChange(prev => !prev);
-        } else toast.error('failure');
-      });
+      if (window.confirm('Đã hoàn tất dọn dẹp phòng?'))
+        dispatch(cleanFinishBooking(idBooking))
+          .then(() => {
+            if (!bookingReducer.error) {
+              toast.success(idBooking);
+              setChange(prev => !prev);
+            } else toast.error('failure');
+          });
+      else return;
   };
 
   const getColorByRoomState = (state) => {
     return ROOM_STATE.find(item => item.name.includes(state));
-  }
+  };
 
   return (
     <div className="vstack gap-3">

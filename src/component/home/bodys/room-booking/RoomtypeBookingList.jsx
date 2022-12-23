@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addOrUpdateRoomtype } from "src/redux/slice/booking-slice";
-import { saveRoomtypeTemp } from "src/redux/slice/roomtype-slice";
+import { saveRoomtypeTemp, resetState } from "src/redux/slice/roomtype-slice";
 import FullPageLoader from "src/component/custom/FullPageLoader";
+import {toast} from "react-toastify";
 
 const RoomtypeBookingList = () => {
     const dispatch = useDispatch();
@@ -13,6 +14,10 @@ const RoomtypeBookingList = () => {
     const roomTypeBookings = roomtypeReducer.roomtypeBookings;
 
     useEffect(() => {
+        dispatch(resetState());
+    }, []);
+
+    useEffect(() => {
     }, [roomtypeReducer.loading, 
         roomtypeReducer.roomtypeSearch,
         bookingReducer.bookingRequest
@@ -20,12 +25,14 @@ const RoomtypeBookingList = () => {
 
     const handleSaveRoomtypeTemp = (id, name, quantity, countRoom, price) => {
         dispatch(saveRoomtypeTemp({id, name, quantity, countRoom, price}));
-    }
+    };
 
     const handleSaveRoomtypesOption = () => {
-        dispatch(addOrUpdateRoomtype({roomTypeBookings}));
-        navigate('/booking/detail')
-    }
+        if (roomTypeBookings.length !== 0) {
+            dispatch(addOrUpdateRoomtype({roomTypeBookings}));
+            navigate('/booking/detail');
+        } else toast.error('Bạn chưa thêm hạng vào booking!');
+    };
 
     return (
         <div className="container">

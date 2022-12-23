@@ -1,8 +1,15 @@
 import {useEffect} from "react";
+import {resetState} from "src/redux/slice/booking-slice";
+import {resetState as resetRoomTypeState} from "src/redux/slice/roomtype-slice";
+import {useDispatch} from "react-redux";
 
 const BillDetail = () => {
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
+        dispatch(resetState());
+        dispatch(resetRoomTypeState());
     }, []);
 
     return (

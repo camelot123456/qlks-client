@@ -135,7 +135,15 @@ const roomtypeSlice = createSlice({
                 payload.countRoom,
                 payload.price
             )
-        }
+        },
+        resetState: (state) => {
+            state.roomtypeBookings = [];
+            state.roomtypeSelect = [];
+            state.roomtypeSearch = [];
+            state.roomtypeCart = [];
+            state.roomtypes = [];
+            state.roomtype = {};
+        },
     },
     extraReducers: {
         [roomtypeFilter.pending]: (state, acction) => {
@@ -194,6 +202,9 @@ const roomtypeSlice = createSlice({
     }
 });
 
-export const { saveRoomtypeTemp } = roomtypeSlice.actions;
+export const {
+    saveRoomtypeTemp,
+    resetState
+} = roomtypeSlice.actions;
 
 export default roomtypeSlice;

@@ -35,16 +35,19 @@ const BookingList = () => {
     };
 
     const handleDelete = (idBooking) => {
-        dispatch(deleteById(idBooking))
-            .then(res => {
-                if (!res.error) {
-                    toast.success('Xóa thành công');
-                    setChange(prev => !prev);
-                } else {
-                    toast.error('Xóa thất bại');
-                }
-            })
-    }
+        const confirm = window.confirm('Bạn có muốn xóa Booking ID là ' + idBooking);
+        if (confirm) {
+            dispatch(deleteById(idBooking))
+                .then(res => {
+                    if (!res.error) {
+                        toast.success('Xóa thành công');
+                        setChange(prev => !prev);
+                    } else {
+                        toast.error('Xóa thất bại');
+                    }
+                })
+        } else return;
+    };
 
     return (
         <div className='bg-light p-3 rounded border mt-4'>

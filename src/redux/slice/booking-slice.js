@@ -284,6 +284,48 @@ const bookingSlice = createSlice({
         },
         addIdBookingIntoBookingRequest: (state, {payload}) => {
             state.roomsToAddRequest.id = payload;
+        },
+        initBookingInfoEdit: (state, { payload }) => {
+            state.bookingRequest.roomTypeBookings = [payload.roomTypeBookings];
+            state.bookingRequest.serviceBookings = payload.serviceBookings;
+            state.bookingRequest.discountBookings = payload.discountBookings;
+        },
+        resetState: (state) => {
+            state.bookingNotSetRooms = [];
+            state.booking = {};
+            state.idTemp = null;
+            state.bookingRequest = {
+                checkin: '',
+                checkout: '',
+                adultGuest: '',
+                childGuest: '',
+                note: '',
+                fullname: '',
+                email: '',
+                phoneNumber: '',
+                country: '',
+                discountBookings: [],
+                roomBooking: [],
+                roomTypeBookings: [],
+                serviceBookings: [],
+            };
+            state.temporaryBooking = {
+                roomCharge: 0,
+                serviceCharge: 0,
+                surchargeTotal: 0,
+                grandTotal: 0,
+                debitTotal: 0,
+                checkIn: '',
+                checkOut: '',
+                adultGuest: 0,
+                childGuest: 0
+            };
+            state.roomsToAddRequest = {
+                id: null,
+                roomBookings: []
+            };
+            state.bookings = [];
+            state.bookingInfo = {};
         }
     },
     extraReducers: {
@@ -467,6 +509,8 @@ export const {
     addOrUpdateService,
     addOrUpdateDiscount,
     addRoomsIntoBookingRequest,
-    addIdBookingIntoBookingRequest
+    addIdBookingIntoBookingRequest,
+    initBookingInfoEdit,
+    resetState
 } = bookingSlice.actions;
 export default bookingSlice;
