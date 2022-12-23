@@ -2,9 +2,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     addRoomsIntoBooking,
     findAllNotSetTheRooms
-} from "redux/slice/booking-slice";
+} from "src/redux/slice/booking-slice";
 import {toast} from "react-toastify";
-import FullPageLoader from "component/custom/FullPageLoader";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 import RoomDetailModal from "./RoomDetailModal";
 import React from "react";
 

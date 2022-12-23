@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteById, onPageable} from 'redux/slice/booking-slice';
-import FullPageLoader from 'component/custom/FullPageLoader';
-import {findById} from "redux/slice/booking-slice";
-import Modal from "component/custom/Modal";
-import Pagination from 'component/custom/Pagination';
-import { BOOKING_FIELDS } from 'constants/constants';
+import {deleteById, onPageable} from 'src/redux/slice/booking-slice';
+import FullPageLoader from 'src/component/custom/FullPageLoader';
+import {findById} from "src/redux/slice/booking-slice";
+import Modal from "src/component/custom/Modal";
+import Pagination from 'src/component/custom/Pagination';
+import { BOOKING_FIELDS } from 'src/constants/constants';
 import moment from 'moment';
-import { findAll } from 'redux/slice/booking-slice';
+import { findAll } from 'src/redux/slice/booking-slice';
 import BookingDetail from './BookingDetail';
 import { toast } from 'react-toastify';
 

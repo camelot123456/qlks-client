@@ -1,13 +1,13 @@
 import { FastField, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { useLocation, useNavigate } from "react-router-dom";
-import FormField from "component/custom/FormField";
+import FormField from "src/component/custom/FormField";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from 'redux/slice/user-jwt-slice';
+import { login } from 'src/redux/slice/user-jwt-slice';
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import FullPageLoader from 'component/custom/FullPageLoader';
-import { getAccountMe } from "redux/slice/auth-slice";
+import FullPageLoader from 'src/component/custom/FullPageLoader';
+import { getAccountMe } from "src/redux/slice/auth-slice";
 
 const Login = () => {
     const dispatch = useDispatch();

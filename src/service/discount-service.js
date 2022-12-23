@@ -1,4 +1,4 @@
-import { httpClient } from "config/axios-config";
+import { httpClient } from "src/config/axios-config";
 
 const findByGiftCode = (giftCode) => {
     return httpClient().get('/api/discounts/' + giftCode);

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as feedbackService from 'service/feedback-service';
+import * as feedbackService from 'src/service/feedback-service';
 
 export const findAll = createAsyncThunk(
     'feedback/findAll',

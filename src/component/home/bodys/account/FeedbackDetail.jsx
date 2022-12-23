@@ -1,11 +1,11 @@
-import FormField from "component/custom/FormField";
-import FullPageLoader from "component/custom/FullPageLoader";
+import FormField from "src/component/custom/FormField";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 import { FastField, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { findById, update } from "redux/slice/feedback-slice";
+import { findById, update } from "src/redux/slice/feedback-slice";
 import * as Yup from "yup";
 
 const FeedbackDetail = () => {

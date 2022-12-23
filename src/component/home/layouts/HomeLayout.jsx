@@ -1,6 +1,6 @@
 import {Outlet} from 'react-router-dom';
-import Navbar from 'component/home/fragments/Navbar';
-import Footer from 'component/home/fragments/Footer';
+import Navbar from 'src/component/home/fragments/Navbar';
+import Footer from 'src/component/home/fragments/Footer';
 import React from "react";
 
 const HomeLayout = () => {

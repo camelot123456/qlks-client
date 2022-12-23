@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { findAll } from "redux/slice/roomtype-slice";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { findAll } from "src/redux/slice/roomtype-slice";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 
 const RoomtypeSmallList = ({title}) => {
 

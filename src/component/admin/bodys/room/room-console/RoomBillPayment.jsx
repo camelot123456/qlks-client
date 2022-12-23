@@ -1,12 +1,12 @@
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { PAYMENT_METHOD, PAYMENT_TYPE } from "constants/constants";
-import { checkoutBooking } from "redux/slice/booking-slice";
-import { adminBillPayment } from "redux/slice/order-slice";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { PAYMENT_METHOD, PAYMENT_TYPE } from "src/constants/constants";
+import { checkoutBooking } from "src/redux/slice/booking-slice";
+import { adminBillPayment } from "src/redux/slice/order-slice";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 import React, {useEffect} from "react";
-import {getTemporaryBooking} from "redux/slice/booking-slice";
+import {getTemporaryBooking} from "src/redux/slice/booking-slice";
 
 
 const RoomBillPayment = ({setChange, closeModal}) => {

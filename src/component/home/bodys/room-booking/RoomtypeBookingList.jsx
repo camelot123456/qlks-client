@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addOrUpdateRoomtype } from "redux/slice/booking-slice";
-import { saveRoomtypeTemp } from "redux/slice/roomtype-slice";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { addOrUpdateRoomtype } from "src/redux/slice/booking-slice";
+import { saveRoomtypeTemp } from "src/redux/slice/roomtype-slice";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 
 const RoomtypeBookingList = () => {
     const dispatch = useDispatch();

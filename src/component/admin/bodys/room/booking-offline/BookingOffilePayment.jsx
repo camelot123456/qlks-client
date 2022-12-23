@@ -2,8 +2,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminBillPayment } from "redux/slice/order-slice";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { adminBillPayment } from "src/redux/slice/order-slice";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 
 
 const BookingOfflinePayment = () => {

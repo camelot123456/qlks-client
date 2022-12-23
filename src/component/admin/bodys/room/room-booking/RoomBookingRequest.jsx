@@ -1,10 +1,10 @@
 import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addIdBookingIntoBookingRequest, findAllNotSetTheRooms} from "redux/slice/booking-slice";
-import {findAllRoomsToAddByIdBooking} from "redux/slice/room-slice";
-import FullPageLoader from 'component/custom/FullPageLoader';
-import Modal from 'component/custom/Modal';
+import {addIdBookingIntoBookingRequest, findAllNotSetTheRooms} from "src/redux/slice/booking-slice";
+import {findAllRoomsToAddByIdBooking} from "src/redux/slice/room-slice";
+import FullPageLoader from 'src/component/custom/FullPageLoader';
+import Modal from 'src/component/custom/Modal';
 import AddRoomBookingModal from "./AddRoomBookingModal";
 
 const RoomBookingRequest = () => {

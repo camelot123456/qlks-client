@@ -1,4 +1,4 @@
-import { httpClient } from "config/axios-config"
+import { httpClient } from "src/config/axios-config"
 
 const findAll = (pageable) => {
     return httpClient().get('/api/payment/logs', {

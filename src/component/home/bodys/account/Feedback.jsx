@@ -1,10 +1,10 @@
-import FullPageLoader from "component/custom/FullPageLoader";
-import Pagination from "component/custom/Pagination";
-import { FEEDBACK_FIELDS } from "constants/constants";
+import FullPageLoader from "src/component/custom/FullPageLoader";
+import Pagination from "src/component/custom/Pagination";
+import { FEEDBACK_FIELDS } from "src/constants/constants";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAll, onPageable } from "redux/slice/feedback-slice";
+import { findAll, onPageable } from "src/redux/slice/feedback-slice";
 import { Link } from 'react-router-dom';
 
 const Feedback = () => {

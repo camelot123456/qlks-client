@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import React from "react";
-import FullPageLoader from "component/custom/FullPageLoader";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 import moment from "moment";
 
 const HistoryDetail = () => {

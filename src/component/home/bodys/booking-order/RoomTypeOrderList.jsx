@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateRoomtype } from "redux/slice/booking-slice";
-import { findAll, roomtypeFilter, saveRoomtypeTemp } from "redux/slice/roomtype-slice";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { addOrUpdateRoomtype } from "src/redux/slice/booking-slice";
+import { findAll, roomtypeFilter, saveRoomtypeTemp } from "src/redux/slice/roomtype-slice";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 
 const RoomTypeOrderList = ({closeModal}) => {
 

@@ -1,4 +1,4 @@
-const { httpClient } = require("config/axios-config")
+const { httpClient } = require("src/config/axios-config")
 
 const findAll = (pageable) => {
     return httpClient().get('/api/feedbacks', {

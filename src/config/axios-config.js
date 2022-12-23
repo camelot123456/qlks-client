@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ACCESS_TOKEN } from "constants/constants";
+import { ACCESS_TOKEN } from "src/constants/constants";
 
 export const httpClient = () => {
     const token = localStorage.getItem(ACCESS_TOKEN);

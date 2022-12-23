@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ROOMTYPE_CART } from "constants/constants";
-import * as roomtypeService from 'service/roomtype-service';
+import { ROOMTYPE_CART } from "src/constants/constants";
+import * as roomtypeService from 'src/service/roomtype-service';
 
 export const roomtypeFilter = createAsyncThunk(
     'roomtype/search',

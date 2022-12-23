@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { findById } from "redux/slice/roomtype-slice";
-import { convertByPercent } from "util/util";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { findById } from "src/redux/slice/roomtype-slice";
+import { convertByPercent } from "src/util/util";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 import RoomtypeSmallList from "./RoomtypeSmallList";
 
 const RoomtypeDetail = () => {

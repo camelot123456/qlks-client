@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {findAllByUser, onPageable} from 'redux/slice/order-slice';
-import FullPageLoader from 'component/custom/FullPageLoader';
-import {findById} from "redux/slice/booking-slice";
-import Modal from "component/custom/Modal";
+import {findAllByUser, onPageable} from 'src/redux/slice/order-slice';
+import FullPageLoader from 'src/component/custom/FullPageLoader';
+import {findById} from "src/redux/slice/booking-slice";
+import Modal from "src/component/custom/Modal";
 import HistoryDetail from "./HistoryDetail";
-import Pagination from 'component/custom/Pagination';
-import { ORDER_FIELDS } from 'constants/constants';
+import Pagination from 'src/component/custom/Pagination';
+import { ORDER_FIELDS } from 'src/constants/constants';
 import moment from 'moment';
 
 const HistoryBooking = () => {

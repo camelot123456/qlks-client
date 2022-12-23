@@ -1,4 +1,4 @@
-import {LOCAL_TIME_REGEX} from "constants/constants";
+import {LOCAL_TIME_REGEX} from "src/constants/constants";
 
 export const addTimeSuffixes = (dateInput, defaultTime) => {
     const localTime = new Date();

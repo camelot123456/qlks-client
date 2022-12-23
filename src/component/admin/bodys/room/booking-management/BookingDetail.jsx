@@ -1,9 +1,9 @@
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { PAYMENT_METHOD, PAYMENT_TYPE } from "constants/constants";
-import { deleteById, findAll } from "redux/slice/booking-slice";
-import FullPageLoader from "component/custom/FullPageLoader";
+import { PAYMENT_METHOD, PAYMENT_TYPE } from "src/constants/constants";
+import { deleteById, findAll } from "src/redux/slice/booking-slice";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 
 
 const BookingDetail = () => {

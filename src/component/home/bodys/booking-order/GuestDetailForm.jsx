@@ -2,12 +2,12 @@ import {FastField, Form, Formik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
 import * as Yup from 'yup';
-import {PAYMENT_METHOD, PAYMENT_TYPE} from 'constants/constants';
-import {createBookingRequest} from 'redux/slice/booking-slice';
-import FormField from 'component/custom/FormField';
-import FullPageLoader from 'component/custom/FullPageLoader';
+import {PAYMENT_METHOD, PAYMENT_TYPE} from 'src/constants/constants';
+import {createBookingRequest} from 'src/redux/slice/booking-slice';
+import FormField from 'src/component/custom/FormField';
+import FullPageLoader from 'src/component/custom/FullPageLoader';
 import { useEffect, useState } from 'react';
-import { getAccountMe } from 'redux/slice/auth-slice';
+import { getAccountMe } from 'src/redux/slice/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 

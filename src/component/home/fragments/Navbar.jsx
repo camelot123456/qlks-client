@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from 'asset/img/mer-de-nuit-hm-logo.png';
-import { getAccountMe, logout } from 'redux/slice/auth-slice';
+import logo from 'src/asset/img/mer-de-nuit-hm-logo.png';
+import { getAccountMe, logout } from 'src/redux/slice/auth-slice';
 
 const Navbar = () => {
     const navigate = useNavigate();

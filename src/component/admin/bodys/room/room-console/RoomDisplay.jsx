@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FullPageLoader from "component/custom/FullPageLoader";
+import FullPageLoader from "src/component/custom/FullPageLoader";
 import {
   handlePageable,
   roomSchedule,
-} from "redux/slice/room-slice";
-import Pagination from "component/custom/Pagination";
-import { ROOM_FIELDS } from "constants/constants";
+} from "src/redux/slice/room-slice";
+import Pagination from "src/component/custom/Pagination";
+import { ROOM_FIELDS } from "src/constants/constants";
 import { toast } from "react-toastify";
-import { checkinBooking, cleanFinishBooking, cleanRoomBooking, findById } from "redux/slice/booking-slice";
+import { checkinBooking, cleanFinishBooking, cleanRoomBooking, findById } from "src/redux/slice/booking-slice";
 import moment from "moment";
 import RoomBillPayment from "./RoomBillPayment";
-import Modal from "component/custom/Modal";
-import { ROOM_STATE } from "constants/roomstate";
+import Modal from "src/component/custom/Modal";
+import { ROOM_STATE } from "src/constants/roomstate";
 
 const RoomDisplay = () => {
   const [change, setChange] = useState(false);

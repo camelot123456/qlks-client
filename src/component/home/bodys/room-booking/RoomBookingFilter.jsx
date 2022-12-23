@@ -1,11 +1,11 @@
 import { FastField, Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import FormField from "../../../custom/FormField";
+import FormField from "src/component/custom/FormField";
 import * as Yup from 'yup';
 import { useEffect } from "react";
 import '../home-page/HeaderSlide.css';
-import { findAllObjectSelect, roomtypeFilter } from "../../../../redux/slice/roomtype-slice";
-import { updateTimeBooking } from "../../../../redux/slice/booking-slice";
+import { findAllObjectSelect, roomtypeFilter } from "src/redux/slice/roomtype-slice";
+import { updateTimeBooking } from "src/redux/slice/booking-slice";
 import moment from "moment";
 
 const RoomBookingFilter = () => {

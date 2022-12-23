@@ -1,5 +1,5 @@
 import './FullPageLoader.css';
-import loaderIcon from 'asset/img/Spinner.gif';
+import loaderIcon from 'src/asset/img/Spinner.gif';
 
 const FullPageLoader = () => {
 

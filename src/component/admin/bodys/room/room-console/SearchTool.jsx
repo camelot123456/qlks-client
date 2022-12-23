@@ -1,13 +1,13 @@
 import { FastField, Field, Form, Formik } from "formik";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAllObjectSelect } from "redux/slice/roomtype-slice";
-import FormField from "component/custom/FormField";
-import { ROOM_STATE } from "constants/roomstate";
+import { findAllObjectSelect } from "src/redux/slice/roomtype-slice";
+import FormField from "src/component/custom/FormField";
+import { ROOM_STATE } from "src/constants/roomstate";
 import {
   handleScheduleFilter,
   roomSchedule,
-} from "redux/slice/room-slice";
+} from "src/redux/slice/room-slice";
 import moment from "moment/moment";
 
 const SearchTool = () => {

@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {ACCESS_TOKEN} from "constants/constants";
-import {getAccountMe} from "redux/slice/auth-slice";
+import {ACCESS_TOKEN} from "src/constants/constants";
+import {getAccountMe} from "src/redux/slice/auth-slice";
 
 const RequireAuth = ({allowedRoles}) => {
     const dispatch = useDispatch();

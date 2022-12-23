@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import * as paymentService from 'service/payment-service';
+import * as paymentService from 'src/service/payment-service';
 
 export const createOrderPaypal = createAsyncThunk(
     'payment/createOrder',

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as discountService from "service/discount-service";
+import * as discountService from "src/service/discount-service";
 
 export const findByGiftCode = createAsyncThunk(
     '/disount/findByGiftCode',

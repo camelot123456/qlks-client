@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import moment from "moment";
-import { ROOM_STATE } from "constants/roomstate";
-import * as roomService from "service/room-service";
+import { ROOM_STATE } from "src/constants/roomstate";
+import * as roomService from "src/service/room-service";
 
 export const roomSchedule = createAsyncThunk(
     'room/roomSchedule',
