@@ -22,11 +22,11 @@ const RoomDetailModal = ({ rooms }) => {
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">ROOM TYPE</th>
-                    <th scope="col">ROOM NUMBER</th>
-                    <th scope="col">MAX</th>
-                    <th scope="col">FLOOR</th>
-                    <th scope="col">PRICE</th>
+                    <th scope="col">HẠNG PHÒNG</th>
+                    <th scope="col">SỐ PHÒNG</th>
+                    <th scope="col">TỐI ĐA (KHÁCH)</th>
+                    <th scope="col">TẦNG</th>
+                    <th scope="col">GIÁ</th>
                     <th scope="col">#</th>
                 </tr>
                 </thead>
@@ -35,10 +35,10 @@ const RoomDetailModal = ({ rooms }) => {
                     <tr key={index}>
                         <th scope="row">{room?.idRoom}</th>
                         <th scope="row">{room?.name}</th>
-                        <td>{room?.numberOfPeople}</td>
-                        <td>{room?.roomName}</td>
+                        <td>PHÒNG {room?.roomName}</td>
+                        <td>{room?.numberOfPeople} NGƯỜI</td>
                         <td>{room?.floor}</td>
-                        <td>{room?.price}</td>
+                        <td>$ {room?.price}</td>
                         <td>
                             <div className="form-check">
                                 <input className="form-check-input checkbox-accept"

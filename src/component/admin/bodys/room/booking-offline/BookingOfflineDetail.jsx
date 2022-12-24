@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addOrUpdateDiscount, updateTimeBooking } from "redux/slice/booking-slice";
@@ -24,12 +24,15 @@ const BookingOfflineDetail = () => {
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const bookingRequest = bookingReducer.bookingRequest;
 
+    useEffect(() => {
+
+    }, []);
 
     const handleOpenModel = (title, modeContent) => {
         setTitleModal(title);
         setModeContentModal(modeContent);
         setOpenModal(true);
-    }
+    };
 
     const handleUpdateTimeBooking = () => {
         let filterForm = {
@@ -41,7 +44,7 @@ const BookingOfflineDetail = () => {
         };
         dispatch(updateTimeBooking(filterForm));
         toast.success('Đã cập nhập');
-    }
+    };
 
     const handleAddDiscount = () => {
         const giftCode = giftCodeRef.current.value;
@@ -64,7 +67,7 @@ const BookingOfflineDetail = () => {
                     toast.error('The gift code was be expired or not found');
                 }
             });
-    }
+    };
 
     return (
         <>
@@ -183,19 +186,7 @@ const BookingOfflineDetail = () => {
                     <div>$ 0</div>
                 </div>
                 <div className="d-flex justify-content-between">
-                    <div>Thuế dịch vụ</div>
-                    <div>$ 0</div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <div>Thuế VAT</div>
-                    <div>$ 0</div>
-                </div>
-                <div className="d-flex justify-content-between">
                     <div>Tổng cộng</div>
-                    <div>$ 0</div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <div>Đặt cọc</div>
                     <div>$ 0</div>
                 </div>
                 <div className="d-flex justify-content-between">

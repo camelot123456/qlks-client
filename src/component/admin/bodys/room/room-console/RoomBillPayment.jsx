@@ -5,11 +5,17 @@ import { PAYMENT_METHOD, PAYMENT_TYPE } from "constants/constants";
 import { checkoutBooking } from "redux/slice/booking-slice";
 import { adminBillPayment } from "redux/slice/order-slice";
 import FullPageLoader from "component/custom/FullPageLoader";
+import React, {useEffect} from "react";
+import {getTemporaryBooking} from "redux/slice/booking-slice";
 
 
 const RoomBillPayment = ({setChange, closeModal}) => {
     const dispatch = useDispatch();
-    const {bookingInfo, loading, error} = useSelector(state => ({...state.booking}));
+    const {bookingInfo, loading, error, temporaryBooking} = useSelector(state => ({...state.booking}));
+
+    useEffect(() => {
+        dispatch(getTemporaryBooking(bookingInfo?.id));
+    }, []);
 
     const handlePayment = (idOrder) => {
         dispatch(adminBillPayment(idOrder))
@@ -49,19 +55,25 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGÀY ĐẶT:</div>
-                        <div>{moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}</div>
+                        <div>
+                            {moment(temporaryBooking?.checkIn).format('DD/MM/YYYY HH:mm') ||
+                            moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}
+                        </div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGÀY TRẢ:</div>
-                        <div>{moment(bookingInfo?.checkOut).format('DD/MM/YYYY HH:mm')}</div>
+                        <div>
+                            {moment(temporaryBooking?.checkOut).format('DD/MM/YYYY HH:mm') ||
+                            moment(bookingInfo?.checkIn).format('DD/MM/YYYY HH:mm')}
+                        </div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGƯỜI LỚN:</div>
-                        <div>{bookingInfo?.adultGuest}</div>
+                        <div>{temporaryBooking?.adultGuest || bookingInfo?.adultGuest}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TRẺ EM:</div>
-                        <div>{bookingInfo?.childGuest}</div>
+                        <div>{temporaryBooking?.childGuest || bookingInfo?.childGuest}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TRẠNG THÁI:</div>
@@ -151,16 +163,16 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                         <div>{bookingInfo?.order?.note}</div>
                     </div>
                     <div className="d-flex justify-content-between">
-                        <div>PHỤ PHÍ:</div>
-                        <div>$ {bookingInfo?.order?.surcharge}</div>
+                        <div>PHỤ PHÍ (%):</div>
+                        <div>{temporaryBooking?.surchargeTotal || bookingInfo?.order?.surcharge} %</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TỔNG TIỀN:</div>
-                        <div>$ {bookingInfo?.order?.grandTotal}</div>
+                        <div>$ {temporaryBooking?.grandTotal || bookingInfo?.order?.grandTotal}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>SỐ TIỀN CẦN TRẢ:</div>
-                        <div className="text-danger">$ {bookingInfo?.order?.debitTotal}</div>
+                        <div className="text-danger">$ {temporaryBooking?.debitTotal || bookingInfo?.order?.debitTotal}</div>
                     </div>
                 </div>
             </div>

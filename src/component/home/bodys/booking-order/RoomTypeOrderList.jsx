@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateRoomtype, getTemporaryBooking } from "redux/slice/booking-slice";
+import { addOrUpdateRoomtype } from "redux/slice/booking-slice";
 import { findAll, roomtypeFilter, saveRoomtypeTemp } from "redux/slice/roomtype-slice";
 import FullPageLoader from "component/custom/FullPageLoader";
 
@@ -11,7 +11,6 @@ const RoomTypeOrderList = ({closeModal}) => {
     const roomtypeReducer = useSelector(state => ({ ...state.roomtype }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const roomtypeBookings = bookingReducer.bookingRequest.roomTypeBookings;
-    const bookingRequest = bookingReducer.bookingRequest;
     const roomtypes = roomtypeReducer.roomtypes;
     const roomtypeSearch = roomtypeReducer.roomtypeSearch;
 
@@ -36,49 +35,23 @@ const RoomTypeOrderList = ({closeModal}) => {
     const getCountRoomByIdRoomType = (idRoomType) => {
         const roomtypeSearchItem = roomtypeSearch.find(rts => rts.id === idRoomType);
         return roomtypeSearchItem && roomtypeSearchItem.countRoom;
-    }
+    };
 
     const getQuantityByIdRoomType = (idRoomType) => {
         const roomtypeBooking = roomtypeBookings.find(rtb => rtb.id === idRoomType);
         return roomtypeBooking && roomtypeBooking.quantity || 0;
-    }
+    };
 
     const handleSaveRoomtypeTemp = (id, name, quantity, countRoom, price) => {
         dispatch(saveRoomtypeTemp({id, name, quantity, countRoom, price}));
-    }
+    };
 
     const handleSaveRoomtypesOption = () => {
         const roomTypeBookings = roomtypeReducer.roomtypeBookings;
         dispatch(addOrUpdateRoomtype({roomTypeBookings}));
         closeModal(false);
         toast.success('Saved');
-        const roomTypeMapper = bookingRequest.roomTypeBookings.map(item => {
-            return {
-                id: item.id,
-                quantity: item.quantity
-            }
-        });
-        const discountMapper = bookingRequest.discountBookings.map(item => {
-            return item.giftCode;
-        });
-        const serviceMapper = bookingRequest.serviceBookings.map(item => {
-            return {
-                id: item.id,
-                quantity: item.quantity
-            }
-        });
-        const bookingForm = {
-            checkIn: bookingRequest.checkin,
-            checkOut: bookingRequest.checkout,
-            adultGuest: bookingRequest.adultGuest,
-            childGuest: bookingRequest.childGuest,
-            roomBookingVMs: [],
-            roomTypeBookingVMs: roomTypeMapper,
-            serviceBookingVMs: serviceMapper,
-            discountBookings: discountMapper
-        };
-        dispatch(getTemporaryBooking(bookingForm));
-    }
+    };
 
     return (
         <>

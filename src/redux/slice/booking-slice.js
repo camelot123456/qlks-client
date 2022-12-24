@@ -69,9 +69,9 @@ export const findById = createAsyncThunk(
 
 export const getTemporaryBooking = createAsyncThunk(
     '/booking/getTemporaryBooking',
-    async (bookingForm, { rejectedWithValue }) => {
+    async (idBooking, { rejectedWithValue }) => {
         try {
-            const bookingResponse = await bookingService.getTemporaryBooking(bookingForm);
+            const bookingResponse = await bookingService.getTemporaryBooking(idBooking);
             return bookingResponse.data;
         } catch (error) {
             return rejectedWithValue(error);
@@ -228,7 +228,11 @@ const bookingSlice = createSlice({
             serviceCharge: 0,
             surchargeTotal: 0,
             grandTotal: 0,
-            debitTotal: 0
+            debitTotal: 0,
+            checkIn: '',
+            checkOut: '',
+            adultGuest: 0,
+            childGuest: 0
         },
         roomsToAddRequest: {
             id: null,

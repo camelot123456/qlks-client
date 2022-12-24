@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateService, getTemporaryBooking } from "redux/slice/booking-slice";
+import { addOrUpdateService } from "redux/slice/booking-slice";
 import { findAll, saveServiceTemp } from "redux/slice/service-slice";
 import FullPageLoader from "component/custom/FullPageLoader";
 
@@ -12,7 +12,6 @@ const ServiceOrderList = ({closeModal}) => {
     const { services, loading, error, serviceBookings } = useSelector(state => ({ ...state.service }));
     const bookingReducer = useSelector(state => ({ ...state.booking }));
     const serviceBookingOrders = bookingReducer.bookingRequest.serviceBookings;
-    const bookingRequest = bookingReducer.bookingRequest;
 
     useEffect(() => {
         dispatch(findAll({
@@ -26,43 +25,17 @@ const ServiceOrderList = ({closeModal}) => {
     const getQuantityByIdService = (idService) => {
         const serviceBookings = serviceBookingOrders.find(rtb => rtb.id === idService);
         return serviceBookings && serviceBookings.quantity || 0;
-    }
+    };
 
     const handleSaveServiceTemp = (id, name, quantity, price) => {
         dispatch(saveServiceTemp({id, name, quantity, price}));
-    }
+    };
 
     const handleSaveServicesOption = () => {
         dispatch(addOrUpdateService({serviceBookings}));
         closeModal(false);
         toast.success('Saved');
-        const roomTypeMapper = bookingRequest.roomTypeBookings.map(item => {
-            return {
-                id: item.id,
-                quantity: item.quantity
-            }
-        });
-        const discountMapper = bookingRequest.discountBookings.map(item => {
-            return item.giftCode;
-        });
-        const serviceMapper = bookingRequest.serviceBookings.map(item => {
-            return {
-                id: item.id,
-                quantity: item.quantity
-            }
-        });
-        const bookingForm = {
-            checkIn: bookingRequest.checkin,
-            checkOut: bookingRequest.checkout,
-            adultGuest: bookingRequest.adultGuest,
-            childGuest: bookingRequest.childGuest,
-            roomBookingVMs: [],
-            roomTypeBookingVMs: roomTypeMapper,
-            serviceBookingVMs: serviceMapper,
-            discountBookings: discountMapper
-        };
-        dispatch(getTemporaryBooking(bookingForm));
-    }
+    };
 
     return (
         <>

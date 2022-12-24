@@ -117,8 +117,8 @@ const HistoryDetail = () => {
                         <div>{bookingInfo?.order?.note}</div>
                     </div>
                     <div className="d-flex justify-content-between">
-                        <div>PHỤ PHÍ:</div>
-                        <div>$ {bookingInfo?.order?.surcharge}</div>
+                        <div>PHỤ PHÍ (%):</div>
+                        <div>{bookingInfo?.order?.surcharge} %</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TỔNG TIỀN:</div>

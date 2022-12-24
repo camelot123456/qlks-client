@@ -55,8 +55,8 @@ const changeRoomBooking = (changeRoomBookingPayload) => {
     return httpClient().post('/api/booking/change/room', changeRoomBookingPayload);
 };
 
-const getTemporaryBooking = (bookingForm) => {
-    return httpClient().post('/api/booking/temporary/', bookingForm);
+const getTemporaryBooking = (idBooking) => {
+    return httpClient().get(`/api/booking/${idBooking}/temporary/`);
 };
 
 export {

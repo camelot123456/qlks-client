@@ -1,9 +1,9 @@
 import moment from "moment";
-import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { addOrUpdateDiscount } from "redux/slice/booking-slice";
-import { findByGiftCode, isExpireByGiftCode } from "redux/slice/discount-slice";
+import {useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {toast} from "react-toastify";
+import {addOrUpdateDiscount} from "redux/slice/booking-slice";
+import {findByGiftCode, isExpireByGiftCode} from "redux/slice/discount-slice";
 import FullPageLoader from "component/custom/FullPageLoader";
 import Modal from "component/custom/Modal";
 import RoomTypeOrderList from "./RoomTypeOrderList";
@@ -17,8 +17,8 @@ const BookingDetail = () => {
     const [titleModal, setTitleModal] = useState('');
     const [changeBookingState, setChangeBookingState] = useState({});
     const [modeContentModal, setModeContentModal] = useState(0);
-    const { loading } = useSelector(state => ({ ...state.roomtype }));
-    const bookingReducer = useSelector(state => ({ ...state.booking }));
+    const {loading} = useSelector(state => ({...state.roomtype}));
+    const bookingReducer = useSelector(state => ({...state.booking}));
     const bookingRequest = bookingReducer.bookingRequest;
     const temporaryBooking = bookingReducer.temporaryBooking;
 
@@ -26,7 +26,7 @@ const BookingDetail = () => {
         setTitleModal(title);
         setModeContentModal(modeContent);
         setOpenModal(true);
-    }
+    };
 
     const handleAddDiscount = () => {
         const giftCode = giftCodeRef.current.value;
@@ -49,13 +49,13 @@ const BookingDetail = () => {
                     toast.error('The gift code was be expired or not found');
                 }
             });
-    }
+    };
 
     return (
         <>
-            <div className="v-stack gap-3 bg-light rounded p-3 border" style={{ width: '32%' }}>
+            <div className="v-stack gap-3 bg-light rounded p-3 border" style={{width: '32%'}}>
                 <h3>Chi tiết đặt phòng</h3>
-                <hr />
+                <hr/>
                 <div className="d-flex justify-content-between">
                     <div>Ngày đặt</div>
                     <div>{moment(bookingRequest.checkin).format('DD/MM/YYYY HH:mm') || ''}</div>
@@ -72,46 +72,48 @@ const BookingDetail = () => {
                     <div>Trẻ em</div>
                     <div>{bookingRequest.childGuest || 0}</div>
                 </div>
-                <br />
+                <br/>
                 <div className="v-stack gap-3">
                     <div className="d-flex justify-content-between">
                         <div>Hạng phòng:</div>
-                        <button className="btn btn-sm btn-outline-primary" onClick={() => handleOpenModel('HẠNG PHÒNG', 0)}>
+                        <button className="btn btn-sm btn-outline-primary"
+                                onClick={() => handleOpenModel('HẠNG PHÒNG', 0)}>
                             <i className="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </div>
                     <table className="table table-hover">
                         <tbody>
-                            {bookingRequest && bookingRequest.roomTypeBookings.map(item => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.name}</th>
-                                    <td>X {item.quantity}</td>
-                                    <td>$ {item.price}</td>
-                                </tr>
-                            ))}
+                        {bookingRequest && bookingRequest.roomTypeBookings.map(item => (
+                            <tr key={item.id}>
+                                <th scope="row">{item.name}</th>
+                                <td>X {item.quantity}</td>
+                                <td>$ {item.price}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
                 <div className="v-stack gap-3">
                     <div className="d-flex justify-content-between">
                         <div>Dịch vụ:</div>
-                        <button className="btn btn-sm btn-outline-primary" onClick={() => handleOpenModel('DỊCH VỤ', 1)}>
+                        <button className="btn btn-sm btn-outline-primary"
+                                onClick={() => handleOpenModel('DỊCH VỤ', 1)}>
                             <i className="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </div>
                     <table className="table table-hover">
                         <tbody>
-                            {bookingRequest && bookingRequest.serviceBookings.map(item => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.name}</th>
-                                    <td>X {item.quantity}</td>
-                                    <td>$ {item.price}</td>
-                                </tr>
-                            ))}
+                        {bookingRequest && bookingRequest.serviceBookings.map(item => (
+                            <tr key={item.id}>
+                                <th scope="row">{item.name}</th>
+                                <td>X {item.quantity}</td>
+                                <td>$ {item.price}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>
-                <hr />
+                <hr/>
                 <div className="d-flex justify-content-between">
                     <div>Tiền phòng</div>
                     <div>$ {temporaryBooking.roomCharge || 0}</div>
@@ -124,22 +126,23 @@ const BookingDetail = () => {
                     <div>Mã giảm giá:</div>
                     <table className="table table-hover">
                         <tbody>
-                            {bookingRequest && bookingRequest.discountBookings.map(item => (
-                                <tr key={item.giftCode} title={`${item.name}-${item.description}`}>
-                                    <th scope="row">{item.giftCode}</th>
-                                    <td>Giảm {item.percent}%</td>
-                                </tr>
-                            ))}
+                        {bookingRequest && bookingRequest.discountBookings.map(item => (
+                            <tr key={item.giftCode} title={`${item.name}-${item.description}`}>
+                                <th scope="row">{item.giftCode}</th>
+                                <td>Giảm {item.percent}%</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                     <div className="d-flex justify-content-between">
-                        <input type="text" ref={giftCodeRef} />
+                        <input type="text" ref={giftCodeRef}/>
                         <button className="btn btn-sm btn-outline-dark"
-                            onClick={() => handleAddDiscount()}
-                        >Thêm</button>
+                                onClick={() => handleAddDiscount()}
+                        >Thêm
+                        </button>
                     </div>
                 </div>
-                <hr />
+                <hr/>
                 <div className="d-flex justify-content-between">
                     <div>Tổng phụ</div>
                     <div>$ {temporaryBooking.surchargeTotal || 0}</div>
@@ -154,10 +157,10 @@ const BookingDetail = () => {
                 </div>
             </div>
             {openModal && <Modal closeModal={setOpenModal} title={titleModal}
-                content={modeContentModal ? 
-                <ServiceOrderList closeModal={setOpenModal} /> : 
-                <RoomTypeOrderList closeModal={setOpenModal} />} />}
-            {loading && <FullPageLoader />}
+                                 content={modeContentModal ?
+                                     <ServiceOrderList closeModal={setOpenModal}/> :
+                                     <RoomTypeOrderList closeModal={setOpenModal}/>}/>}
+            {loading && <FullPageLoader/>}
         </>
     )
 
