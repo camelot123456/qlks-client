@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react';
 import { getAccountMe } from 'src/redux/slice/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import { resetServiceBooking } from 'src/redux/slice/service-slice';
+import { resetDiscountBookings } from 'src/redux/slice/discount-slice';
+import { resetRoomtypeBookings } from 'src/redux/slice/roomtype-slice';
 
 const GuestDetailForm = () => {
     const [showLoading, setShowLoading] = useState(false);
@@ -88,6 +91,9 @@ const GuestDetailForm = () => {
         dispatch(createBookingRequest(bookingForm))
         .then(bookingResponse => {
             if (!bookingResponse.error) {
+                dispatch(resetServiceBooking());
+                dispatch(resetDiscountBookings());
+                dispatch(resetRoomtypeBookings());
                 toast.success('Yêu cầu đã được xử lý');
                 if (values.paymentType === PAYMENT_TYPE.PREPAID 
                     && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {

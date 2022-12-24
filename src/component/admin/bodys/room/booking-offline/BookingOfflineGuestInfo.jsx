@@ -11,6 +11,9 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'src/component/custom/Modal';
 import moment from 'moment';
 import BookingOfflinePayment from './BookingOffilePayment';
+import { resetServiceBooking } from 'src/redux/slice/service-slice';
+import { resetDiscountBookings } from 'src/redux/slice/discount-slice';
+import { resetRoomtypeBookings } from 'src/redux/slice/roomtype-slice';
 
 const BookingOfflineGuestInfo = () => {
     const [showLoading, setShowLoading] = useState(false);
@@ -18,6 +21,7 @@ const BookingOfflineGuestInfo = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const {loading, bookingRequest} = useSelector(state => ({...state.booking}));
+    const roomtypeReducer = useSelector(state => ({ ...state.roomtype }));
 
     const initialValues = {
         fullName: '',
@@ -25,7 +29,7 @@ const BookingOfflineGuestInfo = () => {
         phoneNumber: '',
         country: '',
         paymentType: PAYMENT_TYPE.PREPAID,
-        paymentMethod: PAYMENT_METHOD.CREDIT_CARDS,
+        paymentMethod: PAYMENT_METHOD.CASH,
         note: ''
     };
 
@@ -85,8 +89,10 @@ const BookingOfflineGuestInfo = () => {
             .then(bookingResponse => {
                 if (!bookingResponse.error) {
                     toast.success('Yêu cầu đã được xử lý');
-                    if (values.paymentType === PAYMENT_TYPE.PREPAID 
-                        && values.paymentMethod === PAYMENT_METHOD.CREDIT_CARDS) {
+                    dispatch(resetServiceBooking());
+                    dispatch(resetDiscountBookings());
+                    dispatch(resetRoomtypeBookings());
+                    if (values.paymentType === PAYMENT_TYPE.PREPAID) {
                         dispatch(findById(bookingResponse?.payload?.id))
                             .then(() => {
                                 setShowModal(true);

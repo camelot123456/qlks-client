@@ -59,7 +59,8 @@ const serviceSlice = createSlice({
         services: [],
         service: {},
         loading: false,
-        error: false
+        error: false,
+        serviceSurchagre: 0
     },
     reducers: {
         saveServiceTemp: (state, { payload }) => {
@@ -70,6 +71,12 @@ const serviceSlice = createSlice({
                 payload.quantity,
                 payload.price
             )
+        },
+        resetServiceBooking: (state) => {
+            state.serviceBookings = [];
+        },
+        getServiceSurchagre: (state) => {
+            state.serviceSurchagre = state.serviceBookings.reduce((sub, curr) => sub + (curr.price * curr.quantity), 0);
         }
     },
     extraReducers: {
@@ -102,6 +109,10 @@ const serviceSlice = createSlice({
     }
 });
 
-export const { saveServiceTemp } = serviceSlice.actions;
+export const { 
+    saveServiceTemp ,
+    resetServiceBooking,
+    getServiceSurchagre
+} = serviceSlice.actions;
 
 export default serviceSlice;

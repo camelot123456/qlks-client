@@ -36,6 +36,15 @@ const discountSlice = createSlice({
         isExpireGiftCode: false,
     },
     reducers: {
+        resetState: (state) => {
+            state.discountBookings = [];
+            state.discount = {};
+            state.discounts = [];
+            state.isExpireGiftCode = false;
+        },
+        resetDiscountBookings: (state) => {
+            state.discountBookings = [];
+        }
     },
     extraReducers: {
         [findByGiftCode.pending]: (state, { payload }) => {
@@ -68,6 +77,9 @@ const discountSlice = createSlice({
     }
 });
 
-export const {} = discountSlice.actions;
+export const {
+    resetState,
+    resetDiscountBookings
+} = discountSlice.actions;
 
 export default discountSlice;

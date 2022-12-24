@@ -1,5 +1,9 @@
 import { httpClient } from "src/config/axios-config"
 
+const updateBookingRequest = (bookingForm) => {
+    return httpClient().put('/api/booking', bookingForm);
+};
+
 const createBookingRequest = (bookingForm) => {
     return httpClient().post('/api/booking', bookingForm);
 };
@@ -72,5 +76,6 @@ export {
     cleanRoomBooking,
     cleanFinishBooking,
     createAdminBookingRequest,
-    getTemporaryBooking
+    getTemporaryBooking,
+    updateBookingRequest
 };

@@ -33,8 +33,8 @@ const ServiceOrderList = ({closeModal}) => {
 
     const handleSaveServicesOption = () => {
         dispatch(addOrUpdateService({serviceBookings}));
-        closeModal(false);
         toast.success('Saved');
+        closeModal(false);
     };
 
     return (

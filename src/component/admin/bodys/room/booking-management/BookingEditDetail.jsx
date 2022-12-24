@@ -8,31 +8,71 @@ import FullPageLoader from "src/component/custom/FullPageLoader";
 import Modal from "src/component/custom/Modal";
 import RoomTypeOrderList from "src/component/home/bodys/booking-order/RoomTypeOrderList";
 import ServiceOrderList from "src/component/home/bodys/booking-order/ServiceOrderList";
-import {initBookingInfoEdit} from "src/redux/slice/booking-slice";
 
 const BookingEditDetail = () => {
+
+    const dispatch = useDispatch();
+    const [openModal, setOpenModal] = useState(false);
+    const [titleModal, setTitleModal] = useState('');
+    const [roomSurchagre, setRoomSurchagre] = useState(0);
+    const [serviceSurchagre, setServiceSurchagre] = useState(0);
+    const [grandTotal, setGrandTotal] = useState(0);
+    const [discountPercentTotal, setDiscountPercentTotal] = useState(0);
+    const [modeContentModal, setModeContentModal] = useState(0);
+    const roomtypeReducer = useSelector(state => ({ ...state.roomtype }));
+    const bookingReducer = useSelector(state => ({ ...state.booking }));
+    const bookingRequest = bookingReducer.bookingRequest;
+    const bookingInfo = bookingReducer.bookingInfo;
 
     const checkinRef = useRef();
     const checkoutRef = useRef();
     const adultRef = useRef();
     const childRef = useRef();
     const giftCodeRef = useRef();
-    const dispatch = useDispatch();
-    const [openModal, setOpenModal] = useState(false);
-    const [titleModal, setTitleModal] = useState('');
-    const [modeContentModal, setModeContentModal] = useState(0);
-    const { loading } = useSelector(state => ({ ...state.roomtype }));
-    const bookingReducer = useSelector(state => ({ ...state.booking }));
-    const bookingRequest = bookingReducer.bookingRequest;
-    const bookingInfo = bookingReducer.bookingInfo;
 
     useEffect(() => {
-        dispatch(initBookingInfoEdit({
-            roomTypeBookings: bookingInfo.roomTypeBookings,
-            serviceBookings: bookingInfo.serviceBookings,
-            discountBookings: bookingInfo.discountBookings,
-        }));
-    }, []);
+        setRoomSurchagre(getRoomSurchagre());
+        setServiceSurchagre(getServiceSurchagre());
+        setDiscountPercentTotal(getDiscountPercentTotal());
+        setGrandTotal(getGrandTotal());
+    }, [
+        checkinRef?.current?.value,
+        checkoutRef?.current?.value,
+        adultRef?.current?.value,
+        childRef?.current?.value,
+        bookingRequest?.roomTypeBookings,
+        bookingRequest?.serviceBookings,
+        bookingRequest?.discountBookings
+    ]);
+    
+    useEffect(() => {
+        checkinRef.current.value = moment(bookingInfo?.checkIn).subtract(0, 'day').format('YYYY-MM-DD');
+        checkoutRef.current.value = moment(bookingInfo?.checkOut).subtract(-1, 'day').format('YYYY-MM-DD');
+        adultRef.current.value = bookingInfo?.adultGuest;
+        childRef.current.value = bookingInfo?.childGuest;
+    }, [bookingInfo]);
+
+    const getRoomSurchagre = () => {
+        return bookingRequest?.roomTypeBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.price * element?.quantity;
+        }, 0);
+    }
+
+    const getServiceSurchagre = () => {
+        return bookingRequest?.serviceBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.price * element?.quantity;
+        }, 0);
+    }
+
+    const getDiscountPercentTotal = () => {
+        return bookingRequest?.discountBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.percent;
+        }, 0);
+    }
+
+    const getGrandTotal = () => {
+        return (getServiceSurchagre() + getRoomSurchagre()) * (100 - getDiscountPercentTotal()) / 100;
+    }
 
     const handleOpenModel = (title, modeContent) => {
         handleUpdateTimeBooking();
@@ -83,19 +123,13 @@ const BookingEditDetail = () => {
                 <div className="d-flex justify-content-between mb-3">
                     <div>Ngày đặt</div>
                     <div>
-                        <input className="form-control form-control-sm" type="date"
-                               ref={checkinRef}
-                               defaultValue={moment(bookingInfo.checkin).subtract(0, 'day').format('YYYY-MM-DD')}
-                        />
+                        <input className="form-control form-control-sm" type="date" ref={checkinRef}/>
                     </div>
                 </div>
                 <div className="d-flex justify-content-between mb-3">
                     <div>Ngày trả</div>
                     <div>
-                        <input className="form-control form-control-sm" type="date"
-                               ref={checkoutRef}
-                               defaultValue={moment(bookingInfo.checkout).subtract(-1, 'day').format('YYYY-MM-DD')}
-                        />
+                        <input className="form-control form-control-sm" type="date"ref={checkoutRef}/>
                     </div>
                 </div>
                 <div className="d-flex justify-content-between mb-3">
@@ -103,7 +137,7 @@ const BookingEditDetail = () => {
                     <div>
                         <input className="form-control form-control-sm" type="number"
                                ref={adultRef}
-                               defaultValue={bookingInfo.adultGuest} min="1" max={20}
+                               defaultValue={bookingInfo.adultGuest || 1} min="1" max={20}
                         />
                     </div>
                 </div>
@@ -112,7 +146,7 @@ const BookingEditDetail = () => {
                     <div>
                         <input className="form-control form-control-sm" type="number"
                                ref={childRef}
-                               defaultValue={bookingInfo.childGuest} min="0" max={20}
+                               defaultValue={bookingInfo.childGuest || 0} min="0" max={20}
                         />
                     </div>
                 </div>
@@ -158,14 +192,17 @@ const BookingEditDetail = () => {
                 <hr />
                 <div className="d-flex justify-content-between">
                     <div>Tiền phòng</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((roomSurchagre).toFixed(2))}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tiền dịch vụ</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((serviceSurchagre).toFixed(2))}</div>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <div>Mã giảm giá:</div>
+                    <div>{Number((discountPercentTotal).toFixed(2))}%</div>
                 </div>
                 <div className="v-stack gap-3">
-                    <div>Mã giảm giá:</div>
                     <table className="table table-hover">
                         <tbody>
                         {bookingRequest && bookingRequest.discountBookings.map(item => (
@@ -190,18 +227,18 @@ const BookingEditDetail = () => {
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tổng cộng</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((grandTotal).toFixed(2))}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Số dư phải trả khi đến nơi</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((grandTotal).toFixed(2))}</div>
                 </div>
             </div>
             {openModal && <Modal closeModal={setOpenModal} title={titleModal}
                                  content={modeContentModal ?
                                      <ServiceOrderList closeModal={setOpenModal} /> :
                                      <RoomTypeOrderList closeModal={setOpenModal} />} />}
-            {loading && <FullPageLoader />}
+            {roomtypeReducer.loading && <FullPageLoader />}
         </>
     )
 

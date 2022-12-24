@@ -42,15 +42,15 @@ const RoomTypeOrderList = ({closeModal}) => {
         return roomtypeBooking && roomtypeBooking.quantity || 0;
     };
 
-    const handleSaveRoomtypeTemp = (id, name, quantity, countRoom, price) => {
-        dispatch(saveRoomtypeTemp({id, name, quantity, countRoom, price}));
+    const handleSaveRoomtypeTemp = (id, name, quantity, price) => {
+        dispatch(saveRoomtypeTemp({id, name, quantity, price}));
     };
 
     const handleSaveRoomtypesOption = () => {
         const roomTypeBookings = roomtypeReducer.roomtypeBookings;
         dispatch(addOrUpdateRoomtype({roomTypeBookings}));
-        closeModal(false);
         toast.success('Saved');
+        closeModal(false);
     };
 
     return (
@@ -64,7 +64,7 @@ const RoomTypeOrderList = ({closeModal}) => {
                         <h4 className="font-weight-light" style={{ color: '#d77b5d' }}>Giá: ${item.price}</h4>
                         <input type="number" min={0} max={getCountRoomByIdRoomType(item.id) || 20}
                             defaultValue={getQuantityByIdRoomType(item.id)} 
-                            onChange={(e) => handleSaveRoomtypeTemp(item.id, item.name, +e.target.value, item.countRoom, item.price)}/>
+                            onChange={(e) => handleSaveRoomtypeTemp(item.id, item.name, +e.target.value, item.price)}/>
                     </div>
                 </div>
             ))}

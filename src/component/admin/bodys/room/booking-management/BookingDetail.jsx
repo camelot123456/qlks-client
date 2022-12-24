@@ -228,12 +228,17 @@ const BookingDetail = () => {
                     </tbody>
                 </table>
             </div>
-            <Link className="btn btn-outline-primary"
-                  to={`/admin/booking-management/${bookingInfo?.id}/edit`}
-            >Chỉnh sửa</Link>
-            <button className="btn btn-outline-success"
-                onClick={() => handleDelete(bookingInfo?.order?.id)}
-            >Xác nhận thanh toán</button>
+            {!bookingInfo?.state.includes('CLOSE') ? (
+                <>
+                    <Link className="btn btn-outline-primary"
+                        to={`/admin/booking-management/${bookingInfo?.id}/edit`}
+                    >Chỉnh sửa</Link>
+                    <button className="btn btn-outline-success"
+                        onClick={() => handleDelete(bookingInfo?.order?.id)}
+                    >Xác nhận thanh toán</button>
+                </>
+            ) : null}
+            
             {loading && <FullPageLoader />}
         </div>
     )

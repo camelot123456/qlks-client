@@ -10,12 +10,21 @@ import moment from 'moment';
 import { findAll } from 'src/redux/slice/booking-slice';
 import BookingDetail from './BookingDetail';
 import { toast } from 'react-toastify';
+import { resetServiceBooking } from 'src/redux/slice/service-slice';
+import { resetDiscountBookings } from 'src/redux/slice/discount-slice';
+import { resetRoomtypeBookings } from 'src/redux/slice/roomtype-slice';
 
 const BookingList = () => {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const [change, setChange] = useState(false);
     const {bookings, loading, pageable} = useSelector(state => ({...state.booking}));
+
+    useEffect(() => {
+        dispatch(resetServiceBooking());
+        dispatch(resetDiscountBookings());
+        dispatch(resetRoomtypeBookings());
+    }, []);
 
     useEffect(() => {
         dispatch(findAll({

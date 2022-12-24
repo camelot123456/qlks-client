@@ -26,8 +26,8 @@ const AddRoomBookingModal = ({idBooking, closeModal}) => {
 
     const handleSaveRequest = () => {
         dispatch(addRoomsIntoBooking(roomsToAddRequest))
-            .then(() => {
-                if (!error) {
+            .then((response) => {
+                if (!response?.error) {
                     dispatch(findAllNotSetTheRooms());
                     toast.success('Saved');
                     closeModal(false);

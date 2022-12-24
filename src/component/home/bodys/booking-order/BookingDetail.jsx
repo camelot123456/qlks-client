@@ -1,13 +1,15 @@
 import moment from "moment";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
-import {addOrUpdateDiscount} from "src/redux/slice/booking-slice";
-import {findByGiftCode, isExpireByGiftCode} from "src/redux/slice/discount-slice";
+import {addOrUpdateDiscount, resetState} from "src/redux/slice/booking-slice";
+import {findByGiftCode, isExpireByGiftCode, resetDiscountBookings} from "src/redux/slice/discount-slice";
 import FullPageLoader from "src/component/custom/FullPageLoader";
 import Modal from "src/component/custom/Modal";
 import RoomTypeOrderList from "./RoomTypeOrderList";
 import ServiceOrderList from "./ServiceOrderList";
+import { resetRoomtypeBookings } from "src/redux/slice/roomtype-slice";
+import { resetServiceBooking } from "src/redux/slice/service-slice";
 
 const BookingDetail = () => {
 
@@ -21,6 +23,13 @@ const BookingDetail = () => {
     const bookingReducer = useSelector(state => ({...state.booking}));
     const bookingRequest = bookingReducer.bookingRequest;
     const temporaryBooking = bookingReducer.temporaryBooking;
+
+    useEffect(() => {
+        dispatch(resetServiceBooking());
+        dispatch(resetDiscountBookings());
+        dispatch(resetRoomtypeBookings());
+        dispatch(resetState());
+    }, []);
 
     const handleOpenModel = (title, modeContent) => {
         setTitleModal(title);

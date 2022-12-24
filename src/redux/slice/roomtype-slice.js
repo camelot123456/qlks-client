@@ -83,9 +83,9 @@ export const addRoomIntoCart = (idRoomtype) => {
     }
 };
 
-const saveRoomtypeTemporary = (roomTypeBookings, id, name, quantity, countRoom, price) => {
+const saveRoomtypeTemporary = (roomTypeBookings, id, name, quantity, price) => {
     if (!roomTypeBookings.length) {
-        roomTypeBookings.push({ id, quantity, name, countRoom, price });
+        roomTypeBookings.push({ id, quantity, name, price });
         return roomTypeBookings;
     }
     roomTypeBookings.forEach((item, index) => {
@@ -102,7 +102,7 @@ const saveRoomtypeTemporary = (roomTypeBookings, id, name, quantity, countRoom, 
             return roomTypeBookings;
         } else {
             if (roomTypeBookings.every(iter => iter.id !== id)) {
-                roomTypeBookings.push({ id, quantity, name, countRoom, price });
+                roomTypeBookings.push({ id, quantity, name, price });
                 return roomTypeBookings;
             }
         }
@@ -132,7 +132,6 @@ const roomtypeSlice = createSlice({
                 payload.id,
                 payload.name,
                 payload.quantity,
-                payload.countRoom,
                 payload.price
             )
         },
@@ -144,6 +143,12 @@ const roomtypeSlice = createSlice({
             state.roomtypes = [];
             state.roomtype = {};
         },
+        resetRoomtypeBookings: (state) => {
+            state.roomtypeBookings = [];
+        },
+        getRoomTypeSurchagre: (state) => {
+            state.serviceSurchagre = state.roomtypeBookings.reduce((sub, curr) => sub + (curr.price * curr.quantity), 0);
+        }
     },
     extraReducers: {
         [roomtypeFilter.pending]: (state, acction) => {
@@ -204,7 +209,9 @@ const roomtypeSlice = createSlice({
 
 export const {
     saveRoomtypeTemp,
-    resetState
+    resetState,
+    resetRoomtypeBookings,
+    getRoomTypeSurchagre
 } = roomtypeSlice.actions;
 
 export default roomtypeSlice;

@@ -29,7 +29,7 @@ function InputField1(props) {
 
     return (
         <div className="form-floating mb-3">
-            <input type={type} className="form-control rounded-pill" id={name} placeholder={placeholder} value={value}
+            <input type={type} className="form-control rounded-pill" id={name} placeholder={placeholder} value={value || ''}
                 onChange={onChange} onBlur={onBlur} disabled={disabled} min={min} max={max}
                 style={{ minWidth: '200px' }} />
             <label htmlFor={name}>{label}</label>

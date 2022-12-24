@@ -2,12 +2,14 @@ import moment from "moment";
 import {useEffect, useRef, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addOrUpdateDiscount, updateTimeBooking } from "src/redux/slice/booking-slice";
-import { findByGiftCode, isExpireByGiftCode } from "src/redux/slice/discount-slice";
+import { addOrUpdateDiscount, resetState, updateTimeBooking } from "src/redux/slice/booking-slice";
+import { findByGiftCode, isExpireByGiftCode, resetDiscountBookings } from "src/redux/slice/discount-slice";
 import FullPageLoader from "src/component/custom/FullPageLoader";
 import Modal from "src/component/custom/Modal";
 import RoomTypeOrderList from "src/component/home/bodys/booking-order/RoomTypeOrderList";
 import ServiceOrderList from "src/component/home/bodys/booking-order/ServiceOrderList";
+import { resetServiceBooking } from "src/redux/slice/service-slice";
+import { resetRoomtypeBookings } from "src/redux/slice/roomtype-slice";
 
 const BookingOfflineDetail = () => {
 
@@ -25,7 +27,10 @@ const BookingOfflineDetail = () => {
     const bookingRequest = bookingReducer.bookingRequest;
 
     useEffect(() => {
-
+        dispatch(resetServiceBooking());
+        dispatch(resetDiscountBookings());
+        dispatch(resetRoomtypeBookings());
+        dispatch(resetState());
     }, []);
 
     const handleOpenModel = (title, modeContent) => {

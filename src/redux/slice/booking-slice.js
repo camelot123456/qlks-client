@@ -1,33 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as bookingService from 'src/service/booking-service';
 
-const addRoomtypeBooking = (roomTypeBookings, id, name, quantity, countRoom, price) => {
-    if (!roomTypeBookings.length) {
-        roomTypeBookings.push({ id, quantity, name, countRoom, price });
-        return roomTypeBookings;
-    }
-    roomTypeBookings.forEach((item, index) => {
-        if (item.id === id) {
-            if (!quantity) {
-                roomTypeBookings.splice(index, 1);
-                return roomTypeBookings;
-            };
-            item = {
-                ...item,
-                quantity
-            };
-            roomTypeBookings.splice(index, 1, item);
-            return roomTypeBookings;
-        } else {
-            if (roomTypeBookings.every(iter => iter.id !== id)) {
-                roomTypeBookings.push({ id, quantity, name, countRoom, price });
-                return roomTypeBookings;
-            }
-        }
-    });
-    return roomTypeBookings;
-};
-
 const addDiscountBooking = (discountBookings, isExpireGiftCode, giftCode, name, percent, description) => {
     if (!isExpireGiftCode) {
         return discountBookings;
@@ -96,6 +69,18 @@ export const createBookingRequest = createAsyncThunk(
     async (bookingForm, { rejectedWithValue }) => {
         try {
             const bookingResponse = await bookingService.createBookingRequest(bookingForm);
+            return bookingResponse.data;
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
+export const updateBookingRequest = createAsyncThunk(
+    '/booking/update',
+    async (bookingForm, { rejectedWithValue }) => {
+        try {
+            const bookingResponse = await bookingService.updateBookingRequest(bookingForm);
             return bookingResponse.data;
         } catch (error) {
             return rejectedWithValue(error);
@@ -286,7 +271,7 @@ const bookingSlice = createSlice({
             state.roomsToAddRequest.id = payload;
         },
         initBookingInfoEdit: (state, { payload }) => {
-            state.bookingRequest.roomTypeBookings = [payload.roomTypeBookings];
+            state.bookingRequest.roomTypeBookings = payload.roomTypeBookings;
             state.bookingRequest.serviceBookings = payload.serviceBookings;
             state.bookingRequest.discountBookings = payload.discountBookings;
         },
@@ -339,6 +324,19 @@ const bookingSlice = createSlice({
             state.booking = payload;
         },
         [createBookingRequest.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [updateBookingRequest.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [updateBookingRequest.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+            state.booking = payload;
+        },
+        [updateBookingRequest.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },
