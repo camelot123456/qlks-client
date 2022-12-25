@@ -1,7 +1,7 @@
 import FormField from "src/component/custom/FormField";
 import FullPageLoader from "src/component/custom/FullPageLoader";
 import { FastField, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -11,23 +11,18 @@ import * as Yup from "yup";
 const FeedbackDetail = () => {
 
     const { loading, error, feedback } = useSelector(state => ({ ...state.feedback }));
-    const [initFeedback, setInitFeedback] = useState({
-        rating: 0,
-        content: '',
-    });
     const dispatch = useDispatch();
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(findById(id))
-            .then(() => {
-                setInitFeedback({
-                        rating: feedback.rating,
-                        content: feedback.content
-                    });
-            });
+        dispatch(findById(id));
     }, [id]);
+
+    const initialValues = {
+        rating: feedback?.rating || 0,
+        content: feedback?.content || '',
+    }
 
     const validationSchema = Yup.object().shape({
         content: Yup.string(),
@@ -53,7 +48,8 @@ const FeedbackDetail = () => {
     return (
         <>
             <Formik
-                initialValues={initFeedback}
+                enableReinitialize={true}
+                initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={values => handleSubmit(values)}
             >

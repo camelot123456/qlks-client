@@ -26,12 +26,12 @@ const Navbar = () => {
                 </a>
 
                 <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                    <li><Link to="/" className="nav-link px-2 link-secondary">Home</Link></li>
-                    <li><Link to="/login" className="nav-link px-2 link-dark">Room</Link></li>
-                    <li><Link to="/login" className="nav-link px-2 link-dark">Service</Link></li>
-                    <li><Link to="/login" className="nav-link px-2 link-dark">About</Link></li>
-                    <li><Link to="/login" className="nav-link px-2 link-dark">Constact</Link></li>
-                    <li><Link to="/booking" className="btn btn-outline-success">Booking</Link></li>
+                    <li><a href="/#home-page" className="nav-link px-2 link-secondary">Trang chủ</a></li>
+                    <li><a href="/#roomtype" className="nav-link px-2 link-dark">Phòng</a></li>
+                    <li><a href="/#service" className="nav-link px-2 link-dark">Dịch vụ</a></li>
+                    <li><Link to="/#gift-code" className="nav-link px-2 link-dark">Mã quà tặng</Link></li>
+                    <li><Link to="/#contact" className="nav-link px-2 link-dark">Liên hệ</Link></li>
+                    <li><Link to="/booking" className="btn btn-outline-success">Đặt phòng</Link></li>
                 </ul>
 
                 <div className="col-md-3 text-end">

@@ -14,6 +14,7 @@ const ServiceDetail = () => {
 
     useEffect(() => {
         dispatch(findById(id));
+        window.scrollTo(0, 0);
     }, [id]);
 
     return (
@@ -37,6 +38,22 @@ const ServiceDetail = () => {
                 </div>}
                 {loading && <FullPageLoader />}
             </section>
+            <div className="container">
+                <ul className="nav nav-tabs mb-3">
+                    <li className="nav-item">
+                        <button className="nav-link active" aria-current="page">Ảnh</button>
+                    </li>
+                </ul>
+                <div className="row row-cols-1 row-cols-md-4 g-4">
+                    {service?.fileRepos && service?.fileRepos.map((item, i) => (
+                        <div key={i} class="col">
+                            <div class="card">
+                                <img src={item?.base64Image} class="card-img-top" alt={service.name}/>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
             <ServiceList title={'DỊCH VỤ KHÁC'}/>
         </>
     )

@@ -57,7 +57,7 @@ const RoomTypeOrderList = ({closeModal}) => {
         <>
             {roomtypes && roomtypes.map((item, index) => (
                 <div key={index} className="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
-                    <img src={item.thumbnail} width="50%" className="flex-shrink-0 me-3" alt="..." />
+                    <img src={item.fileRepos[item.fileRepos.length - 1]?.base64Image || item.thumbnail} width="50%" className="flex-shrink-0 me-3" alt="..." />
                     <div>
                         <h5 className="mt-0">{item.name}</h5>
                         <p className="font-weight-light">Tình trạng: {getCountRoomByIdRoomType(item.id) ? `Còn ${getCountRoomByIdRoomType(item.id)} phòng` : 'Hết phòng'}</p>

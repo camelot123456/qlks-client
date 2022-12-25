@@ -1,47 +1,10 @@
-import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { PAYMENT_METHOD, PAYMENT_TYPE } from "src/constants/constants";
-import { checkoutBooking } from "src/redux/slice/booking-slice";
-import { adminBillPayment } from "src/redux/slice/order-slice";
+import {useSelector} from "react-redux";
+import React from "react";
 import FullPageLoader from "src/component/custom/FullPageLoader";
-import React, {useEffect} from "react";
-import {getTemporaryBooking} from "src/redux/slice/booking-slice";
+import moment from "moment";
 
-
-const RoomBillPayment = ({setChange, closeModal}) => {
-    const dispatch = useDispatch();
-    const {bookingInfo, loading, error, temporaryBooking} = useSelector(state => ({...state.booking}));
-
-    useEffect(() => {
-        dispatch(getTemporaryBooking(bookingInfo?.id));
-    }, []);
-
-    const handlePayment = (idOrder) => {
-        dispatch(checkoutBooking(idOrder))
-            .then(() => {
-                if (!error) {
-                    toast.success('Thanh toán thành công');
-                    setChange(prev => !prev);
-                    closeModal(false);
-                } else toast.error('Thanh toán thất bại');
-            });
-        // dispatch(adminBillPayment(idOrder))
-        //     .then(resp => {
-        //         if (!resp.error) {
-        //             dispatch(checkoutBooking(idOrder))
-        //                 .then(() => {
-        //                     if (!error) {
-        //                         toast.success('Thanh toán thành công');
-        //                         setChange(prev => !prev);
-        //                         closeModal(false);
-        //                     } else toast.error('Thanh toán thất bại');
-        //                 });
-        //         } else {
-        //             toast.success('Thanh toán thất bại');
-        //         }
-        //     })
-    }
+const RoomBookingDetail = ({setChange, closeModal}) => {
+    const {bookingInfo, loading} = useSelector(state => ({...state.booking}));
 
     return (
         <div className="vstack gap-3">
@@ -71,11 +34,11 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>NGƯỜI LỚN:</div>
-                        <div>{temporaryBooking?.adultGuest || bookingInfo?.adultGuest}</div>
+                        <div>{bookingInfo?.adultGuest}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TRẺ EM:</div>
-                        <div>{temporaryBooking?.childGuest || bookingInfo?.childGuest}</div>
+                        <div>{bookingInfo?.childGuest}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TRẠNG THÁI:</div>
@@ -131,7 +94,7 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>THƠI GIAN THANH TOÁN:</div>
-                        <div>{moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm')}</div>
+                        <div>{bookingInfo?.order?.paidAt ? moment(bookingInfo?.order?.paidAt).format('DD/MM/YYYY HH:mm') : 'ĐANG CẬP NHẬP...'}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>HÌNH THỨC:</div>
@@ -144,20 +107,9 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     <div className="d-flex justify-content-between">
                         <div>PHƯƠNG THỨC:</div>
                         <div>
-                            {bookingInfo?.order.paymentType === PAYMENT_TYPE.POSTPAID ? 
-                            (<select className="form-select form-select-lg mb-3 rounded-pill"
-                                    id='paymentMethod' name='paymentMethod'>
-                                <option value={PAYMENT_METHOD.CREDIT_CARDS}>CREDIT CARD</option>
-                                <option value={PAYMENT_METHOD.CASH}>CASH</option>
-                                <option value={PAYMENT_METHOD.CHECKS}>CHECKS</option>
-                                <option value={PAYMENT_METHOD.DEBIT_CARDS}>DEBIT CARD</option>
-                                <option value={PAYMENT_METHOD.ELECTRONIC_BANK_TRANFERS}>ELECTRON BANK TRANFERS</option>
-                                <option value={PAYMENT_METHOD.MOBILE_PAYMENTS}>MOBILE PAYMENT</option>
-                            </select>)
-                            :
-                            (<span className="badge text-bg-success">
+                            <span className="badge text-bg-success">
                                 {bookingInfo?.order?.paymentMethod}
-                            </span>)}
+                            </span>
                         </div>
                     </div>
                     <div className="d-flex justify-content-between">
@@ -166,15 +118,15 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>PHỤ PHÍ (%):</div>
-                        <div>{temporaryBooking?.surchargeTotal || bookingInfo?.order?.surcharge} %</div>
+                        <div>{bookingInfo?.order?.surcharge} %</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>TỔNG TIỀN:</div>
-                        <div>$ {temporaryBooking?.grandTotal || bookingInfo?.order?.grandTotal}</div>
+                        <div>$ {bookingInfo?.order?.grandTotal}</div>
                     </div>
                     <div className="d-flex justify-content-between">
                         <div>SỐ TIỀN CẦN TRẢ:</div>
-                        <div className="text-danger">$ {temporaryBooking?.debitTotal || bookingInfo?.order?.debitTotal}</div>
+                        <div className="text-danger">$ {bookingInfo?.order?.debitTotal}</div>
                     </div>
                 </div>
             </div>
@@ -196,11 +148,17 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                             <th scope="row">{item?.name}</th>
                             <td>x {item?.quantity}</td>
                             <td>$ {item?.price}</td>
-                            <td>{item?.rooms.map(room => (
+                            <td>{item?.rooms.length > 0 ?
+                            (item?.rooms.map(room => (
                                 <span className="badge text-bg-success" key={room?.id}>
                                     {room?.roomName}
                                 </span>
-                            ))}</td>
+                            ))) 
+                            : 
+                            (<span className="badge text-bg-secondary">
+                                ĐANG CẬP NHẬP ...
+                            </span>)}
+                            </td>
                         </tr>
                     ))}
                     </tbody>
@@ -244,22 +202,8 @@ const RoomBillPayment = ({setChange, closeModal}) => {
                     </tbody>
                 </table>
             </div>
-            {bookingInfo?.order?.debitTotal ? (
-                <button className="btn btn-outline-warning"
-                onClick={() => handlePayment(bookingInfo?.id)}
-                >
-                    Xác nhận thanh toán
-                </button>
-            ) : (
-                <button className="btn btn-outline-success"
-                onClick={() => handlePayment(bookingInfo?.id)}
-                >
-                    Xác nhận trả phòng
-                </button>
-            )}
-            {loading && <FullPageLoader />}
+            {loading && <FullPageLoader/>}
         </div>
     )
-}
-
-export default RoomBillPayment;
+};
+export default RoomBookingDetail;

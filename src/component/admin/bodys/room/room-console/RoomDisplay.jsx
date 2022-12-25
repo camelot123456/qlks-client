@@ -8,16 +8,19 @@ import {
 import Pagination from "src/component/custom/Pagination";
 import { ROOM_FIELDS } from "src/constants/constants";
 import { toast } from "react-toastify";
-import { checkinBooking, cleanFinishBooking, cleanRoomBooking, findById } from "src/redux/slice/booking-slice";
+import { checkinBooking, cleanFinishBooking, cleanRoomBooking, doNotDisturbBooking, findById } from "src/redux/slice/booking-slice";
 import moment from "moment";
 import RoomBillPayment from "./RoomBillPayment";
 import Modal from "src/component/custom/Modal";
 import { ROOM_STATE } from "src/constants/roomstate";
+import RoomBookingDetail from "./RoomBookingDetail";
+import RoomProgress from "./RoomProgress";
 
 const RoomDisplay = () => {
   const [change, setChange] = useState(false);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [typeModal, setTypeModal] = useState(0);
   const { roomsSchedule, loading, pageableSchedule } = useSelector((state) => ({
     ...state.room,
   }));
@@ -59,17 +62,46 @@ const RoomDisplay = () => {
   };
 
   const handleCheckout = (idBooking) => {
-      if (window.confirm('Xác nhận khách đang yêu cầu trả phòng?'))
-        dispatch(findById(idBooking))
-          .then(() => {
-              setShowModal(true);
-          });
-      else return;
+    setTypeModal(0);
+    if (window.confirm('Xác nhận khách đang yêu cầu trả phòng?'))
+      dispatch(findById(idBooking))
+        .then(() => {
+            setShowModal(true);
+        });
+    else return;
+  };
+
+  const showRoomBooking = (idBooking) => {
+    setTypeModal(1);
+    dispatch(findById(idBooking))
+      .then(() => {
+          setShowModal(true);
+      });
+  };
+
+  const showProgressInfo = (idBooking) => {
+    setTypeModal(2);
+    dispatch(findById(idBooking))
+      .then(() => {
+          setShowModal(true);
+      });
   };
 
   const handleClean = (idBooking) => {
       if (window.confirm('Đã yêu cầu nhân viên buồng phòng?'))
         dispatch(cleanRoomBooking(idBooking))
+          .then(() => {
+            if (!bookingReducer.error) {
+              toast.success(idBooking);
+              setChange(prev => !prev);
+            } else toast.error('failure');
+          });
+      else return;
+  };
+
+  const doNotDisturbRoomBooking = (idBooking) => {
+      if (window.confirm('Khánh đang yêu cầu không được làm phiền?'))
+        dispatch(doNotDisturbBooking(idBooking))
           .then(() => {
             if (!bookingReducer.error) {
               toast.success(idBooking);
@@ -110,10 +142,14 @@ const RoomDisplay = () => {
               }}
             >
               <div className="card-header hstack">
-                <button className="btn btn-outline-dark btn-sm me-auto">
+                <button className="btn btn-outline-dark btn-sm me-auto"
+                  onClick={() => showRoomBooking(room.idBooking)}
+                >
                   <i className="fa fa-info-circle" aria-hidden="true"></i>
                 </button>
-                <button className="btn btn-outline-dark btn-sm ">
+                <button className="btn btn-outline-dark btn-sm "
+                  onClick={() => showProgressInfo(room.idBooking)}
+                >
                   <i className="fa fa-commenting" aria-hidden="true"></i>
                 </button>
               </div>
@@ -128,11 +164,8 @@ const RoomDisplay = () => {
                 <div className="card-footer d-flex justify-content-evenly">
                   <button className="btn btn-outline-dark btn-sm "
                     onClick={() => handleCheckin(room.idBooking)}
-                  >
+                    >
                     <i className="fa fa-sign-in" aria-hidden="true"></i>
-                  </button>
-                  <button className="btn btn-outline-dark btn-sm ">
-                    <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
@@ -143,8 +176,19 @@ const RoomDisplay = () => {
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-dark btn-sm ">
+                  <button className="btn btn-outline-dark btn-sm "
+                    onClick={() => doNotDisturbRoomBooking(room.idBooking)}
+                  >
                     <i className="fa fa-ban" aria-hidden="true"></i>
+                  </button>
+                </div>
+              )}
+              {room?.state === "DO_NOT_DISTURB" && (
+                <div className="card-footer d-flex justify-content-evenly">
+                  <button className="btn btn-outline-dark btn-sm "
+                    onClick={() => handleCheckout(room.idBooking)}
+                  >
+                    <i className="fa fa-sign-out" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
@@ -155,9 +199,6 @@ const RoomDisplay = () => {
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-dark btn-sm ">
-                    <i className="fa fa-ban" aria-hidden="true"></i>
-                  </button>
                 </div>
               )}
               {room?.state === "OVERDUE" && (
@@ -166,9 +207,6 @@ const RoomDisplay = () => {
                     onClick={() => handleCheckout(room.idBooking)}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
-                  </button>
-                  <button className="btn btn-outline-dark btn-sm ">
-                    <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
@@ -179,9 +217,6 @@ const RoomDisplay = () => {
                   >
                     <i className="fa fa-refresh" aria-hidden="true"></i>
                   </button>
-                  <button className="btn btn-outline-dark btn-sm ">
-                    <i className="fa fa-ban" aria-hidden="true"></i>
-                  </button>
                 </div>
               )}
               {room?.state === "CLEANING_IN_PROGRESS" && (
@@ -190,9 +225,6 @@ const RoomDisplay = () => {
                     onClick={() => handleCleanFinish(room.idBooking)}
                   >
                     <i className="fa fa-check" aria-hidden="true"></i>
-                  </button>
-                  <button className="btn btn-outline-dark btn-sm ">
-                    <i className="fa fa-ban" aria-hidden="true"></i>
                   </button>
                 </div>
               )}
@@ -207,7 +239,15 @@ const RoomDisplay = () => {
       />
       {showModal && <Modal closeModal={setShowModal}
         setChange={setChange}
-        content={<RoomBillPayment setChange={setChange} closeModal={setShowModal}/>} width={'850'}/>}
+        content={typeModal === 0 ? (
+          <RoomBillPayment setChange={setChange} closeModal={setShowModal}/>
+        ) : (
+          typeModal === 1 ? (
+            <RoomBookingDetail setChange={setChange} closeModal={setShowModal}/>
+          ) : (
+            <RoomProgress setChange={setChange} closeModal={setShowModal}/>
+          )
+        )} width={'850'}/>}
       {loading && <FullPageLoader />}
     </div>
   );

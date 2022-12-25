@@ -7,8 +7,8 @@ const HomePageLayout = () => {
 
     return (
         <>
-            <HeaderSlice />
-            <RoomtypeList />
+            <HeaderSlice/>
+            <RoomtypeList/>
             <ServiceList title={'DỊCH VỤ'} />
         </>
     )

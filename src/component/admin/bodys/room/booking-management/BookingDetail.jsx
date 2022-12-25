@@ -5,11 +5,17 @@ import { PAYMENT_METHOD, PAYMENT_TYPE } from "src/constants/constants";
 import { deleteById, findAll } from "src/redux/slice/booking-slice";
 import FullPageLoader from "src/component/custom/FullPageLoader";
 import {Link} from "react-router-dom";
+import { useEffect, useState } from "react";
 
 
 const BookingDetail = () => {
     const dispatch = useDispatch();
+    const [progressInfo, setProgressInfo] = useState([]);
     const {bookingInfo, loading, error} = useSelector(state => ({...state.booking}));
+
+    useEffect(() => {
+        setProgressInfo(JSON.parse(bookingInfo?.order?.logs));
+    }, [bookingInfo]);
 
     const handleDelete = (idBooking) => {
         dispatch(deleteById(idBooking))
@@ -21,10 +27,6 @@ const BookingDetail = () => {
                     toast.error('Xóa thất bại');
                 }
             })
-    }
-
-    const handleUpdate = (idBooking) => {
-        toast.success('Thanh toán thành công');
     }
 
     return (
@@ -227,15 +229,36 @@ const BookingDetail = () => {
                     ))}
                     </tbody>
                 </table>
+                <hr />
+                <h5 className="text-center">TIẾN TRÌNH</h5>
+                <table className="table table-secondary table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">THỜI GIAN</th>
+                        <th scope="col">TRẠNG THÁI</th>
+                        <th scope="col">NỘI DUNG</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {progressInfo && progressInfo?.map((item, i) => (
+                        <tr key={i}>
+                            <th scope="row">{item?.datetime}</th>
+                            <td>
+                                <span className="badge text-bg-success">
+                                    {item?.state}
+                                </span>
+                            </td>
+                            <td>{item?.message}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
             {!bookingInfo?.state.includes('CLOSE') ? (
                 <>
                     <Link className="btn btn-outline-primary"
                         to={`/admin/booking-management/${bookingInfo?.id}/edit`}
                     >Chỉnh sửa</Link>
-                    <button className="btn btn-outline-success"
-                        onClick={() => handleDelete(bookingInfo?.order?.id)}
-                    >Xác nhận thanh toán</button>
                 </>
             ) : null}
             

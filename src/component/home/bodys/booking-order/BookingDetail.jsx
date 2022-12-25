@@ -17,6 +17,10 @@ const BookingDetail = () => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
+    const [roomSurchagre, setRoomSurchagre] = useState(0);
+    const [serviceSurchagre, setServiceSurchagre] = useState(0);
+    const [grandTotal, setGrandTotal] = useState(0);
+    const [discountPercentTotal, setDiscountPercentTotal] = useState(0);
     const [changeBookingState, setChangeBookingState] = useState({});
     const [modeContentModal, setModeContentModal] = useState(0);
     const {loading} = useSelector(state => ({...state.roomtype}));
@@ -25,10 +29,21 @@ const BookingDetail = () => {
     const temporaryBooking = bookingReducer.temporaryBooking;
 
     useEffect(() => {
+        setRoomSurchagre(getRoomSurchagre());
+        setServiceSurchagre(getServiceSurchagre());
+        setDiscountPercentTotal(getDiscountPercentTotal());
+        setGrandTotal(getGrandTotal());
+    }, [
+        bookingRequest?.roomTypeBookings,
+        bookingRequest?.serviceBookings,
+        bookingRequest?.discountBookings
+    ]);
+
+    useEffect(() => {
         dispatch(resetServiceBooking());
         dispatch(resetDiscountBookings());
-        dispatch(resetRoomtypeBookings());
-        dispatch(resetState());
+        // dispatch(resetRoomtypeBookings());
+        // dispatch(resetState());
     }, []);
 
     const handleOpenModel = (title, modeContent) => {
@@ -59,6 +74,28 @@ const BookingDetail = () => {
                 }
             });
     };
+
+    const getRoomSurchagre = () => {
+        return bookingRequest?.roomTypeBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.price * element?.quantity;
+        }, 0);
+    }
+
+    const getServiceSurchagre = () => {
+        return bookingRequest?.serviceBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.price * element?.quantity;
+        }, 0);
+    }
+
+    const getDiscountPercentTotal = () => {
+        return bookingRequest?.discountBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.percent;
+        }, 0);
+    }
+
+    const getGrandTotal = () => {
+        return getServiceSurchagre() + (getRoomSurchagre() * (100 - getDiscountPercentTotal()) / 100);
+    }
 
     return (
         <>
@@ -125,14 +162,17 @@ const BookingDetail = () => {
                 <hr/>
                 <div className="d-flex justify-content-between">
                     <div>Tiền phòng</div>
-                    <div>$ {temporaryBooking.roomCharge || 0}</div>
+                    <div>$ {Number((roomSurchagre).toFixed(2))}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tiền dịch vụ</div>
-                    <div>$ {temporaryBooking.serviceCharge || 0}</div>
+                    <div>$ {Number((serviceSurchagre).toFixed(2))}</div>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <div>Mã giảm giá:</div>
+                    <div>{Number((discountPercentTotal).toFixed(2))}%</div>
                 </div>
                 <div className="v-stack gap-3">
-                    <div>Mã giảm giá:</div>
                     <table className="table table-hover">
                         <tbody>
                         {bookingRequest && bookingRequest.discountBookings.map(item => (
@@ -153,16 +193,16 @@ const BookingDetail = () => {
                 </div>
                 <hr/>
                 <div className="d-flex justify-content-between">
-                    <div>Tổng phụ</div>
-                    <div>$ {temporaryBooking.surchargeTotal || 0}</div>
+                    <div>Tổng phụ phí</div>
+                    <div>$ 0</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tổng cộng</div>
-                    <div>$ {temporaryBooking.grandTotal || 0}</div>
+                    <div>$ {Number((grandTotal).toFixed(2))}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Số dư phải trả khi đến nơi</div>
-                    <div>$ {temporaryBooking.debitTotal || 0}</div>
+                    <div>$ {Number((grandTotal).toFixed(2))}</div>
                 </div>
             </div>
             {openModal && <Modal closeModal={setOpenModal} title={titleModal}

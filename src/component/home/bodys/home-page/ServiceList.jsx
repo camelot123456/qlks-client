@@ -12,21 +12,21 @@ const ServiceList = ({title}) => {
     useEffect(() => {
         dispatch(findAll({
             page: 0,
-            size: 4,
+            size: 100,
             sort: 'id,asc',
             search: ''
         }));
     }, []);
 
     return (
-        <section className="py-5">
+        <section id="service" className="py-5">
             <div className="container px-4 px-lg-5 mt-5">
                 <h1 className="text-center mb-4">{title}</h1>
                 <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     {services && services.map(item => (
                         <div key={item.id} className="col mb-5">
                             <div className="card h-100">
-                                <img className="card-img-top" src={item.thumbnail} />
+                                <img className="card-img-top" src={item.fileRepos[item.fileRepos.length - 1]?.base64Image || item.thumbnail} />
                                 <div className="card-body p-4">
                                     <div className="text-center">
                                         <h5 className="fw-bolder">{item.name}</h5>

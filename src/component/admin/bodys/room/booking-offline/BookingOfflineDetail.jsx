@@ -19,6 +19,10 @@ const BookingOfflineDetail = () => {
     const childRef = useRef();
     const giftCodeRef = useRef();
     const dispatch = useDispatch();
+    const [roomSurchagre, setRoomSurchagre] = useState(0);
+    const [serviceSurchagre, setServiceSurchagre] = useState(0);
+    const [grandTotal, setGrandTotal] = useState(0);
+    const [discountPercentTotal, setDiscountPercentTotal] = useState(0);
     const [openModal, setOpenModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
     const [modeContentModal, setModeContentModal] = useState(0);
@@ -27,11 +31,48 @@ const BookingOfflineDetail = () => {
     const bookingRequest = bookingReducer.bookingRequest;
 
     useEffect(() => {
+        setRoomSurchagre(getRoomSurchagre());
+        setServiceSurchagre(getServiceSurchagre());
+        setDiscountPercentTotal(getDiscountPercentTotal());
+        setGrandTotal(getGrandTotal());
+    }, [
+        checkinRef?.current?.value,
+        checkoutRef?.current?.value,
+        adultRef?.current?.value,
+        childRef?.current?.value,
+        bookingRequest?.roomTypeBookings,
+        bookingRequest?.serviceBookings,
+        bookingRequest?.discountBookings
+    ]);
+
+    useEffect(() => {
         dispatch(resetServiceBooking());
         dispatch(resetDiscountBookings());
         dispatch(resetRoomtypeBookings());
         dispatch(resetState());
     }, []);
+
+    const getRoomSurchagre = () => {
+        return bookingRequest?.roomTypeBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.price * element?.quantity;
+        }, 0);
+    }
+
+    const getServiceSurchagre = () => {
+        return bookingRequest?.serviceBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.price * element?.quantity;
+        }, 0);
+    }
+
+    const getDiscountPercentTotal = () => {
+        return bookingRequest?.discountBookings?.reduce((subTotal, element) => {
+            return subTotal + element?.percent;
+        }, 0);
+    }
+
+    const getGrandTotal = () => {
+        return getServiceSurchagre() + ((getRoomSurchagre()) * (100 - getDiscountPercentTotal()) / 100);
+    }
 
     const handleOpenModel = (title, modeContent) => {
         handleUpdateTimeBooking();
@@ -157,14 +198,17 @@ const BookingOfflineDetail = () => {
                 <hr />
                 <div className="d-flex justify-content-between">
                     <div>Tiền phòng</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((roomSurchagre).toFixed(2))}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tiền dịch vụ</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((serviceSurchagre).toFixed(2))}</div>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <div>Mã giảm giá:</div>
+                    <div>{Number((discountPercentTotal).toFixed(2))}%</div>
                 </div>
                 <div className="v-stack gap-3">
-                    <div>Mã giảm giá:</div>
                     <table className="table table-hover">
                         <tbody>
                             {bookingRequest && bookingRequest.discountBookings.map(item => (
@@ -184,16 +228,16 @@ const BookingOfflineDetail = () => {
                 </div>
                 <hr />
                 <div className="d-flex justify-content-between">
-                    <div>Tổng phụ</div>
+                    <div>Tổng phụ phí</div>
                     <div>$ 0</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Tổng cộng</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((grandTotal).toFixed(2))}</div>
                 </div>
                 <div className="d-flex justify-content-between">
                     <div>Số dư phải trả khi đến nơi</div>
-                    <div>$ 0</div>
+                    <div>$ {Number((grandTotal).toFixed(2))}</div>
                 </div>
             </div>
             {openModal && <Modal closeModal={setOpenModal} title={titleModal}

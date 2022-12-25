@@ -13,6 +13,18 @@ export const findAll = createAsyncThunk(
     }
 );
 
+export const findAllByIdRoomtype = createAsyncThunk(
+    'feedback/findAllByIdRoomtype',
+    async (id, { rejectedWithValue }) => {
+        try {
+            const feedback = await feedbackService.findAllByIdRoomtype(id);
+            return feedback.data;
+        } catch (error) {
+            return rejectedWithValue(error.response.data);
+        }
+    }
+);
+
 export const findById = createAsyncThunk(
     'feedback/findById',
     async (id, { rejectedWithValue }) => {
@@ -63,6 +75,18 @@ const feedbackSlice = createSlice({
                 search: payload.search
             }
         },
+        resetState: (state) => {
+            state.feedback = {};
+            state.feedbacks = [];
+            state.pageable = {
+                page: 0,
+                pages: 0,
+                size: 20,
+                sort: 'modified_at,desc',
+                count: 0,
+                search: ''
+            };
+        }
     },
     extraReducers: {
         [findById.pending]: (state, acction) => {
@@ -75,6 +99,19 @@ const feedbackSlice = createSlice({
             state.feedback = payload;
         },
         [findById.rejected]: (state, acction) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [findAllByIdRoomtype.pending]: (state, acction) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [findAllByIdRoomtype.fulfilled]: (state, { payload }) => {
+            state.loading = false;
+            state.error = false;
+            state.feedbacks = payload;
+        },
+        [findAllByIdRoomtype.rejected]: (state, acction) => {
             state.loading = false;
             state.error = true;
         },
@@ -115,7 +152,8 @@ const feedbackSlice = createSlice({
 });
 
 export const {
-    onPageable
+    onPageable,
+    resetState
 } = feedbackSlice.actions;
 
 export default feedbackSlice;

@@ -168,6 +168,17 @@ export const cleanFinishBooking = createAsyncThunk(
     }
 );
 
+export const doNotDisturbBooking = createAsyncThunk(
+    '/booking/doNotDisturbBooking',
+    async (idBooking, { rejectedWithValue }) => {
+        try {
+            return await bookingService.doNotDisturbBooking(idBooking);
+        } catch (error) {
+            return rejectedWithValue(error);
+        }
+    }
+);
+
 export const changeRoomBooking = createAsyncThunk(
     '/booking/changeRoomBooking',
     async (bookingForm, { rejectedWithValue }) => {
@@ -458,6 +469,18 @@ const bookingSlice = createSlice({
             state.error = false;
         },
         [checkinBooking.rejected]: (state, {payload}) => {
+            state.loading = false;
+            state.error = true;
+        },
+        [doNotDisturbBooking.pending]: (state, {payload}) => {
+            state.loading = true;
+            state.error = false;
+        },
+        [doNotDisturbBooking.fulfilled]: (state, {payload}) => {
+            state.loading = false;
+            state.error = false;
+        },
+        [doNotDisturbBooking.rejected]: (state, {payload}) => {
             state.loading = false;
             state.error = true;
         },

@@ -12,7 +12,7 @@ const RoomtypeSmallList = ({title}) => {
     useEffect(() => {
         dispatch(findAll({
             page: 0,
-            size: 3,
+            size: 20,
             sort: 'id,asc',
             search: ''
         }));

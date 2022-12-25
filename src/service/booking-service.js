@@ -55,6 +55,10 @@ const cleanFinishBooking = (idBooking) => {
     return httpClient().get('/api/booking/finish/' + idBooking);
 };
 
+const doNotDisturbBooking = (idBooking) => {
+    return httpClient().get('/api/booking/do-not-disturb/' + idBooking);
+};
+
 const changeRoomBooking = (changeRoomBookingPayload) => {
     return httpClient().post('/api/booking/change/room', changeRoomBookingPayload);
 };
@@ -77,5 +81,6 @@ export {
     cleanFinishBooking,
     createAdminBookingRequest,
     getTemporaryBooking,
-    updateBookingRequest
+    updateBookingRequest,
+    doNotDisturbBooking
 };

@@ -15,6 +15,10 @@ const findById = (idFeedback) => {
     return httpClient().get('/api/feedbacks/' + idFeedback);
 };
 
+const findAllByIdRoomtype = (idRoomtype) => {
+    return httpClient().get('/api/feedbacks/roomtype/' + idRoomtype);
+};
+
 const save = (feedbackForm) => {
     return httpClient().post('/api/feedbacks', feedbackForm);
 };
@@ -32,5 +36,6 @@ export {
     findById,
     save,
     update,
-    deleteFeedback
+    deleteFeedback,
+    findAllByIdRoomtype
 };

@@ -41,7 +41,7 @@ const ServiceOrderList = ({closeModal}) => {
         <>
             {services && services.map(item => (
                 <div key={item.id} className="d-flex position-relative p-3 border mb-3 bg-light shadow-lg bg-body rounded">
-                    <img src={item.thumbnail} width="30%" className="flex-shrink-0 me-3" alt="..." />
+                    <img src={item.fileRepos[item.fileRepos.length - 1]?.base64Image || item.thumbnail} width="30%" className="flex-shrink-0 me-3" alt="..." />
                     <div>
                         <h5 className="mt-0">{item.name}</h5>
                         <h4 className="font-weight-light" style={{ color: '#d77b5d' }}>Giá: ${item.price}</h4>

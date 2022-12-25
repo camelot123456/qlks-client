@@ -71,7 +71,7 @@ const BookingEditDetail = () => {
     }
 
     const getGrandTotal = () => {
-        return (getServiceSurchagre() + getRoomSurchagre()) * (100 - getDiscountPercentTotal()) / 100;
+        return getServiceSurchagre() + ((getRoomSurchagre()) * (100 - getDiscountPercentTotal()) / 100);
     }
 
     const handleOpenModel = (title, modeContent) => {
@@ -222,7 +222,7 @@ const BookingEditDetail = () => {
                 </div>
                 <hr />
                 <div className="d-flex justify-content-between">
-                    <div>Tổng phụ</div>
+                    <div>Tổng phụ phí</div>
                     <div>$ 0</div>
                 </div>
                 <div className="d-flex justify-content-between">
